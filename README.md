@@ -1,1 +1,1 @@
-### Xana Admin Panel by Codistan.
+### Xana Admin.
