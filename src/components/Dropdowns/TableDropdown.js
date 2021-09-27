@@ -18,15 +18,15 @@ const NotificationDropdown = () => {
   return (
     <>
       <a
-        className="text-blueGray-500 py-1 px-3"
-        href="#pablo"
+        className='text-blueGray-500 py-1 px-3'
+        href='#pablo'
         ref={btnDropdownRef}
         onClick={(e) => {
           e.preventDefault();
           dropdownPopoverShow ? closeDropdownPopover() : openDropdownPopover();
         }}
       >
-        <i className="fas fa-ellipsis-v"></i>
+        <i className='fas fa-ellipsis-v'></i>
       </a>
       <div
         ref={popoverDropdownRef}
@@ -36,7 +36,7 @@ const NotificationDropdown = () => {
         }
       >
         <a
-          href="#pablo"
+          href='#pablo'
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }
@@ -45,7 +45,7 @@ const NotificationDropdown = () => {
           Action
         </a>
         <a
-          href="#pablo"
+          href='#pablo'
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }
@@ -54,7 +54,7 @@ const NotificationDropdown = () => {
           Another action
         </a>
         <a
-          href="#pablo"
+          href='#pablo'
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }
