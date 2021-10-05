@@ -1,0 +1,173 @@
+#report {
+  margin: 15px 50px;
+  font-size: 15px;
+}
+
+.btn {
+  text-align: center;
+  display: block;
+}
+button {
+  background-color: crimson;
+  color: white;
+  padding: 5px 10px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+button:first-child {
+  margin-right: 20px;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+}
+
+.img {
+  width: 100px;
+  height: 100px;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.user-img {
+  width: 130px;
+  height: 130px;
+  border-radius: 15px;
+}
+
+.user-info {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: 50px;
+}
+
+.user-info > p {
+  flex: 1 0 50%;
+  padding: 4px;
+}
+
+.company {
+  background-color: #0b2e75;
+  color: white;
+  margin: 20px 0px;
+  padding: 25px 35px;
+  border-radius: 20px;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.heading {
+  font-size: 14px;
+}
+
+.company p {
+  padding: 0px;
+  margin: 0px;
+}
+
+.company_info {
+  display: grid;
+  grid-template-columns: 18% 82%;
+}
+.company_info p {
+  padding: 5px 0px;
+}
+
+.company_contact {
+  display: flex;
+  justify-content: space-between;
+}
+
+.company_contact > p {
+  min-width: 200px;
+}
+
+.report-desc {
+  width: 100%;
+  border: 1px solid #0b2e75;
+  padding: 10px 15px;
+  border-radius: 15px;
+}
+
+td {
+  vertical-align: top;
+  padding: 5px 0px;
+}
+
+.headings {
+  width: 25% !important;
+}
+
+.values {
+  width: 75% !important;
+}
+
+.date {
+  padding-right: 20px;
+}
+
+.result-date {
+  padding-left: 100px;
+}
+
+.results {
+  display: flex;
+  justify-content: space-between;
+}
+
+.results > p {
+  width: 30%;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 100px;
+}
+
+.regards {
+  display: flex;
+  /* grid-template-columns: 60% 40%; */
+}
+
+.fs-28 {
+  font-size: 24px;
+  letter-spacing: 2px;
+}
+
+.black-border {
+  border: 2px solid black;
+}
+
+.qr-section {
+  display: flex;
+  flex: 0.4;
+  justify-content: right;
+  align-items: flex-end;
+}
+
+.qr-section > *:first-child {
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.qr-section > *:last-child {
+  margin-right: 10px;
+}
+
+.footer {
+  text-align: center;
+}
+
+.footer p {
+  margin: 0px;
+  padding: 0px;
+}
