@@ -42,11 +42,11 @@ const Report = (props) => {
       <div id="report">
         <div className="top">
           <img className="img" src="logo.png" alt="xana" />
-          <h3 className="bold" style={{ color: 'darkblue' }}>
+          <h2 className="bold" style={{ color: 'darkblue' }}>
             Certificate of Coronavirus <br />
             <span style={{ color: 'darkorange' }}>(SARS-CoV-2)</span> Rapid
             Antigen Testing
-          </h3>
+          </h2>
         </div>
 
         <div className="user">
@@ -127,8 +127,16 @@ const Report = (props) => {
               {props.sampleDate}
             </p>
             <p>
+              <span className="bold">Sample Time:</span>
+              {props.sampleTime}
+            </p>
+            <p>
               <span className="bold">Result Date:</span>
               {props.resultDate}
+            </p>
+            <p>
+              <span className="bold">Result Time:</span>
+              {props.resultTime}
             </p>
           </div>
           <p>
@@ -137,7 +145,7 @@ const Report = (props) => {
             </span>
             {props.orderId}
           </p>
-          <p style={{ marginBottom: '30px' }}>
+          <p style={{ marginBottom: '50px' }}>
             <span className="bold" style={{ paddingRight: '10px' }}>
               Result:
             </span>
@@ -152,7 +160,8 @@ const Report = (props) => {
               <img src="logo.png" alt="xana" width={50} height={50} />
             </p>
             <div className="qr-section">
-              <QRCode value="Xana Medtec" size={90} />
+              <img src="fit-to-fly.png" width={90} height={90} />
+              <QRCode value="Xana Medtec" size={90} className="qr" />
               <p>
                 <span className="fs-28 bold" style={{ paddingRight: '12px' }}>
                   CE
@@ -165,10 +174,12 @@ const Report = (props) => {
         </div>
         <div className="footer">
           <p style={{ fontWeight: '600', fontSize: '14px', color: 'darkblue' }}>
-            Xana <span style={{ color: 'darkorange' }}>Medtec Ltd</span> Reg.
-            No. 12112703
+            Xana <span style={{ color: 'darkorange' }}>Meditest</span>{' '}
+            <span style={{ color: 'black' }}>is a trading name for Xana</span>{' '}
+            <span style={{ color: 'darkorange' }}>Medtec Ltd</span> Reg. No.
+            12112703
           </p>
-          <p>
+          <p style={{ fontWeight: '600' }}>
             Universal Square Business Center, Suite 1.16, Devonshire Street
             North, Manchester, M12 6JH
           </p>
