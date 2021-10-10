@@ -41,7 +41,11 @@ const Report = (props) => {
       )}
       <div id="report">
         <div className="top">
-          <img className="img" src="logo.png" alt="xana" />
+          <img
+            className="img"
+            src={require('assets/img/logo.png').default}
+            alt="xana"
+          />
           <h2 className="bold" style={{ color: 'darkblue' }}>
             Certificate of Coronavirus <br />
             <span style={{ color: 'darkorange' }}>(SARS-CoV-2)</span> Rapid
@@ -50,7 +54,11 @@ const Report = (props) => {
         </div>
 
         <div className="user">
-          <img className="user-img" src="user.jpg" alt="User" />
+          <img
+            className="user-img"
+            src={require('assets/img/user.jpg').default}
+            alt="User"
+          />
           <div className="user-info">
             <p>
               <span className="bold">First name:</span> {props.firstName}
@@ -112,7 +120,13 @@ const Report = (props) => {
               </tr>
               <tr>
                 <td className="bold headings">Test Performance:</td>
-                <td className="values">{props.testPerformance} </td>
+                <td className="values">
+                  {props.testPerformance.split('\n').map((p) => (
+                    <>
+                      {p} <br />
+                    </>
+                  ))}{' '}
+                </td>
               </tr>
               <tr>
                 <td className="bold headings">Test Authorisation:</td>
@@ -157,10 +171,19 @@ const Report = (props) => {
               <span className="bold">Medical &amp; Clinical Advisor</span>
               <br />
               <span className="bold">GPHC number: 2072830 </span> <br />
-              <img src="logo.png" alt="xana" width={50} height={50} />
+              <img
+                src={require('assets/img/logo.png').default}
+                alt="xana"
+                width={50}
+                height={50}
+              />
             </p>
             <div className="qr-section">
-              <img src="fit-to-fly.png" width={90} height={90} />
+              <img
+                src={require('assets/img/fit-to-fly.png').default}
+                width={90}
+                height={90}
+              />
               <QRCode value="Xana Medtec" size={90} className="qr" />
               <p>
                 <span className="fs-28 bold" style={{ paddingRight: '12px' }}>
