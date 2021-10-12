@@ -76,26 +76,28 @@ const ReportForm = () => {
     let mm = String(date.getMonth() + 1).padStart(2, '0') //janvier = 0
     let yyyy = date.getFullYear()
 
-    return dd + '/' + mm + '/' + yyyy
+    return dd + '-' + mm + '-' + yyyy
   }
   const submitHandler = async (e) => {
     e.preventDefault()
     try {
-      const { success } = await axios.post(
-        '/api/reports/user/add-report',
+      const { data } = await axios.post(
+        'http://127.0.0.1:5000/api/reports/user/add-report',
         {
           userId: 3,
           firstName,
           lastName,
-          dob,
+          dob: getDate(dob),
           passportNo,
           testName,
           testManufacturer,
           testDescription,
           testPerformance,
           testAuthorization,
-          sampleDate,
-          resultDate,
+          sampleDate: getDate(sampleDate),
+          resultDate: getDate(resultDate),
+          // sampleTime: getDate(sampleTime),
+          // resultTime: getDate(resultTime),
           result,
         },
         {
@@ -104,7 +106,8 @@ const ReportForm = () => {
           },
         }
       )
-      setStatus(success)
+      console.log(data.success)
+      setStatus(data.success)
     } catch (e) {
       setStatus(false)
       console.log(e)
