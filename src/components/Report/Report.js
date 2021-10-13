@@ -21,7 +21,7 @@ const Report = (props) => {
 
   const sendReport = async () => {
     try {
-      await axios.get('/api/reports/send-report')
+      await axios.get('http://127.0.0.1:5000/api/reports/send-report')
       setSuccess(true)
     } catch (err) {
       console.log(err)
@@ -185,12 +185,10 @@ const Report = (props) => {
                 height={90}
               />
               <QRCode value="Xana Medtec" size={90} className="qr" />
-              <p>
-                <span className="fs-28 bold" style={{ paddingRight: '12px' }}>
-                  CE
-                </span>
+              <p className="fs-28 bold">
+                <span>CE</span>
                 <br />
-                <span className="fs-28 bold black-border">IVD</span>
+                <span className="black-border">IVD</span>
               </p>
             </div>
           </div>
