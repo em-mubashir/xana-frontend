@@ -1,0 +1,3 @@
+export const USER_LOAD_START = "USER_LOAD_START";
+export const API_ERROR = "API_ERROR";
+export const USER_LOAD_SUCCESS = "USER_LOAD_SUCCESS";

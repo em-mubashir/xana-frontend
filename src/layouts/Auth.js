@@ -5,6 +5,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 
 import Login from "views/auth/Login.js";
 import Register from "views/auth/Register.js";
+import TokenVerification from "views/user/TokenVerification";
 
 export default function Auth() {
   return (
@@ -15,6 +16,11 @@ export default function Auth() {
           <Switch>
             <Route path='/' exact component={Login} />
             <Route path='/register' exact component={Register} />
+            <Route
+              path='/token-verification'
+              exact
+              component={TokenVerification}
+            />
             <Redirect from='/auth' to='/auth/login' />
           </Switch>
         </section>
