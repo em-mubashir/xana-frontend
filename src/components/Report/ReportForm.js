@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import DatePicker from 'react-datepicker'
+import TimePicker from 'react-time-picker'
 import Select from 'react-select'
 import ReactHtmlParser from 'react-html-parser'
 import Report from './Report'
@@ -18,7 +19,9 @@ const ReportForm = () => {
   const [testDescription, setTestDescription] = useState('')
   const [testAuthorization, setTestAuthorization] = useState('')
   const [sampleDate, setSampleDate] = useState(new Date())
+  const [sampleTime, setSampleTime] = useState('00:00')
   const [resultDate, setResultDate] = useState(new Date())
+  const [resultTime, setResultTime] = useState('00:00')
   const [orderId, setOrderId] = useState('')
   const [result, setResult] = useState('Negative')
   const [status, setStatus] = useState(false)
@@ -26,6 +29,7 @@ const ReportForm = () => {
   const resultOptions = [
     { value: 'negative', label: 'Negative' },
     { value: 'positive', label: 'Positive' },
+    { value: 'invalid', label: 'Invalid' },
   ]
 
   const testOptions = [
@@ -78,8 +82,10 @@ const ReportForm = () => {
 
     return dd + '-' + mm + '-' + yyyy
   }
+
   const submitHandler = async (e) => {
     e.preventDefault()
+    console.log('Sample Time: ' + sampleTime + typeof sampleTime)
     try {
       const { data } = await axios.post(
         'http://127.0.0.1:5000/api/reports/user/add-report',
@@ -96,8 +102,8 @@ const ReportForm = () => {
           testAuthorization,
           sampleDate: getDate(sampleDate),
           resultDate: getDate(resultDate),
-          // sampleTime: getDate(sampleTime),
-          // resultTime: getDate(resultTime),
+          sampleTime,
+          resultTime,
           result,
         },
         {
@@ -129,6 +135,8 @@ const ReportForm = () => {
           testAuthorization={testAuthorization}
           sampleDate={getDate(sampleDate)}
           resultDate={getDate(resultDate)}
+          sampleTime={sampleTime}
+          resultTime={resultTime}
           result={result}
           orderId={orderId}
         />
@@ -269,6 +277,30 @@ const ReportForm = () => {
                       selected={resultDate}
                       onChange={(date) => dateHandler(date, setResultDate)}
                       maxDate={new Date()}
+                      required
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div
+                    className="form-group"
+                    style={{ display: 'flex', alignItems: 'center' }}
+                  >
+                    <label>Sample_Time: </label>
+                    <TimePicker
+                      onChange={setSampleTime}
+                      value={sampleTime}
+                      required
+                    />
+                  </div>
+                  <div
+                    className="form-group"
+                    style={{ display: 'flex', alignItems: 'center' }}
+                  >
+                    <label>Result_Time: </label>
+                    <TimePicker
+                      onChange={setResultTime}
+                      value={resultTime}
                       required
                     />
                   </div>

@@ -7,6 +7,8 @@ import './report.css'
 const Report = (props) => {
   const { success, setSuccess } = useState()
 
+  console.log(props.resultDate)
+
   const generatePDF = () => {
     const element = document.getElementById('report')
     const opt = {
@@ -22,7 +24,7 @@ const Report = (props) => {
   const sendReport = async () => {
     try {
       await axios.get('http://127.0.0.1:5000/api/reports/send-report')
-      setSuccess(true)
+      // setSuccess(true);
     } catch (err) {
       console.log(err)
     }
@@ -30,23 +32,14 @@ const Report = (props) => {
 
   return (
     <div>
-      <div className="btn">
-        <button onClick={generatePDF} type="primary">
-          Download PDF
-        </button>
-        <button onClick={sendReport}>Get Report via Email</button>
-      </div>
-      {success && (
-        <p style={{ textAlign: 'center' }}>Email sent successfully</p>
-      )}
       <div id="report">
         <div className="top">
           <img
             className="img"
-            src={require('assets/img/logo.png').default}
+            src={require('assets/img/xana_logo.svg').default}
             alt="xana"
           />
-          <h2 className="bold" style={{ color: 'darkblue' }}>
+          <h2 className="bold" style={{ color: 'darkblue', fontSize: '28px' }}>
             Certificate of Coronavirus <br />
             <span style={{ color: 'darkorange' }}>(SARS-CoV-2)</span> Rapid
             Antigen Testing
@@ -185,11 +178,11 @@ const Report = (props) => {
                 height={90}
               />
               <QRCode value="Xana Medtec" size={90} className="qr" />
-              <p className="fs-28 bold">
-                <span>CE</span>
-                <br />
-                <span className="black-border">IVD</span>
-              </p>
+              <img
+                src={require('assets/img/ce-ivd.png').default}
+                width={60}
+                height={60}
+              />
             </div>
           </div>
         </div>
@@ -206,6 +199,15 @@ const Report = (props) => {
           </p>
         </div>
       </div>
+      <div className="btn">
+        <button onClick={generatePDF} type="primary">
+          Download PDF
+        </button>
+        <button onClick={sendReport}>Get Report via Email</button>
+      </div>
+      {/* {success && (
+        <p style={{ textAlign: 'center' }}>Email sent successfully</p>
+      )} */}
     </div>
   )
 }
