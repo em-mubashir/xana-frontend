@@ -11,17 +11,17 @@ export default function Auth() {
   return (
     <>
       <main>
-        <section className='relative w-full h-full py-40 min-h-screen'>
-          <div className='absolute top-0 w-full h-full bg-blueGray-800 bg-no-repeat bg-full'></div>
+        <section className="relative w-full h-full min-h-screen">
+          <div className="absolute top-0 w-full h-full bg-trueGray-200 bg-no-repeat bg-full"></div>
           <Switch>
-            <Route path='/' exact component={Login} />
-            <Route path='/register' exact component={Register} />
+            <Route path="/" exact component={Login} />
+            <Route path="/register" exact component={Register} />
             <Route
-              path='/token-verification'
+              path="/token-verification"
               exact
               component={TokenVerification}
             />
-            <Redirect from='/auth' to='/auth/login' />
+            <Redirect from="/auth" to="/auth/login" />
           </Switch>
         </section>
       </main>
