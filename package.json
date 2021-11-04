@@ -6,6 +6,7 @@
   "license": "MIT",
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.15.3",
+    "@hookform/resolvers": "^2.8.3",
     "@popperjs/core": "2.9.1",
     "@tailwindcss/forms": "0.2.1",
     "axios": "^0.23.0",
@@ -15,13 +16,15 @@
     "gulp-append-prepend": "1.0.8",
     "react": "17.0.1",
     "react-dom": "17.0.1",
+    "react-hook-form": "^7.18.1",
     "react-redux": "^7.2.5",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
     "react-scripts": "4.0.3",
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "REACT_APP_ENV=local CHOKIDAR_USEPOLLING=true react-scripts start",

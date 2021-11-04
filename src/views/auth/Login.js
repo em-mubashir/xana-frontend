@@ -1,7 +1,36 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+
+const scheme = yup
+  .object()
+  .shape({
+    Email: yup.string().email().required("Email is required!"),
+    Password: yup
+      .string()
+      .required("Password is required!")
+      .matches(
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character!"
+      ),
+  })
+  .required();
 
 export default function Login() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(scheme),
+  });
+
+  const submitForm = (data) => {
+    console.log(data);
+  };
+
   return (
     <>
       <div className="mx-auto px-4 h-auto">
@@ -19,21 +48,31 @@ export default function Login() {
                 <div className="text-black text-center mb-6 font-bold text-lg">
                   <h1>Log in as Admin</h1>
                 </div>
-                <form>
+                <form onSubmit={handleSubmit(submitForm)}>
                   <div className="relative w-full mb-3">
                     <input
                       type="email"
+                      name="Email"
                       className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
                       placeholder="User name/Email"
+                      {...register("Email")}
                     />
+                    <small className="text-red-600">
+                      {errors.Email?.message}
+                    </small>
                   </div>
 
                   <div className="relative w-full mb-3">
                     <input
                       type="password"
+                      name="Password"
                       className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
                       placeholder="Password"
+                      {...register("Password")}
                     />
+                    <small className="text-red-600">
+                      {errors.Password?.message}
+                    </small>
                   </div>
 
                   <div className="w-full text-right">
@@ -48,7 +87,8 @@ export default function Login() {
                   <div className="text-center mt-4">
                     <button
                       className="bg-blue-900 text-white text-sm px-12 py-3 rounded-xl shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1 w-auto ease-linear transition-all duration-150"
-                      type="button"
+                      type="submit"
+                      name="loginButton"
                     >
                       Log In
                     </button>
