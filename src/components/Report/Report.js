@@ -1,32 +1,32 @@
-import React, { useState } from 'react'
-import html2pdf from 'html2pdf.js'
-import axios from 'axios'
-import QRCode from 'qrcode.react'
-import './report.css'
+import React, { useState } from "react";
+import html2pdf from "html2pdf.js";
+import axios from "axios";
+import QRCode from "qrcode.react";
+import "./report.css";
 
 const Report = (props) => {
-  const { success, setSuccess } = useState()
+  const { success, setSuccess } = useState();
 
   const generatePDF = () => {
-    const element = document.getElementById('report')
+    const element = document.getElementById("report");
     const opt = {
-      filename: 'report.pdf',
-      image: { type: 'png', quality: 0.98 },
+      filename: "report.pdf",
+      image: { type: "png", quality: 0.98 },
       html2canvas: { scale: 2 },
-      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' },
-    }
+      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+    };
 
-    html2pdf().set(opt).from(element).save()
-  }
+    html2pdf().set(opt).from(element).save();
+  };
 
   const sendReport = async () => {
     try {
-      await axios.get('/api/reports/send-report')
-      setSuccess(true)
+      await axios.get("/api/reports/send-report");
+      setSuccess(true);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   return (
     <div>
@@ -37,14 +37,14 @@ const Report = (props) => {
         <button onClick={sendReport}>Get Report via Email</button>
       </div>
       {success && (
-        <p style={{ textAlign: 'center' }}>Email sent successfully</p>
+        <p style={{ textAlign: "center" }}>Email sent successfully</p>
       )}
       <div id="report">
         <div className="top">
           <img className="img" src="logo.png" alt="xana" />
-          <h2 className="bold" style={{ color: 'darkblue' }}>
+          <h2 className="bold" style={{ color: "darkblue" }}>
             Certificate of Coronavirus <br />
-            <span style={{ color: 'darkorange' }}>(SARS-CoV-2)</span> Rapid
+            <span style={{ color: "darkorange" }}>(SARS-CoV-2)</span> Rapid
             Antigen Testing
           </h2>
         </div>
@@ -84,11 +84,11 @@ const Report = (props) => {
               <p>
                 <span className="bold heading">Tel:</span> 0161 974 6518
               </p>
-              <p style={{ marginRight: '20px' }}>
+              <p style={{ marginRight: "20px" }}>
                 <span className="bold heading">Email:</span> info@xanamedtec.com
               </p>
               <p>
-                <span className="bold heading">Website:</span>{' '}
+                <span className="bold heading">Website:</span>{" "}
                 www.xanamedtec.com
               </p>
             </div>
@@ -140,18 +140,18 @@ const Report = (props) => {
             </p>
           </div>
           <p>
-            <span className="bold" style={{ paddingRight: '10px' }}>
+            <span className="bold" style={{ paddingRight: "10px" }}>
               Order Id:
             </span>
             {props.orderId}
           </p>
-          <p style={{ marginBottom: '50px' }}>
-            <span className="bold" style={{ paddingRight: '10px' }}>
+          <p style={{ marginBottom: "50px" }}>
+            <span className="bold" style={{ paddingRight: "10px" }}>
               Result:
             </span>
             {props.result}
           </p>
-          <div className="regards" style={{ fontSize: '12px' }}>
+          <div className="regards" style={{ fontSize: "12px" }}>
             <p style={{ flex: 0.6 }}>
               <span>Mr. Sayed Adeel Babar Shah MPharm</span> <br />
               <span className="bold">Medical &amp; Clinical Advisor</span>
@@ -160,10 +160,10 @@ const Report = (props) => {
               <img src="logo.png" alt="xana" width={50} height={50} />
             </p>
             <div className="qr-section">
-              <img src="fit-to-fly.png" width={90} height={90} />
+              <img alt="" src="fit-to-fly.png" width={90} height={90} />
               <QRCode value="Xana Medtec" size={90} className="qr" />
               <p>
-                <span className="fs-28 bold" style={{ paddingRight: '12px' }}>
+                <span className="fs-28 bold" style={{ paddingRight: "12px" }}>
                   CE
                 </span>
                 <br />
@@ -173,20 +173,20 @@ const Report = (props) => {
           </div>
         </div>
         <div className="footer">
-          <p style={{ fontWeight: '600', fontSize: '14px', color: 'darkblue' }}>
-            Xana <span style={{ color: 'darkorange' }}>Meditest</span>{' '}
-            <span style={{ color: 'black' }}>is a trading name for Xana</span>{' '}
-            <span style={{ color: 'darkorange' }}>Medtec Ltd</span> Reg. No.
+          <p style={{ fontWeight: "600", fontSize: "14px", color: "darkblue" }}>
+            Xana <span style={{ color: "darkorange" }}>Meditest</span>{" "}
+            <span style={{ color: "black" }}>is a trading name for Xana</span>{" "}
+            <span style={{ color: "darkorange" }}>Medtec Ltd</span> Reg. No.
             12112703
           </p>
-          <p style={{ fontWeight: '600' }}>
+          <p style={{ fontWeight: "600" }}>
             Universal Square Business Center, Suite 1.16, Devonshire Street
             North, Manchester, M12 6JH
           </p>
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Report
+export default Report;
