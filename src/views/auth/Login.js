@@ -96,12 +96,16 @@ export default function Login() {
                 </form>
               </div>
             </div>
-            <div className="px-3 py-3 flex align-bottom relative mt-20">
-              <img
+            <div className="px-3 py-3 flex align-bottom relative mt-20 justify-center ">
+              {/* <img
                 alt="..."
                 className="mr-1"
                 src={require("assets/img/copyright.svg").default}
-              />
+              /> */}
+              <p className="text-blue-900 font-semibold">
+                Copyright © {new Date().getFullYear()} All Rights Reserved.
+                Powered By Codistan
+              </p>
             </div>
           </div>
         </div>

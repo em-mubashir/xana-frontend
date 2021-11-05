@@ -7,7 +7,7 @@ export default function User() {
     <>
       <Switch>
         <Route
-          path='/user/verification/:token'
+          path="/user/verification/:token"
           exact
           component={TokenVerification}
         />

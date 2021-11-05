@@ -13,6 +13,8 @@ import FooterAdmin from "components/Footers/FooterAdmin.js";
 import Dashboard from "views/admin/Dashboard.js";
 import Settings from "views/admin/Settings.js";
 import Tables from "views/admin/Tables.js";
+import Test from "views/admin/Test.js";
+import User from "views/admin/User.js";
 
 export default function Admin() {
   return (
@@ -20,11 +22,14 @@ export default function Admin() {
       <Sidebar />
       <div className="md:ml-64 bg-blueGray-100">
         <AdminNavbar />
+        {/* <HeaderStats /> */}
         <div className="px-4 md:px-10 mx-auto w-full">
           <Switch>
             <Route path="/admin/dashboard" exact component={Dashboard} />
             <Route path="/admin/settings" exact component={Settings} />
             <Route path="/admin/tables" exact component={Tables} />
+            <Route path="/admin/test" exact component={Test} />
+            <Route path="/admin/user" exact component={User} />
             <Redirect from="/admin" to="/admin/dashboard" />
           </Switch>
           <FooterAdmin />
