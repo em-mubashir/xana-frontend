@@ -20,14 +20,15 @@
     "react-redux": "^7.2.5",
     "react-router": "5.2.0",
     "react-router-dom": "5.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^4.0.3",
     "redux": "^4.1.1",
     "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.3.0",
     "yup": "^0.32.11"
   },
   "scripts": {
-    "start": "REACT_APP_ENV=local CHOKIDAR_USEPOLLING=true react-scripts start",
+    "backup": "REACT_APP_ENV=local CHOKIDAR_USEPOLLING=true react-scripts start",
+    "start": "react-scripts start",
     "dev": "REACT_APP_ENV=development react-scripts start",
     "prod": "REACT_APP_ENV=production react-scripts start",
     "build": "react-scripts build && gulp licenses",
