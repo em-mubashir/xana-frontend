@@ -35,7 +35,7 @@ export default function Login() {
     <>
       <div className="mx-auto px-4 h-auto">
         <div className="flex content-center items-center justify-center h-full">
-          <div className="w-full h-full lg:w-4/12 px-4">
+          <div className="w-full h-full lg:w-4/12 md:w-9/12 px-4">
             <div className="relative flex flex-col min-w-0 break-words w-full h-full mb-6 rounded-lg bg-trueGray-200 border-0">
               <div className="rounded-t flex justify-center mb-12 px-6 py-6 mt-8">
                 <img
@@ -96,15 +96,14 @@ export default function Login() {
                 </form>
               </div>
             </div>
-            <div className="px-3 py-3 flex align-bottom relative mt-20 justify-center ">
+            <div className="px-3 py-3 flex align-bottom relative mt-20 justify-center lg:w-full">
               {/* <img
                 alt="..."
                 className="mr-1"
                 src={require("assets/img/copyright.svg").default}
               /> */}
-              <p className="text-blue-900 font-semibold">
-                Copyright © {new Date().getFullYear()} All Rights Reserved.
-                Powered By Codistan
+              <p className="text-blue-900 font-semibold text-sm">
+                Copyright © {new Date().getFullYear()} All Rights Reserved. Powered By Codistan
               </p>
             </div>
           </div>
