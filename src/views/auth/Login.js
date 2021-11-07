@@ -86,7 +86,7 @@ export default function Login() {
 
                   <div className="text-center mt-4">
                     <button
-                      className="bg-blue-900 text-white text-sm px-12 py-3 rounded-xl shadow hover:bg-blue-600 outline-none focus:outline-none mr-1 mb-1 w-auto ease-linear transition-all duration-150"
+                      className="bg-blue-900 text-white text-sm px-12 py-3 rounded-xl shadow hover:bg-yellow-600 outline-none focus:outline-none mr-1 mb-1 w-auto transition duration-500 ease-in-out"
                       type="submit"
                       name="loginButton"
                     >
@@ -103,7 +103,8 @@ export default function Login() {
                 src={require("assets/img/copyright.svg").default}
               /> */}
               <p className="text-blue-900 font-semibold text-sm">
-                Copyright © {new Date().getFullYear()} All Rights Reserved. Powered By Codistan
+                Copyright © {new Date().getFullYear()} All Rights Reserved.
+                Powered By Codistan
               </p>
             </div>
           </div>

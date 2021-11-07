@@ -79,7 +79,7 @@ export default function Sidebar() {
 
             {/* Navigation */}
             <ul className="md:flex-col md:min-w-full flex flex-col list-none">
-              <li className="items-center">
+              {/* <li className="items-center">
                 <Link
                   className={
                     "text-xs uppercase py-3 font-bold block " +
@@ -143,26 +143,26 @@ export default function Sidebar() {
                   ></i>{" "}
                   Tables
                 </Link>
-              </li>
+              </li> */}
 
               <li className="items-center">
                 <Link
                   className={
                     "text-xs uppercase py-3 font-bold block " +
                     (window.location.href.indexOf("/admin/test") !== -1
-                      ? "text-lightBlue-500 hover:text-lightBlue-600"
+                      ? "text-white bg-blue-900 text-center transition duration-300 ease-in-out"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
                   to="/admin/test"
                 >
-                  <i
+                  {/* <i
                     className={
-                      "fas fa-table mr-2 text-sm " +
+                      "fas fa-tools mr-2 text-sm " +
                       (window.location.href.indexOf("/admin/test") !== -1
                         ? "opacity-75"
                         : "text-blueGray-300")
                     }
-                  ></i>{" "}
+                  ></i>{" "} */}
                   Tests
                 </Link>
               </li>
@@ -172,19 +172,19 @@ export default function Sidebar() {
                   className={
                     "text-xs uppercase py-3 font-bold block " +
                     (window.location.href.indexOf("/admin/user") !== -1
-                      ? "text-lightBlue-500 hover:text-lightBlue-600"
+                      ? "text-white bg-blue-900 text-center transition duration-300 ease-in-out"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
                   to="/admin/user"
                 >
-                  <i
+                  {/* <i
                     className={
                       "fas fa-table mr-2 text-sm " +
                       (window.location.href.indexOf("/admin/user") !== -1
                         ? "opacity-75"
                         : "text-blueGray-300")
                     }
-                  ></i>{" "}
+                  ></i>{" "} */}
                   Users
                 </Link>
               </li>
