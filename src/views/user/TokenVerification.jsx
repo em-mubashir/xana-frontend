@@ -21,6 +21,7 @@ export default function TokenVerification() {
 
   return (
     <>
+      <div>user page</div>
       {state.success ? (
         <h1 style={{ textAlign: "center", fontSize: "40px" }}>
           User Verified successfully

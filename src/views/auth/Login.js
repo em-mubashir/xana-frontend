@@ -77,7 +77,7 @@ export default function Login() {
 
                   <div className="w-full text-right">
                     <Link
-                      to="/auth/forgetPass"
+                      to="../auth/NewPassword"
                       className="text-yellow-600 font-bold"
                     >
                       <small>Forget Password?</small>

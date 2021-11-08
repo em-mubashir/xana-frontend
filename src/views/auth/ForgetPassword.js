@@ -7,22 +7,11 @@ import * as yup from "yup";
 const scheme = yup
   .object()
   .shape({
-    NewPassword: yup
-      .string()
-      .required("Please enter password.")
-      .matches(
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-        "Password must contain 8 Letters and atleast 1 Uppercase, 1 Lowercase, 1 Number and 1 Special Character."
-      ),
-
-    ConfirmPassword: yup
-      .string()
-      .required("Please enter password.")
-      .oneOf([yup.ref("NewPassword"), null], "Passwords must match!"),
+    Email: yup.string().email().required("Please enter email."),
   })
   .required();
 
-const NewPassword = () => {
+const ForgetPassword = () => {
   const {
     register,
     handleSubmit,
@@ -63,36 +52,23 @@ const NewPassword = () => {
 
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                 <div className="text-black text-center font-bold text-lg">
-                  <h1>Create new password</h1>
+                  <h1>Forgot password?</h1>
                 </div>
                 <div className="text-blue-900 text-center mb-7 font-semibold text-xs">
-                  <p>Enter your new password.</p>
+                  <p>Enter your email to reset your password.</p>
                 </div>
 
                 <form onSubmit={handleSubmit(submitForm)}>
                   <div className="relative w-full mb-3">
                     <input
-                      type="password"
-                      name="NewPassword"
+                      type="email"
+                      name="Email"
                       className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                      placeholder="New Password"
-                      {...register("NewPassword")}
+                      placeholder="email@email.com"
+                      {...register("Email")}
                     />
                     <small className="text-red-600">
-                      {errors.NewPassword?.message}
-                    </small>
-                  </div>
-
-                  <div className="relative w-full mb-3">
-                    <input
-                      type="password"
-                      name="ConfirmPassword"
-                      className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                      placeholder="Confirm Password"
-                      {...register("ConfirmPassword")}
-                    />
-                    <small className="text-red-600">
-                      {errors.ConfirmPassword?.message}
+                      {errors.Email?.message}
                     </small>
                   </div>
 
@@ -105,15 +81,19 @@ const NewPassword = () => {
                       Continue
                     </button>
                   </div>
+
+                  <div className="text-blue-900 text-center mt-2 font-semibold text-xs">
+                    <Link to="">Resend link</Link>
+                  </div>
                 </form>
               </div>
             </div>
             <div className="px-3 py-3 flex align-bottom relative mt-20 justify-center lg:w-full">
               {/* <img
-                alt="..."
-                className="mr-1"
-                src={require("assets/img/copyright.svg").default}
-              /> */}
+          alt="..."
+          className="mr-1"
+          src={require("assets/img/copyright.svg").default}
+        /> */}
               <p className="text-blue-900 font-semibold text-sm">
                 Copyright © {new Date().getFullYear()} All Rights Reserved.
                 Powered By Codistan
@@ -126,4 +106,4 @@ const NewPassword = () => {
   );
 };
 
-export default NewPassword;
+export default ForgetPassword;

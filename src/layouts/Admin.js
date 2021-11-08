@@ -30,7 +30,7 @@ export default function Admin() {
             <Route path="/admin/tables" exact component={Tables} />
             <Route path="/admin/test" exact component={Test} />
             <Route path="/admin/user" exact component={User} />
-            <Redirect from="/admin" to="/admin/dashboard" />
+            <Redirect from="/admin" to="/admin/test" />
           </Switch>
           <FooterAdmin />
         </div>
