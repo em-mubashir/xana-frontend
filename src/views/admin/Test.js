@@ -2,11 +2,16 @@ import React from "react";
 import { ThemeProvider } from "@mui/styles";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import TestForm from "components/Form/TestForm";
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
 const Test = () => {
+  // mui datatable
   const columns = [
     "Report Id",
     "User Id",
@@ -110,6 +115,21 @@ const Test = () => {
     filterType: "checkbox",
   };
 
+  // popover functions
+  const [anchorEl, setAnchorE1] = React.useState(null);
+
+  const handleClick = (event) => {
+    setAnchorE1(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorE1(null);
+  };
+
+  const open = Boolean(anchorEl);
+
+  const id = open ? "simple-popover" : undefined;
+
   return (
     <>
       <div className="flex flex-wrap w-full h-auto p-1">
@@ -147,11 +167,28 @@ const Test = () => {
           </div>
         </div>
       </div>
-      <div class="mb-3 flex flex-wrap">
-        <button type="button">
+
+      <div class="mb-3 mr-2 flex flex-wrap justify-end items-center">
+        <Button
+          aria-describedby={id}
+          onClick={handleClick}
+          size="small"
+          color="inherit"
+        >
           <img alt="" src={require("../../assets/img/plus.svg").default} />
-        </button>
-        <p className="font-bold ml-2">Add new test</p>
+        </Button>
+        <p className="font-bold">Add new test</p>
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+        >
+          <div>
+            <TestForm />
+          </div>
+        </Popover>
       </div>
 
       <ThemeProvider theme={theme}>
