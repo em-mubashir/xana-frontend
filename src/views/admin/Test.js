@@ -147,6 +147,13 @@ const Test = () => {
           </div>
         </div>
       </div>
+      <div class="mb-3 flex flex-wrap">
+        <button type="button">
+          <img alt="" src={require("../../assets/img/plus.svg").default} />
+        </button>
+        <p className="font-bold ml-2">Add new test</p>
+      </div>
+
       <ThemeProvider theme={theme}>
         <MUIDataTable
           title={"Tests Details"}

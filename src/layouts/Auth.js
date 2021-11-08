@@ -16,9 +16,13 @@ export default function Auth() {
         <section className="relative w-full h-full min-h-screen">
           <div className="absolute top-0 w-full h-full bg-trueGray-200 bg-no-repeat bg-full"></div>
           <Switch>
-            <Route path="/auth/login" exact component={Login} />
-            <Route path="/auth/login" exact component={NewPassword} />
-            <Route path="/" exact component={ForgetPassword} />
+            <Route path="/" exact component={Login} />
+            <Route path="/auth/newpassword" exact component={NewPassword} />
+            <Route
+              path="/auth/forgetpassword"
+              exact
+              component={ForgetPassword}
+            />
 
             <Route path="/auth/register" exact component={Register} />
             <Route
