@@ -176,14 +176,15 @@ const Test = () => {
           color="inherit"
         >
           <img alt="" src={require("../../assets/img/plus.svg").default} />
+          <p className="font-bold ml-2">Add new test</p>
         </Button>
-        <p className="font-bold">Add new test</p>
         <Popover
           id={id}
           open={open}
           anchorEl={anchorEl}
           onClose={handleClose}
-          anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+          anchorOrigin={{ vertical: "center", horizontal: "center" }}
+          transformOrigin={{ vertical: "center", horizontal: "center" }}
         >
           <div>
             <TestForm />
