@@ -1,24 +1,31 @@
 import React from "react";
-import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+
 import TestConfirmForm from "./TestConfirmForm";
 
 const TestForm = () => {
-  // popover functions
-  const [anchorEl, setAnchorE1] = React.useState(null);
+  // Mui Modal functions
 
-  const handleClick = (event) => {
-    setAnchorE1(event.currentTarget);
+  const modalStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 500,
+    bgcolor: "white",
+    boxShadow: 24,
+    p: 4,
+    backgroundColor: "white",
+    borderRadius: "10px",
   };
 
-  const handleClose = () => {
-    setAnchorE1(null);
-  };
+  const [open, setOpen] = React.useState(false);
 
-  const open = Boolean(anchorEl);
+  const handleOpen = () => setOpen(true);
 
-  const id = open ? "simple-popover" : undefined;
+  const handleClose = () => setOpen(false);
 
   return (
     <>
@@ -259,26 +266,30 @@ const TestForm = () => {
                 type="button"
                 variant="contained"
                 name="confirmButton"
-                aria-describedby={id}
-                onClick={handleClick}
+                // aria-describedby={id}
+                onClick={handleOpen}
                 size="large"
                 color="primary"
                 style={{ backgroundColor: "#293C74", borderRadius: "10px" }}
               >
                 Confirm
               </Button>
-              <Popover
-                id={id}
+
+              <Modal
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
                 open={open}
-                anchorEl={anchorEl}
                 onClose={handleClose}
-                anchorOrigin={{ vertical: "center", horizontal: "center" }}
-                transformOrigin={{ vertical: "center", horizontal: "center" }}
+                // anchorOrigin={{ vertical: "center", horizontal: "center" }}
+                // transformOrigin={{ vertical: "center", horizontal: "center" }}
               >
-                <div>
+                <div
+                  style={modalStyle}
+                  // className="flex bg-white w-1/3 items-center content-center justify-center  "
+                >
                   <TestConfirmForm />
                 </div>
-              </Popover>
+              </Modal>
             </div>
             <div className="w-96 m-2"></div>
           </div>
