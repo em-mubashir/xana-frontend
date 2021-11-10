@@ -16,7 +16,6 @@ const TestForm = () => {
     width: 500,
     bgcolor: "white",
     boxShadow: 24,
-    p: 4,
     backgroundColor: "white",
     borderRadius: "10px",
   };
@@ -30,12 +29,35 @@ const TestForm = () => {
   return (
     <>
       <div className="flex flex-wrap w-auto justify-center align-middle items-center">
-        <form className="w-2/4">
-          <div className="flex flex-wrap p-7 justify-center">
-            <div className="w-96 mt-3 mb-10">
+        <form className="w-auto">
+          <div className="flex flex-wrap justify-center">
+            <div className="w-full mt-3 mr-1 text-right">
+              <Button
+                onClick={handleClose}
+                // size="small"
+                color="inherit"
+                style={{
+                  maxWidth: "30px",
+                  maxHeight: "30px",
+                  minWidth: "30px",
+                  minHeight: "30px",
+                  borderRadius: "50%",
+                  padding: "0",
+                }}
+              >
+                <img
+                  alt=""
+                  src={require("../../assets/img/closeButton.svg").default}
+                />
+              </Button>
+            </div>
+            <div className="w-full mb-5 text-center text-yellow-600">
+              <h1 className="text-3xl font-bold">Add New Test</h1>
+            </div>
+            <div className="w-full mb-5 text-center">
               <h1 className="text-2xl">Fill the form below!</h1>
             </div>
-            <div className="w-96  m-2"></div>
+            <div className="w-full  m-2"></div>
 
             <div className="w-96 m-2">
               <input
@@ -266,7 +288,6 @@ const TestForm = () => {
                 type="button"
                 variant="contained"
                 name="confirmButton"
-                // aria-describedby={id}
                 onClick={handleOpen}
                 size="large"
                 color="primary"
@@ -275,18 +296,8 @@ const TestForm = () => {
                 Confirm
               </Button>
 
-              <Modal
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-                open={open}
-                onClose={handleClose}
-                // anchorOrigin={{ vertical: "center", horizontal: "center" }}
-                // transformOrigin={{ vertical: "center", horizontal: "center" }}
-              >
-                <div
-                  style={modalStyle}
-                  // className="flex bg-white w-1/3 items-center content-center justify-center  "
-                >
+              <Modal open={open} onClose={handleClose}>
+                <div style={modalStyle}>
                   <TestConfirmForm />
                 </div>
               </Modal>

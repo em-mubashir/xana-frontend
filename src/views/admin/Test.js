@@ -1,16 +1,38 @@
 import React from "react";
+
 import { ThemeProvider } from "@mui/styles";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
-import Popover from "@mui/material/Popover";
-import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
+
 import TestForm from "components/Form/TestForm";
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
 const Test = () => {
+  // Mui Modal functions
+
+  const modalStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 900,
+    height: "100%",
+    boxShadow: 24,
+    backgroundColor: "white",
+    borderRadius: "15px",
+    overflow: "scroll",
+  };
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => setOpen(true);
+
+  const handleClose = () => setOpen(false);
+
   // mui datatable
   const columns = [
     "Report Id",
@@ -115,21 +137,6 @@ const Test = () => {
     filterType: "checkbox",
   };
 
-  // popover functions
-  const [anchorEl, setAnchorE1] = React.useState(null);
-
-  const handleClick = (event) => {
-    setAnchorE1(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorE1(null);
-  };
-
-  const open = Boolean(anchorEl);
-
-  const id = open ? "simple-popover" : undefined;
-
   return (
     <>
       <div className="flex flex-wrap w-full h-auto p-1">
@@ -169,27 +176,15 @@ const Test = () => {
       </div>
 
       <div class="mb-3 mr-2 flex flex-wrap justify-end items-center">
-        <Button
-          aria-describedby={id}
-          onClick={handleClick}
-          size="small"
-          color="inherit"
-        >
+        <Button onClick={handleOpen} size="small" color="inherit">
           <img alt="" src={require("../../assets/img/plus.svg").default} />
           <p className="font-bold ml-2">Add new test</p>
         </Button>
-        <Popover
-          id={id}
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          anchorOrigin={{ vertical: "center", horizontal: "center" }}
-          transformOrigin={{ vertical: "center", horizontal: "center" }}
-        >
-          <div>
+        <Modal open={open} onClose={handleClose}>
+          <div style={modalStyle}>
             <TestForm />
           </div>
-        </Popover>
+        </Modal>
       </div>
 
       <ThemeProvider theme={theme}>
