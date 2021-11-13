@@ -33,8 +33,9 @@
     "yup": "^0.32.11"
   },
   "scripts": {
-    "backup": "REACT_APP_ENV=local CHOKIDAR_USEPOLLING=true react-scripts start",
-    "start": "react-scripts start",
+    "backup": "react-scripts start",
+    "haseeb": "react-scripts start",
+    "start": "REACT_APP_ENV=local CHOKIDAR_USEPOLLING=true react-scripts start",
     "dev": "REACT_APP_ENV=development react-scripts start",
     "prod": "REACT_APP_ENV=production react-scripts start",
     "build": "react-scripts build && gulp licenses",
