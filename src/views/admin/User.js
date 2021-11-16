@@ -2,12 +2,17 @@ import React from "react";
 import { ThemeProvider } from "@mui/styles";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
+import { useState } from "react";
+
+var axios = require("axios");
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
 const User = () => {
   const columns = [
+    "id",
+    "name",
     "Report Id",
     "User Id",
     "First Name",
@@ -27,84 +32,24 @@ const User = () => {
     "Status",
   ];
 
-  const data = [
-    [
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "NY",
-    ],
-    [
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "NY",
-    ],
-    [
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "NY",
-    ],
-    [
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "NY",
-    ],
-  ];
+  var config = {
+    method: "get",
+    url: "http://192.168.18.62/api/admin/all-users",
+    headers: {},
+  };
+
+  const [dataTable, setDataTable] = useState([]);
+
+  axios(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+    })
+    .then((response) => {
+      setDataTable(response.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
 
   const options = {
     filterType: "checkbox",
@@ -115,7 +60,7 @@ const User = () => {
       <ThemeProvider theme={theme}>
         <MUIDataTable
           title={"Users Details"}
-          data={data}
+          data={dataTable}
           columns={columns}
           options={options}
         />
