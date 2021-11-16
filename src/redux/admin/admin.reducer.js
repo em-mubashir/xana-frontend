@@ -1,4 +1,4 @@
-import * as ACTION from "../types/types";
+import * as ACTION from "./admin.types";
 
 const initialState = {
   user: null,
@@ -15,3 +15,5 @@ const adminReducer = (state = initialState, { type, payload }) => {
       return state;
   }
 };
+
+export default adminReducer;

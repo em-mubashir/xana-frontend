@@ -1,4 +1,4 @@
-import * as ACTION from "report.types";
+import * as ACTION from "./report.types";
 
 const initialState = {
   user: null,
@@ -15,3 +15,5 @@ const reportReducer = (state = initialState, { type, payload }) => {
       return state;
   }
 };
+
+export default reportReducer;
