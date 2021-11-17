@@ -12,29 +12,28 @@ theme = responsiveFontSizes(theme);
 const User = () => {
   const columns = [
     "id",
-    "name",
-    "Report Id",
-    "User Id",
-    "First Name",
-    "Last Name",
-    "DOB",
-    "Passport Number",
-    "Test Name",
-    "Test Manufacturer",
-    "Test Description",
-    "Test Performance",
-    "Test Authorization",
-    "Sample Date",
-    "Sample Time",
-    "Result Date",
-    "Result Time",
-    "Result",
-    "Status",
+    "first_name",
+    "last_name",
+    "middle_name",
+    "email",
+    "mobile",
+    "passport_number",
+    "gender",
+    "company",
+    "roleid_fk",
+    "address",
+    "image",
+    "code",
+    "confirmed",
+    "dob",
   ];
+  const options = {
+    filterType: "checkbox",
+  };
 
   var config = {
     method: "get",
-    url: "http://192.168.18.62/api/admin/all-users",
+    url: "http://192.168.10.6/api/admin/all-users",
     headers: {},
   };
 
@@ -42,18 +41,13 @@ const User = () => {
 
   axios(config)
     .then((response) => {
-      console.log(JSON.stringify(response.data));
-    })
-    .then((response) => {
-      setDataTable(response.data);
+      setDataTable(response.data.data);
     })
     .catch(function (error) {
       console.log(error);
     });
 
-  const options = {
-    filterType: "checkbox",
-  };
+  console.log("dataaa", dataTable);
 
   return (
     <>

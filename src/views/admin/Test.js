@@ -5,8 +5,11 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
+import { useState } from "react";
 
 import TestForm from "components/Form/TestForm";
+
+var axios = require("axios");
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -35,107 +38,41 @@ const Test = () => {
 
   // mui datatable
   const columns = [
-    "Report Id",
-    "User Id",
-    "First Name",
-    "Last Name",
-    "DOB",
-    "Passport Number",
-    "Test Name",
-    "Test Manufacturer",
-    "Test Description",
-    "Test Performance",
-    "Test Authorization",
-    "Sample Date",
-    "Sample Time",
-    "Result Date",
-    "Result Time",
-    "Result",
-    "Status",
-  ];
-
-  const data = [
-    [
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "NY",
-    ],
-    [
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "NY",
-    ],
-    [
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "NY",
-    ],
-    [
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "Joe James",
-      "Test Corp",
-      "Yonkers",
-      "NY",
-      "NY",
-    ],
+    "id",
+    "test_name",
+    "test_manufacturer",
+    "test_description",
+    "test_performance",
+    "test_authorisation",
+    "date_register",
+    "date_conduct",
+    "result",
+    "userId",
+    "test_image",
+    "qr_id",
   ];
 
   const options = {
     filterType: "checkbox",
   };
+
+  //
+  var config = {
+    method: "get",
+    url: "http://192.168.10.6/api/admin/test",
+    headers: {},
+  };
+
+  const [dataTable, setDataTable] = useState([]);
+
+  axios(config)
+    .then((response) => {
+      setDataTable(response.data.data);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  console.log("dataaa", dataTable);
 
   return (
     <>
@@ -190,7 +127,7 @@ const Test = () => {
       <ThemeProvider theme={theme}>
         <MUIDataTable
           title={"Tests Details"}
-          data={data}
+          data={dataTable}
           columns={columns}
           options={options}
         />
