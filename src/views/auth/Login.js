@@ -7,30 +7,6 @@ import { useState } from "react";
 
 const axios = require("axios");
 
-// sending form data to api
-const getFormData = JSON.stringify({
-  email: "",
-  password: "",
-});
-
-const config = {
-  method: "post",
-  url: "http://192.168.18.62/api/admin/login",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  data: getFormData,
-};
-
-axios(config)
-  .then(function (response) {
-    console.log(JSON.stringify(response.data));
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-//
-
 // for yup
 const scheme = yup
   .object()
@@ -48,14 +24,42 @@ const scheme = yup
 //
 
 export default function Login() {
-  //  sending form data to api using useState
+  //  sending form data to api
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    formEmail: "",
+    formPassword: "",
+    name: "",
   });
 
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  let name, value;
+  const handleInputs = (e) => {
+    console.log(e);
+    name = e.target.name;
+    value = e.target.value;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const getFormData = JSON.stringify({
+    // email: formData.formEmail,
+    // password: formData.formPassword,
+  });
+
+  const config = {
+    method: "post",
+    url: "http://192.168.18.62/api/admin/login",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: getFormData,
+  };
+
+  axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   //
 
   const {
@@ -66,8 +70,9 @@ export default function Login() {
     resolver: yupResolver(scheme),
   });
 
-  const submitForm = (data) => {
-    console.log(data);
+  const submitForm = (e) => {
+    e.preventDefault();
+    console.log(formData);
   };
 
   return (
@@ -90,10 +95,8 @@ export default function Login() {
                 <form onSubmit={handleSubmit(submitForm)}>
                   <div className="relative w-full mb-3">
                     <input
-                      // value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
+                      value={formData.formEmail}
+                      onChange={handleInputs}
                       type="email"
                       name="Email"
                       className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
@@ -104,13 +107,10 @@ export default function Login() {
                       {errors.Email?.message}
                     </small>
                   </div>
-
                   <div className="relative w-full mb-3">
                     <input
-                      // value={formData.password}
-                      onChange={(e) =>
-                        setFormData({ ...formData, password: e.target.value })
-                      }
+                      value={formData.formPassword}
+                      onChange={handleInputs}
                       type="password"
                       name="Password"
                       className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
@@ -121,7 +121,6 @@ export default function Login() {
                       {errors.Password?.message}
                     </small>
                   </div>
-
                   <div className="w-full text-right">
                     <Link
                       to="../auth/NewPassword"
@@ -130,7 +129,6 @@ export default function Login() {
                       <small>Forget Password?</small>
                     </Link>
                   </div>
-
                   <div className="text-center mt-4">
                     <button
                       className="bg-blue-900 text-white text-sm px-12 py-3 rounded-xl shadow hover:bg-yellow-600 outline-none focus:outline-none mr-1 mb-1 w-auto transition duration-500 ease-in-out"
