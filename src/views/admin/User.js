@@ -4,7 +4,7 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
 import { useState } from "react";
 
-var axios = require("axios");
+const axios = require("axios");
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -31,7 +31,7 @@ const User = () => {
     filterType: "checkbox",
   };
 
-  var config = {
+  const config = {
     method: "get",
     url: "http://192.168.18.62/api/admin/all-users",
     headers: {},

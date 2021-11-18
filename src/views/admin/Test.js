@@ -9,14 +9,13 @@ import { useState } from "react";
 
 import TestForm from "components/Form/TestForm";
 
-var axios = require("axios");
+const axios = require("axios");
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
 const Test = () => {
   // Mui Modal functions
-
   const modalStyle = {
     position: "absolute",
     top: "50%",
@@ -51,13 +50,13 @@ const Test = () => {
     "test_image",
     "qr_id",
   ];
+  //
 
   const options = {
     filterType: "checkbox",
   };
 
-  //
-  var config = {
+  const config = {
     method: "get",
     url: "http://192.168.18.62/api/admin/test",
     headers: {},

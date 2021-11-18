@@ -3,7 +3,35 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useState } from "react";
 
+const axios = require("axios");
+
+// sending form data to api
+const getFormData = JSON.stringify({
+  email: "",
+  password: "",
+});
+
+const config = {
+  method: "post",
+  url: "http://192.168.18.62/api/admin/login",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  data: getFormData,
+};
+
+axios(config)
+  .then(function (response) {
+    console.log(JSON.stringify(response.data));
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+//
+
+// for yup
 const scheme = yup
   .object()
   .shape({
@@ -17,8 +45,19 @@ const scheme = yup
       ),
   })
   .required();
+//
 
 export default function Login() {
+  //  sending form data to api using useState
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  //
+
   const {
     register,
     handleSubmit,
@@ -51,6 +90,10 @@ export default function Login() {
                 <form onSubmit={handleSubmit(submitForm)}>
                   <div className="relative w-full mb-3">
                     <input
+                      // value={formData.email}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
                       type="email"
                       name="Email"
                       className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
@@ -64,6 +107,10 @@ export default function Login() {
 
                   <div className="relative w-full mb-3">
                     <input
+                      // value={formData.password}
+                      onChange={(e) =>
+                        setFormData({ ...formData, password: e.target.value })
+                      }
                       type="password"
                       name="Password"
                       className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
