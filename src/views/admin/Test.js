@@ -59,7 +59,7 @@ const Test = () => {
   //
   var config = {
     method: "get",
-    url: "http://192.168.10.6/api/admin/test",
+    url: "http://192.168.18.62/api/admin/test",
     headers: {},
   };
 
@@ -77,7 +77,7 @@ const Test = () => {
   return (
     <>
       <div className="flex flex-wrap w-full h-auto p-1">
-        <div className="xl:w-52 h-44 p-3 mr-4 mb-4 rounded-xl bg-blue-900">
+        <div className="xl:w-52 lg:w-3/12 md:w-6/12 sm:w-full h-44 p-3 mr-4 mb-3 rounded-xl bg-blue-900">
           <div className="text-base text-white">Total Tests</div>
           <div className="text-5xl text-white">120</div>
           <div className="flex justify-end mt-8">
