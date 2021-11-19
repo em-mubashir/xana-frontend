@@ -3,9 +3,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useState } from "react";
-
-const axios = require("axios");
+import axios from "axios";
 
 // for yup
 const scheme = yup
@@ -24,56 +22,41 @@ const scheme = yup
 //
 
 export default function Login() {
-  //  sending form data to api
-  const [formData, setFormData] = useState({
-    formEmail: "",
-    formPassword: "",
-    name: "",
-  });
-
-  let name, value;
-  const handleInputs = (e) => {
-    console.log(e);
-    name = e.target.name;
-    value = e.target.value;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const getFormData = JSON.stringify({
-    // email: formData.formEmail,
-    // password: formData.formPassword,
-  });
-
-  const config = {
-    method: "post",
-    url: "http://192.168.18.62/api/admin/login",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    data: getFormData,
-  };
-
-  axios(config)
-    .then(function (response) {
-      console.log(JSON.stringify(response.data));
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  //
-
+  // for yup and react-hook-form
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(scheme),
   });
+  //
 
-  const submitForm = (e) => {
-    e.preventDefault();
+  // sendind form fields data to api
+  const submitForm = (formData) => {
+    const getFormData = JSON.stringify({
+      email: watch("Email"),
+      password: watch("Password"),
+    });
+    const config = {
+      method: "post",
+      url: "http://192.168.18.62/api/admin/login",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: getFormData,
+    };
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     console.log(formData);
   };
+  //
 
   return (
     <>
@@ -95,8 +78,6 @@ export default function Login() {
                 <form onSubmit={handleSubmit(submitForm)}>
                   <div className="relative w-full mb-3">
                     <input
-                      value={formData.formEmail}
-                      onChange={handleInputs}
                       type="email"
                       name="Email"
                       className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
@@ -109,8 +90,6 @@ export default function Login() {
                   </div>
                   <div className="relative w-full mb-3">
                     <input
-                      value={formData.formPassword}
-                      onChange={handleInputs}
                       type="password"
                       name="Password"
                       className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
@@ -142,11 +121,6 @@ export default function Login() {
               </div>
             </div>
             <div className="px-3 py-3 flex align-bottom relative mt-20 justify-center lg:w-full">
-              {/* <img
-                alt="..."
-                className="mr-1"
-                src={require("assets/img/copyright.svg").default}
-              /> */}
               <p className="text-blue-900 font-semibold text-sm">
                 Copyright © {new Date().getFullYear()} All Rights Reserved.
                 Powered By Codistan
