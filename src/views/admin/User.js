@@ -33,7 +33,7 @@ const User = () => {
 
   const config = {
     method: "get",
-    url: "http://192.168.18.62/api/admin/all-users",
+    url: "http://192.168.0.104/api/admin/all-users",
     headers: {},
   };
 

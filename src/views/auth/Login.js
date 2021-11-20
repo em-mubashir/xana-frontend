@@ -41,7 +41,7 @@ export default function Login() {
     });
     const config = {
       method: "post",
-      url: "http://192.168.18.62/api/admin/login",
+      url: "http://192.168.0.104/api/admin/login",
       headers: {
         "Content-Type": "application/json",
       },
