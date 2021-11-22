@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
+import { getLoginAsync } from "../../redux/admin/admin.thunk";
+import { useDispatch } from "react-redux";
 
 // for yup
 const scheme = yup
@@ -33,28 +35,35 @@ export default function Login() {
   });
   //
 
+  const dispatch = useDispatch();
+
   // sendind form fields data to api
   const submitForm = (formData) => {
-    const getFormData = JSON.stringify({
-      email: watch("Email"),
-      password: watch("Password"),
-    });
-    const config = {
-      method: "post",
-      url: "http://192.168.0.104/api/admin/login",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: getFormData,
-    };
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    console.log(formData);
+    // const getFormData = JSON.stringify({
+    // email: watch("Email"),
+    // password: watch("Password"),
+    // });
+    // const config = {
+    // method: "post",
+    // url: "http://192.168.18.62/api/admin/login",
+    // headers: {
+    // "Content-Type": "application/json",
+    // },
+    // data: getFormData,
+    // };
+    // axios(config)
+    // .then(function (response) {
+    // console.log(JSON.stringify(response.data));
+    // })
+    // .catch(function (error) {
+    // console.log(error);
+    // });
+    // console.log(formData);
+
+    // getLoginAsync(formData);
+
+    dispatch(getLoginAsync("haseeebbb"));
+    // console.log(getLoginAsync());
   };
   //
 

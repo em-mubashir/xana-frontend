@@ -2,7 +2,7 @@ import React from "react";
 import { ThemeProvider } from "@mui/styles";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const axios = require("axios");
 
@@ -31,30 +31,55 @@ const User = () => {
     filterType: "checkbox",
   };
 
-  const config = {
+  // const config = {
+  // method: "get",
+  // url: "http://192.168.18.62/api/admin/all-users",
+  // headers: {},
+  // };
+
+  const [userData, setUserData] = useState();
+
+  // axios(config)
+  // .then((response) => {
+  // console.log("api feedback");
+  // console.log(response.data.data);
+  // setUserData(response.data.data);
+  // })
+  // .catch(function (error) {
+  // console.log(error);
+  // });
+
+  // console.log("dataaa", userData);
+
+  var config = {
     method: "get",
-    url: "http://192.168.0.104/api/admin/all-users",
+    url: "http://192.168.18.62/api/admin/all-users",
     headers: {},
   };
 
-  const [dataTable, setDataTable] = useState([]);
-
   axios(config)
-    .then((response) => {
-      setDataTable(response.data.data);
+    .then(function (response) {
+      console.log(JSON.stringify(response.data.data));
+      let user_data = response.data.data;
+      setUserData(user_data);
+      console.log(user_data);
+      console.log(userData);
     })
     .catch(function (error) {
       console.log(error);
     });
 
-  console.log("dataaa", dataTable);
+  useEffect(() => {
+    // console.log("state change");
+  }, [userData]);
 
   return (
     <>
       <ThemeProvider theme={theme}>
         <MUIDataTable
           title={"Users Details"}
-          data={dataTable}
+          // data={dataTable}
+          data={userData}
           columns={columns}
           options={options}
         />

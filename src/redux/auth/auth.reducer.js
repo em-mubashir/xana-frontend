@@ -1,17 +1,18 @@
-import * as ACTION from "./admin.types";
+import * as ACTION from "./auth.types";
+import axios from "axios";
 
 const initialState = {
   user: null,
 };
 
-const adminReducer = (state = initialState, { type, payLoad }) => {
+const authReducer = (state = initialState, { type, payload }) => {
   switch (type) {
-    case ACTION.USER_LOAD_START:
+    case ACTION.AUTH_LOAD_START:
       return {
         ...state,
         user: 1,
       };
-    case ACTION.ADMIN_LOGIN:
+    case ACTION.AUTH_LOGIN:
       //   const config = {
       // method: "post",
       // url: "http://192.168.18.62/api/admin/login",
@@ -20,21 +21,22 @@ const adminReducer = (state = initialState, { type, payLoad }) => {
       // },
       // data: getFormData,
       //   };
+
       //   axios(config)
       // .then(function (response) {
-      //   console.log(JSON.stringify(response.data))
+      //   console.log(JSON.stringify(response.data));
       // })
       // .catch(function (error) {
       //   console.log(error);
       // });
-      console.log("In admin reducer:", payLoad);
+      console.log("in reduce r");
       return {
         ...state,
-        user: 1,
+        userData: 1,
       };
     default:
       return state;
   }
 };
 
-export default adminReducer;
+export default authReducer;

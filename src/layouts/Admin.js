@@ -25,9 +25,9 @@ export default function Admin() {
         {/* <HeaderStats /> */}
         <div className="px-4 md:px-10 mx-auto w-full">
           <Switch>
-            <Route path="/admin/dashboard" exact component={Dashboard} />
-            <Route path="/admin/settings" exact component={Settings} />
-            <Route path="/admin/tables" exact component={Tables} />
+            {/* <Route path="/admin/dashboard" exact component={Dashboard} /> */}
+            {/* <Route path="/admin/settings" exact component={Settings} /> */}
+            {/* <Route path="/admin/tables" exact component={Tables} /> */}
             <Route path="/admin/test" exact component={Test} />
             <Route path="/admin/user" exact component={User} />
             <Redirect from="/admin" to="/admin/test" />

@@ -1,5 +1,16 @@
-import * as ACTION from "../types/types";
+import * as ACTION from "./admin.types";
 
 const adminLoadStart = () => ({
   type: ACTION.USER_LOAD_START,
 });
+const adminLogin = (user) => {
+  return {
+    type: ACTION.ADMIN_LOGIN,
+    payLoad: user,
+  };
+};
+
+export default {
+  adminLoadStart,
+  adminLogin,
+};
