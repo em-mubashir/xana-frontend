@@ -39,31 +39,34 @@ export default function Login() {
 
   // sendind form fields data to api
   const submitForm = (formData) => {
-    // const getFormData = JSON.stringify({
-    // email: watch("Email"),
-    // password: watch("Password"),
-    // });
-    // const config = {
-    // method: "post",
-    // url: "http://192.168.18.62/api/admin/login",
-    // headers: {
-    // "Content-Type": "application/json",
-    // },
-    // data: getFormData,
-    // };
-    // axios(config)
-    // .then(function (response) {
-    // console.log(JSON.stringify(response.data));
-    // })
-    // .catch(function (error) {
-    // console.log(error);
-    // });
-    // console.log(formData);
+    const getFormData = JSON.stringify({
+      email: watch("Email"),
+      password: watch("Password"),
+    });
+    const config = {
+      method: "post",
+      url: "http://192.168.18.62/api/admin/login",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: getFormData,
+    };
+    axios(config)
+      .then(function (response) {
+        console.log("data", response.data);
+        console.log("length", response.data.data.length);
 
-    // getLoginAsync(formData);
+        if (response.data.data.length > 0) {
+          dispatch(getLoginAsync(response.data));
+        } else {
+          console.log("Empty Data");
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
-    dispatch(getLoginAsync("haseeebbb"));
-    // console.log(getLoginAsync());
+    //using thunk dispatcher
   };
   //
 
