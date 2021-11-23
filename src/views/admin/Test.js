@@ -6,6 +6,7 @@ import MUIDataTable from "mui-datatables";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
+import { useSelector } from "react-redux";
 
 import TestForm from "components/Form/TestForm";
 
@@ -15,6 +16,11 @@ let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
 const Test = () => {
+  const adminData = useSelector((state) => state.adminData);
+  console.log("admin dataaaa", adminData);
+  console.log("access token", adminData.user.payload.accessToken);
+  console.log("access token", adminData.user.payload.accessToken.length);
+
   // Mui Modal functions
   const modalStyle = {
     position: "absolute",
@@ -50,28 +56,29 @@ const Test = () => {
     "test_image",
     "qr_id",
   ];
-  //
-
   const options = {
     filterType: "checkbox",
   };
-
-  const config = {
-    method: "get",
-    url: "http://192.168.18.62/api/admin/test",
-    headers: {},
-  };
+  //
 
   const [dataTable, setDataTable] = useState([]);
-
-  axios(config)
-    .then((response) => {
-      setDataTable(response.data.data);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  console.log("dataaa", dataTable);
+  if (adminData.user.payload.accessToken.length > 0) {
+    const config = {
+      method: "get",
+      url: "http://192.168.18.62/api/admin/test",
+      headers: {},
+    };
+    axios(config)
+      .then((response) => {
+        setDataTable(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    console.log("dataaa", dataTable);
+  } else {
+    console.log("Redirect to login page");
+  }
 
   return (
     <>

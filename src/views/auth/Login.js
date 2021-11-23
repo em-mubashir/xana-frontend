@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -24,6 +24,8 @@ const scheme = yup
 //
 
 export default function Login() {
+  let history = useHistory();
+
   // for yup and react-hook-form
   const {
     register,
@@ -58,6 +60,9 @@ export default function Login() {
 
         if (response.data.data.length > 0) {
           dispatch(getLoginAsync(response.data));
+
+          history.push("/admin/test");
+          // <Redirect to="/admin/test" />;
         } else {
           console.log("Empty Data");
         }
