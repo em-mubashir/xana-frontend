@@ -18,8 +18,8 @@ theme = responsiveFontSizes(theme);
 const Test = () => {
   const adminData = useSelector((state) => state.adminData);
   console.log("admin dataaaa", adminData);
-  console.log("access token", adminData.user.payload.accessToken);
-  console.log("access token", adminData.user.payload.accessToken.length);
+  // console.log("access token", adminData.user.payload.accessToken);
+  // console.log("access token", adminData.user.payload.accessToken.length);
 
   // Mui Modal functions
   const modalStyle = {
@@ -62,23 +62,26 @@ const Test = () => {
   //
 
   const [dataTable, setDataTable] = useState([]);
-  if (adminData.user.payload.accessToken.length > 0) {
-    const config = {
-      method: "get",
-      url: "http://192.168.18.62/api/admin/test",
-      headers: {},
-    };
-    axios(config)
-      .then((response) => {
-        setDataTable(response.data.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    console.log("dataaa", dataTable);
-  } else {
-    console.log("Redirect to login page");
-  }
+  // if (adminData.user.payload.accessToken.length > 0) {
+  const config = {
+    method: "get",
+    url: "http://192.168.18.62/api/admin/test",
+    headers: {},
+  };
+  axios(config)
+    .then((response) => {
+      if (adminData.success) {
+        if (adminData?.user?.payload?.accessToken.length > 0) {
+          setDataTable(response.data.data);
+        }
+      } else {
+        console.log("Redirect to login page");
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  console.log("dataaa", dataTable);
 
   return (
     <>

@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { getLoginAsync } from "../../redux/admin/admin.thunk";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // for yup
 const scheme = yup
@@ -21,10 +21,14 @@ const scheme = yup
       ),
   })
   .required();
-//
 
 export default function Login() {
   let history = useHistory();
+  const dispatch = useDispatch();
+  const adminData = useSelector((state) => state.adminData);
+  console.log(adminData);
+
+  const [invalidLogin, setInvalidLogin] = useState("");
 
   // for yup and react-hook-form
   const {
@@ -35,9 +39,16 @@ export default function Login() {
   } = useForm({
     resolver: yupResolver(scheme),
   });
-  //
 
-  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log("admin data", adminData);
+    if (adminData && adminData.user && adminData.user.payload) {
+      history.push("/admin/test");
+      console.log(adminData.user.payload);
+    } else {
+      alert("token doesnt exist");
+    }
+  });
 
   // sendind form fields data to api
   const submitForm = (formData) => {
@@ -53,25 +64,22 @@ export default function Login() {
       },
       data: getFormData,
     };
+
     axios(config)
       .then(function (response) {
-        console.log("data", response.data);
-        console.log("length", response.data.data.length);
-
-        if (response.data.data.length > 0) {
-          dispatch(getLoginAsync(response.data));
-
-          history.push("/admin/test");
-          // <Redirect to="/admin/test" />;
+        console.log(response);
+        if (response.data.success) {
+          if (response?.data?.data.length > 0) {
+            dispatch(getLoginAsync(response.data));
+            history.push("/admin/test");
+          }
         } else {
-          console.log("Empty Data");
+          setInvalidLogin(response.data.message);
         }
       })
       .catch(function (error) {
         console.log(error);
       });
-
-    //using thunk dispatcher
   };
   //
 
@@ -124,6 +132,15 @@ export default function Login() {
                     >
                       <small>Forget Password?</small>
                     </Link>
+                  </div>
+                  <div
+                    className={
+                      invalidLogin.length > 0
+                        ? " text-center text-red-600 border-2 border-red-600 my-8 py-2"
+                        : "invisible"
+                    }
+                  >
+                    {invalidLogin}
                   </div>
                   <div className="text-center mt-4">
                     <button

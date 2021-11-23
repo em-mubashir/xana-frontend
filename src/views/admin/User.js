@@ -12,9 +12,9 @@ theme = responsiveFontSizes(theme);
 
 const User = () => {
   const adminData = useSelector((state) => state.adminData);
-  console.log("admin dataaaa", adminData);
-  console.log("access token", adminData.user.payload.accessToken);
-  console.log("access token length", adminData.user.payload.accessToken.length);
+  // console.log("admin dataaaa", adminData);
+  // console.log("access token", adminData.user.payload.accessToken);
+  // console.log("access token length", adminData.user.payload.accessToken.length);
 
   const columns = [
     "id",
@@ -57,7 +57,7 @@ const User = () => {
 
   // console.log("dataaa", userData);
 
-  if (adminData.user.payload.accessToken.length > 0) {
+  if (adminData?.user?.payload?.accessToken.length > 0) {
     console.log("Redirect to login page");
   } else {
     var config = {
