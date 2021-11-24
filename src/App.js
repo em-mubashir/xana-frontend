@@ -12,11 +12,11 @@ export default function App() {
       <BrowserRouter>
         <Switch>
           {/* add routes with layouts */}
-          <Route path="/admin" component={Admin} />
-          <Route path="/user" component={User} />
+          <Route path="/" component={Auth} />
+          <Route path="/admin" exact component={Admin} />
+          <Route path="/user" exact component={User} />
           {/* <Route path='/auth' component={Auth} /> */}
           {/* add routes without layouts */}
-          <Route path="/" exact component={Auth} />
           {/* add redirect for first page */}
           {/* <Redirect from="*" to="/" /> */}
           <Redirect from="*" to="/" />

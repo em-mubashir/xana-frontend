@@ -18,6 +18,7 @@ export default function Auth() {
           <Switch>
             <Route path="/" exact component={Login} />
             <Route path="/auth/newpassword" exact component={NewPassword} />
+
             <Route
               path="/auth/forgetpassword"
               exact

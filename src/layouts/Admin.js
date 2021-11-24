@@ -33,12 +33,6 @@ export default function Admin() {
             {/* <Route path="/admin/tables" exact component={Tables} /> */}
             <Route path="/admin/test" exact component={Test} />
             <Route path="/admin/user" exact component={User} />
-            <Route path="/admin/newpassword" exact component={NewPassword} />
-            <Route
-              path="/admin/forgetpassword"
-              exact
-              component={ForgetPassword}
-            />
 
             <Redirect from="/admin" to="/admin/test" />
           </Switch>

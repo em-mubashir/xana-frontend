@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -13,6 +13,8 @@ const scheme = yup
   .required();
 
 const ForgetPassword = () => {
+  let history = useHistory();
+
   const {
     register,
     handleSubmit,
@@ -37,6 +39,10 @@ const ForgetPassword = () => {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
+        console.log(response.data.success);
+        if (response.data.success === true) {
+          history.push("/auth/newpassword");
+        }
       })
       .catch(function (error) {
         console.log(error);
