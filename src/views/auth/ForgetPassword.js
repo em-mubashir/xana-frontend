@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { BASE_URL } from "../../environment";
 
 const scheme = yup
   .object()
@@ -21,6 +22,25 @@ const ForgetPassword = () => {
   });
 
   const submitForm = (data) => {
+    var axios = require("axios");
+    var getdata = JSON.stringify({
+      email: data.Email,
+    });
+    var config = {
+      method: "post",
+      url: BASE_URL + "user/forgot-password",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: getdata,
+    };
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     console.log(data);
   };
 
