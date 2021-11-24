@@ -4,8 +4,15 @@ export const loadAdminAsync = () => (dispatch, getState) => {
   console.log("state thunk", getState());
   dispatch(adminReducer.adminLoadStart());
 };
+
 export const getLoginAsync = (adminData) => {
   return (dispatch, getState) => {
     dispatch(adminReducer.adminLogin(adminData));
+  };
+};
+
+export const getLogoutAsync = (adminData) => {
+  return (dispatch, getState) => {
+    dispatch(adminReducer.adminLogout(adminData));
   };
 };

@@ -12,7 +12,13 @@ const adminReducer = (state = initialState, { type, payLoad }) => {
         user: 1,
       };
     case ACTION.ADMIN_LOGIN:
-      console.log("In admin reducer:", payLoad);
+      console.log("In admin login reducer:", payLoad);
+      return {
+        ...state,
+        user: payLoad,
+      };
+    case ACTION.ADMIN_LOGOUT:
+      console.log("In admin logout reducer", payLoad);
       return {
         ...state,
         user: payLoad,

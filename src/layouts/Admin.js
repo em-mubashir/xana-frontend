@@ -16,6 +16,9 @@ import Tables from "views/admin/Tables.js";
 import Test from "views/admin/Test.js";
 import User from "views/admin/User.js";
 
+import NewPassword from "views/auth/NewPassword";
+import ForgetPassword from "views/auth/ForgetPassword";
+
 export default function Admin() {
   return (
     <>
@@ -30,6 +33,13 @@ export default function Admin() {
             {/* <Route path="/admin/tables" exact component={Tables} /> */}
             <Route path="/admin/test" exact component={Test} />
             <Route path="/admin/user" exact component={User} />
+            <Route path="/admin/newpassword" exact component={NewPassword} />
+            <Route
+              path="/admin/forgetpassword"
+              exact
+              component={ForgetPassword}
+            />
+
             <Redirect from="/admin" to="/admin/test" />
           </Switch>
           <FooterAdmin />

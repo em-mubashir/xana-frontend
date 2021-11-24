@@ -5,7 +5,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { getLoginAsync } from "../../redux/admin/admin.thunk";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { BASE_URL } from "../../environment";
 
 // for yup
 const scheme = yup
@@ -25,8 +26,6 @@ const scheme = yup
 export default function Login() {
   let history = useHistory();
   const dispatch = useDispatch();
-  const adminData = useSelector((state) => state.adminData);
-  console.log(adminData);
 
   const [invalidLogin, setInvalidLogin] = useState("");
 
@@ -41,14 +40,12 @@ export default function Login() {
   });
 
   useEffect(() => {
-    console.log("admin data", adminData);
-    if (adminData && adminData.user && adminData.user.payload) {
+    if (localStorage.getItem("access_token") != null) {
       history.push("/admin/test");
-    } else {
-      alert("token doesnt exist");
-      // history.push("/");
     }
   });
+
+  // if (localStorage.getItem("access_token") != null) {
 
   // sendind form fields data to api
   const submitForm = (formData) => {
@@ -58,7 +55,7 @@ export default function Login() {
     });
     const config = {
       method: "post",
-      url: "http://192.168.18.62/api/admin/login",
+      url: BASE_URL + "admin/login",
       headers: {
         "Content-Type": "application/json",
       },
@@ -67,10 +64,30 @@ export default function Login() {
 
     axios(config)
       .then(function (response) {
-        console.log(response);
+        console.log(
+          "access token in login page",
+          JSON.stringify(response.data.payload.accessToken)
+        );
         if (response.data.success) {
+          console.log("response success", response.data.success);
+
           if (response?.data?.data.length > 0) {
+            console.log("response data", response.data.data);
+
             dispatch(getLoginAsync(response.data));
+            localStorage.setItem(
+              "access_token",
+              response.data.payload.accessToken
+            );
+            localStorage.setItem(
+              "refresh_token",
+              response.data.payload.refreshToken
+            );
+            console.log(
+              "token set on local storage from login page",
+              localStorage.getItem("access_token")
+            );
+
             history.push("/admin/test");
           }
         } else {
@@ -127,7 +144,7 @@ export default function Login() {
                   </div>
                   <div className="w-full text-right">
                     <Link
-                      to="../auth/NewPassword"
+                      to="/auth/newpassword"
                       className="text-yellow-600 font-bold"
                     >
                       <small>Forget Password?</small>

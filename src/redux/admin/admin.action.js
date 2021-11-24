@@ -10,7 +10,15 @@ const adminLogin = (user) => {
   };
 };
 
+const adminLogout = (user) => {
+  return {
+    type: ACTION.ADMIN_LOGOUT,
+    payLoad: user,
+  };
+};
+
 export default {
   adminLoadStart,
   adminLogin,
+  adminLogout,
 };

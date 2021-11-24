@@ -7,6 +7,8 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { BASE_URL } from "../../environment";
 
 import TestForm from "components/Form/TestForm";
 
@@ -16,10 +18,10 @@ let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
 const Test = () => {
+  let history = useHistory();
+
   const adminData = useSelector((state) => state.adminData);
-  console.log("admin dataaaa", adminData);
-  // console.log("access token", adminData.user.payload.accessToken);
-  // console.log("access token", adminData.user.payload.accessToken.length);
+  console.log("test page redux data", adminData);
 
   // Mui Modal functions
   const modalStyle = {
@@ -62,26 +64,36 @@ const Test = () => {
   //
 
   const [dataTable, setDataTable] = useState([]);
-  // if (adminData.user.payload.accessToken.length > 0) {
-  const config = {
-    method: "get",
-    url: "http://192.168.18.62/api/admin/test",
-    headers: {},
-  };
-  axios(config)
-    .then((response) => {
-      if (adminData.success) {
-        if (adminData?.user?.payload?.accessToken.length > 0) {
-          setDataTable(response.data.data);
-        }
-      } else {
-        console.log("Redirect to login page");
-      }
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  console.log("dataaa", dataTable);
+  console.log(
+    "token get from local storage ",
+    localStorage.getItem("access_token")
+  );
+  if (localStorage.getItem("access_token") != null) {
+    var data = "";
+
+    var config = {
+      method: "get",
+      url: BASE_URL + "admin/test/",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("access_token"),
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        setDataTable(response.data.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  } else {
+    // history.push("/");
+    console.log("redirected to login page from test page");
+  }
+
+  console.log("test page mui data table", dataTable);
 
   return (
     <>
