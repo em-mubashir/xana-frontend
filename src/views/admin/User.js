@@ -4,6 +4,7 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { Link, Redirect, useHistory } from "react-router-dom";
 
 const axios = require("axios");
 
@@ -11,6 +12,8 @@ let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
 const User = () => {
+  let history = useHistory();
+
   const adminData = useSelector((state) => state.adminData);
   // console.log("admin dataaaa", adminData);
   // console.log("access token", adminData.user.payload.accessToken);
@@ -58,8 +61,6 @@ const User = () => {
   // console.log("dataaa", userData);
 
   if (adminData?.user?.payload?.accessToken.length > 0) {
-    console.log("Redirect to login page");
-  } else {
     var config = {
       method: "get",
       url: "http://192.168.18.62/api/admin/all-users",
@@ -73,10 +74,12 @@ const User = () => {
       .catch(function (error) {
         console.log(error);
       });
+  } else {
+    history.push("/");
   }
   useEffect(() => {
-    // console.log("state change");
-  }, [userData]);
+    console.log("state change", adminData);
+  }, []);
 
   return (
     <>

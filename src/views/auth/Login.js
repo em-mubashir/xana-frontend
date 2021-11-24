@@ -44,9 +44,9 @@ export default function Login() {
     console.log("admin data", adminData);
     if (adminData && adminData.user && adminData.user.payload) {
       history.push("/admin/test");
-      console.log(adminData.user.payload);
     } else {
       alert("token doesnt exist");
+      // history.push("/");
     }
   });
 
