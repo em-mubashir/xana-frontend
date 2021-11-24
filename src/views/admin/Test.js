@@ -86,12 +86,60 @@ const Test = () => {
         .then(function (response) {
           console.log(JSON.stringify(response.data));
           setDataTable(response.data.data);
-          console.log("Total Tests", response.data.data.length);
-          setTotalTests(response.data.data.length);
-          console.log("Pending Reports", response.data);
-          setPendingReports(response.data.data.length);
-          console.log("Positive/Negative", response.data);
-          setPositiveNegative(response.data.data.length);
+
+          console.log(
+            "Total Tests",
+            response.data.data.reduce((count, val) => {
+              count++;
+              return count;
+            }, 0)
+          );
+          setTotalTests(
+            response.data.data.reduce((count, val) => {
+              count++;
+              return count;
+            }, 0)
+          );
+
+          console.log(
+            "Pending Reports",
+            response.data.data.reduce((count, val) => {
+              console.log(val.test_image);
+              if (val.test_image != null) {
+                count++;
+              }
+              return count;
+            }, 0)
+          );
+          setPendingReports(
+            response.data.data.reduce((count, val) => {
+              console.log(val.test_image);
+              if (val.test_image != null) {
+                count++;
+              }
+              return count;
+            }, 0)
+          );
+
+          console.log(
+            "Positive/Negative",
+            response.data.data.reduce((count, val) => {
+              console.log(val.result);
+              if (val.result != null) {
+                count++;
+              }
+              return count;
+            }, 0)
+          );
+          setPositiveNegative(
+            response.data.data.reduce((count, val) => {
+              console.log(val.result);
+              if (val.result != null) {
+                count++;
+              }
+              return count;
+            }, 0)
+          );
         })
         .catch(function (error) {
           console.log(error);
