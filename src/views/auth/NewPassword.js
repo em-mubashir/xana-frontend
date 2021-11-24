@@ -1,8 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import axios from "axios";
+import { BASE_URL } from "../../environment";
 
 const scheme = yup
   .object()
@@ -23,16 +25,45 @@ const scheme = yup
   .required();
 
 const NewPassword = () => {
+  let history = useHistory();
+
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(scheme),
   });
 
   const submitForm = (data) => {
-    console.log(data);
+    var getData = JSON.stringify({
+      id: " ",
+      password: watch("NewPassword"),
+    });
+
+    var config = {
+      method: "put",
+      url: BASE_URL + "user/update-password",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: getData,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log("response data", JSON.stringify(response.data));
+        console.log(response.data.success);
+        if (response.data.success === true) {
+          history.push("/");
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    console.log("form data", data);
   };
 
   return (
