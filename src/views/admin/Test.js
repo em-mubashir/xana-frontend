@@ -64,6 +64,9 @@ const Test = () => {
   //
 
   const [dataTable, setDataTable] = useState([]);
+  const [totalTests, setTotalTests] = useState([]);
+  const [pendingReports, setPendingReports] = useState([]);
+  const [positiveNegative, setPositiveNegative] = useState([]);
   useEffect(() => {
     console.log(
       "token get from local storage ",
@@ -83,6 +86,12 @@ const Test = () => {
         .then(function (response) {
           console.log(JSON.stringify(response.data));
           setDataTable(response.data.data);
+          console.log("Total Tests", response.data.data.length);
+          setTotalTests(response.data.data.length);
+          console.log("Pending Reports", response.data);
+          setPendingReports(response.data.data.length);
+          console.log("Positive/Negative", response.data);
+          setPositiveNegative(response.data.data.length);
         })
         .catch(function (error) {
           console.log(error);
@@ -91,7 +100,7 @@ const Test = () => {
       // history.push("/");
       console.log("redirected to login page from test page");
     }
-  }, []);
+  }, [totalTests, pendingReports, positiveNegative]);
 
   console.log("test page mui data table", dataTable);
 
@@ -100,7 +109,7 @@ const Test = () => {
       <div className="flex flex-wrap w-full h-auto p-1">
         <div className="xl:w-52 lg:w-3/12 md:w-6/12 sm:w-full h-44 p-3 mr-4 mb-3 rounded-xl bg-blue-900">
           <div className="text-base text-white">Total Tests</div>
-          <div className="text-5xl text-white">120</div>
+          <div className="text-5xl text-white">{totalTests}</div>
           <div className="flex justify-end mt-8">
             <img
               className="w-10 h-10"
@@ -111,7 +120,7 @@ const Test = () => {
         </div>
         <div className="xl:w-52 lg:w-3/12 md:w-6/12 sm:w-full h-44 p-3 mr-4 mb-3 rounded-xl bg-yellow-600">
           <div className="text-base text-white">Pending Reports</div>
-          <div className="text-5xl text-white">44</div>
+          <div className="text-5xl text-white">{pendingReports}</div>
           <div className="flex justify-end mt-8">
             <img
               className="w-10 h-10"
@@ -122,7 +131,7 @@ const Test = () => {
         </div>
         <div className="xl:w-52 lg:w-3/12 md:w-6/12 sm:w-full h-44 p-3 mr-4 mb-3 rounded-xl bg-blue-400">
           <div className="text-base text-white">Positive/Negative</div>
-          <div className="text-5xl text-white">244</div>
+          <div className="text-5xl text-white">{positiveNegative}</div>
           <div className="flex justify-end mt-8">
             <img
               className="w-10 h-10"
