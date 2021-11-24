@@ -5,7 +5,7 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { BASE_URL } from "../../environment";
@@ -64,34 +64,34 @@ const Test = () => {
   //
 
   const [dataTable, setDataTable] = useState([]);
-  console.log(
-    "token get from local storage ",
-    localStorage.getItem("access_token")
-  );
-  if (localStorage.getItem("access_token") != null) {
-    var data = "";
-
-    var config = {
-      method: "get",
-      url: BASE_URL + "admin/test/",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("access_token"),
-      },
-      data: data,
-    };
-
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        setDataTable(response.data.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  } else {
-    // history.push("/");
-    console.log("redirected to login page from test page");
-  }
+  useEffect(() => {
+    console.log(
+      "token get from local storage ",
+      localStorage.getItem("access_token")
+    );
+    if (localStorage.getItem("access_token") != null) {
+      var data = "";
+      var config = {
+        method: "get",
+        url: BASE_URL + "admin/test/",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("access_token"),
+        },
+        data: data,
+      };
+      axios(config)
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+          setDataTable(response.data.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      // history.push("/");
+      console.log("redirected to login page from test page");
+    }
+  }, []);
 
   console.log("test page mui data table", dataTable);
 

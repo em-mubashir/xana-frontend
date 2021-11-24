@@ -39,28 +39,29 @@ const User = () => {
   };
 
   const [userData, setUserData] = useState();
-
-  if (localStorage.getItem("access_token") != null) {
-    var config = {
-      method: "get",
-      url: BASE_URL + "admin/all-users",
-      headers: {},
-    };
-    axios(config)
-      .then(function (response) {
-        console.log(
-          "user page response data",
-          JSON.stringify(response.data.data)
-        );
-        setUserData(response.data.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  } else {
-    // history.push("/");
-    console.log("redirected to login page from user page");
-  }
+  useEffect(() => {
+    if (localStorage.getItem("access_token") != null) {
+      var config = {
+        method: "get",
+        url: BASE_URL + "admin/all-users",
+        headers: {},
+      };
+      axios(config)
+        .then(function (response) {
+          console.log(
+            "user page response data",
+            JSON.stringify(response.data.data)
+          );
+          setUserData(response.data.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      // history.push("/");
+      console.log("redirected to login page from user page");
+    }
+  }, []);
 
   return (
     <>
