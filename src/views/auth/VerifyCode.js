@@ -46,7 +46,13 @@ const VerifyCode = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        console.log(response.data);
+        console.log(response.data.success);
+        console.log(response.data.data);
+        if (response.data.success === true) {
+          localStorage.setItem("User_Id_Token", response.data.data);
+          history.push("/auth/newpassword");
+        }
       })
       .catch(function (error) {
         console.log(error);

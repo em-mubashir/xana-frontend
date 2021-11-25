@@ -37,8 +37,11 @@ const NewPassword = () => {
   });
 
   const submitForm = (data) => {
+    const userId = localStorage.getItem("User_Id_Token");
+    console.log("User Id", userId);
+
     var getData = JSON.stringify({
-      id: " ",
+      id: userId,
       password: watch("NewPassword"),
     });
 
@@ -56,6 +59,7 @@ const NewPassword = () => {
         console.log("response data", JSON.stringify(response.data));
         console.log(response.data.success);
         if (response.data.success === true) {
+          localStorage.removeItem("User_Id_Token");
           history.push("/");
         }
       })

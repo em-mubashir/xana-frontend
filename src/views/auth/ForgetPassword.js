@@ -41,7 +41,7 @@ const ForgetPassword = () => {
         console.log(JSON.stringify(response.data));
         console.log(response.data.success);
         if (response.data.success === true) {
-          history.push("/auth/newpassword");
+          history.push("/auth/verifycode");
         }
       })
       .catch(function (error) {
