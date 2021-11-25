@@ -9,18 +9,10 @@ import { BASE_URL } from "../../environment";
 const scheme = yup
   .object()
   .shape({
-    NewPassword: yup
-      .string()
-      .required("Please enter password.")
-      .matches(
-        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-        "Password must contain 8 Letters and atleast 1 Uppercase, 1 Lowercase, 1 Number and 1 Special Character."
-      ),
-
-    ConfirmPassword: yup
-      .string()
-      .required("Please enter password.")
-      .oneOf([yup.ref("NewPassword"), null], "Passwords must match!"),
+    Field1: yup.string().required(),
+    Field2: yup.number().required(),
+    Field3: yup.number().required(),
+    Field4: yup.number().required(),
   })
   .required();
 
@@ -37,14 +29,15 @@ const VerifyCode = () => {
   });
 
   const submitForm = (data) => {
-    var getData = JSON.stringify({
-      id: " ",
-      password: watch("NewPassword"),
-    });
+    var axios = require("axios");
+    var getData =
+      watch("Field1") + watch("Field2") + watch("Field3") + watch("Field4");
+
+    console.log("code concatenated", getData);
 
     var config = {
-      method: "put",
-      url: BASE_URL + "user/update-password",
+      method: "get",
+      url: BASE_URL + "user/reset-password/" + getData,
       headers: {
         "Content-Type": "application/json",
       },
@@ -53,11 +46,7 @@ const VerifyCode = () => {
 
     axios(config)
       .then(function (response) {
-        console.log("response data", JSON.stringify(response.data));
-        console.log(response.data.success);
-        if (response.data.success === true) {
-          history.push("/");
-        }
+        console.log(JSON.stringify(response.data));
       })
       .catch(function (error) {
         console.log(error);
@@ -92,7 +81,7 @@ const VerifyCode = () => {
                 />
               </div>
 
-              <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
+              <div className="flex-auto flex-wrap px-4 lg:px-10 py-10 pt-0">
                 <div className="text-black text-center font-bold text-lg">
                   <h1>Verify Code</h1>
                 </div>
@@ -101,56 +90,44 @@ const VerifyCode = () => {
                 </div>
 
                 <form onSubmit={handleSubmit(submitForm)}>
-                  <div className="relative w-full mb-3">
+                  <div className="relative w-1/4 mb-3">
                     <input
-                      type="password"
-                      name="NewPassword"
-                      className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
+                      type="text"
+                      name="Field1"
+                      className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
                       placeholder="0"
-                      {...register("NewPassword")}
+                      {...register("Field1")}
                     />
-                    <small className="text-red-600">
-                      {errors.NewPassword?.message}
-                    </small>
                   </div>
 
-                  <div className="relative w-full mb-3">
+                  <div className="relative w-1/4 mb-3">
                     <input
-                      type="password"
-                      name="ConfirmPassword"
+                      type="text"
+                      name="Field2"
                       className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                      placeholder="Confirm Password"
-                      {...register("ConfirmPassword")}
+                      placeholder="0"
+                      {...register("Field2")}
                     />
-                    <small className="text-red-600">
-                      {errors.ConfirmPassword?.message}
-                    </small>
                   </div>
 
-                  <div className="relative w-full mb-3">
+                  <div className="relative w-1/4 mb-3">
                     <input
-                      type="password"
-                      name="ConfirmPassword"
+                      type="text"
+                      name="Field3"
                       className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                      placeholder="Confirm Password"
-                      {...register("ConfirmPassword")}
+                      placeholder="0"
+                      {...register("Field3")}
                     />
-                    <small className="text-red-600">
-                      {errors.ConfirmPassword?.message}
-                    </small>
                   </div>
 
-                  <div className="relative w-full mb-3">
+                  <div className="relative w-1/4 mb-3">
                     <input
-                      type="password"
-                      name="ConfirmPassword"
+                      type="text"
+                      name="Field4"
                       className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                      placeholder="Confirm Password"
-                      {...register("ConfirmPassword")}
+                      placeholder="0"
+                      {...register("Field4")}
                     />
-                    <small className="text-red-600">
-                      {errors.ConfirmPassword?.message}
-                    </small>
                   </div>
 
                   <div className="text-center mt-6">

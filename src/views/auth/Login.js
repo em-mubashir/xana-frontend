@@ -121,7 +121,7 @@ export default function Login() {
                   <div className="relative w-full mb-3">
                     <input
                       type="email"
-                      name="Email"
+                      name="Field1"
                       className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
                       placeholder="User name/Email"
                       {...register("Email")}
