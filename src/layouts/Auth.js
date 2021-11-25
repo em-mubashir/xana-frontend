@@ -4,8 +4,9 @@ import { Switch, Route, Redirect } from "react-router-dom";
 // views
 
 import Login from "views/auth/Login.js";
-import NewPassword from "views/auth/NewPassword";
 import ForgetPassword from "views/auth/ForgetPassword";
+import VerifyCode from "views/auth/VerifyCode";
+import NewPassword from "views/auth/NewPassword";
 // import Register from "views/auth/Register.js";
 import TokenVerification from "views/user/TokenVerification";
 
@@ -22,6 +23,7 @@ export default function Auth() {
               exact
               component={ForgetPassword}
             />
+            <Route path="/auth/verifycode" exact component={VerifyCode} />
             <Route path="/auth/newpassword" exact component={NewPassword} />
 
             <Route
