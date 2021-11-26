@@ -29,6 +29,10 @@ export default function Login() {
 
   const [invalidLogin, setInvalidLogin] = useState("");
 
+  if (localStorage.getItem("access_token") != null) {
+    history.push("/admin/test");
+  }
+
   // for yup and react-hook-form
   const {
     register,
@@ -38,14 +42,6 @@ export default function Login() {
   } = useForm({
     resolver: yupResolver(scheme),
   });
-
-  useEffect(() => {
-    if (localStorage.getItem("access_token") != null) {
-      history.push("/admin/test");
-    }
-  });
-
-  // if (localStorage.getItem("access_token") != null) {
 
   // sendind form fields data to api
   const submitForm = (formData) => {
@@ -64,10 +60,7 @@ export default function Login() {
 
     axios(config)
       .then(function (response) {
-        console.log(
-          "access token in login page",
-          JSON.stringify(response.data.payload.accessToken)
-        );
+        console.log("response data", response.data);
         if (response.data.success) {
           console.log("response success", response.data.success);
 
@@ -121,8 +114,8 @@ export default function Login() {
                   <div className="relative w-full mb-3">
                     <input
                       type="email"
-                      name="Field1"
-                      className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
+                      // name="Email"
+                      className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
                       placeholder="User name/Email"
                       {...register("Email")}
                     />
@@ -133,7 +126,7 @@ export default function Login() {
                   <div className="relative w-full mb-3">
                     <input
                       type="password"
-                      name="Password"
+                      // name="Password"
                       className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
                       placeholder="Password"
                       {...register("Password")}

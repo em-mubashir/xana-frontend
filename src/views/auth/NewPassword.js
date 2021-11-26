@@ -108,8 +108,8 @@ const NewPassword = () => {
                   <div className="relative w-full mb-3">
                     <input
                       type="password"
-                      name="NewPassword"
-                      className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
+                      // name="NewPassword"
+                      className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
                       placeholder="New Password"
                       {...register("NewPassword")}
                     />
@@ -121,7 +121,7 @@ const NewPassword = () => {
                   <div className="relative w-full mb-3">
                     <input
                       type="password"
-                      name="ConfirmPassword"
+                      // name="ConfirmPassword"
                       className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
                       placeholder="Confirm Password"
                       {...register("ConfirmPassword")}

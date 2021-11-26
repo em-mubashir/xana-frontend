@@ -87,7 +87,7 @@ const VerifyCode = () => {
                 />
               </div>
 
-              <div className="flex-auto flex-wrap px-4 lg:px-10 py-10 pt-0">
+              <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                 <div className="text-black text-center font-bold text-lg">
                   <h1>Verify Code</h1>
                 </div>
@@ -96,44 +96,46 @@ const VerifyCode = () => {
                 </div>
 
                 <form onSubmit={handleSubmit(submitForm)}>
-                  <div className="relative w-1/4 mb-3">
-                    <input
-                      type="text"
-                      name="Field1"
-                      className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                      placeholder="0"
-                      {...register("Field1")}
-                    />
-                  </div>
+                  <div className="flex flex-row justify-between">
+                    <div className="relative w-1/5 mb-3">
+                      <input
+                        type="text"
+                        name="Field1"
+                        className="px-1 py-2 text-blueGray-700 bg-white rounded-lg text-2xl text-center shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                        placeholder="0"
+                        {...register("Field1")}
+                      />
+                    </div>
 
-                  <div className="relative w-1/4 mb-3">
-                    <input
-                      type="text"
-                      name="Field2"
-                      className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                      placeholder="0"
-                      {...register("Field2")}
-                    />
-                  </div>
+                    <div className="relative w-1/5 mb-3">
+                      <input
+                        type="text"
+                        name="Field2"
+                        className="px-1 py-2 text-blueGray-700 bg-white rounded-lg text-2xl text-center shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                        placeholder="0"
+                        {...register("Field2")}
+                      />
+                    </div>
 
-                  <div className="relative w-1/4 mb-3">
-                    <input
-                      type="text"
-                      name="Field3"
-                      className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                      placeholder="0"
-                      {...register("Field3")}
-                    />
-                  </div>
+                    <div className="relative w-1/5 mb-3">
+                      <input
+                        type="text"
+                        name="Field3"
+                        className="px-1 py-2 text-blueGray-700 bg-white rounded-lg text-2xl text-center shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                        placeholder="0"
+                        {...register("Field3")}
+                      />
+                    </div>
 
-                  <div className="relative w-1/4 mb-3">
-                    <input
-                      type="text"
-                      name="Field4"
-                      className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                      placeholder="0"
-                      {...register("Field4")}
-                    />
+                    <div className="relative w-1/5 mb-3">
+                      <input
+                        type="text"
+                        name="Field4"
+                        className="px-1 py-2 text-blueGray-700 bg-white rounded-lg text-2xl text-center shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                        placeholder="0"
+                        {...register("Field4")}
+                      />
+                    </div>
                   </div>
 
                   <div className="text-center mt-6">
