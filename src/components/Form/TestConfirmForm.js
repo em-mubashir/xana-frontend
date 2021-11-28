@@ -1,6 +1,6 @@
 import React from "react";
 
-const TestConfirmForm = () => {
+const TestConfirmForm = (props) => {
   return (
     <>
       <div className="flex flex-wrap w-auto justify-center align-middle items-center">
@@ -20,8 +20,9 @@ const TestConfirmForm = () => {
               </button>
               <button
                 className="bg-blue-200 text-white text-sm px-10 py-3 rounded-xl shadow hover:bg-blue-900 outline-none focus:outline-none m-2 w-36 transition duration-500 ease-in-out"
-                type="submit"
+                type="button"
                 name="loginButton"
+                onClick={props.propsHandleClose}
               >
                 Cancel
               </button>

@@ -1,25 +1,12 @@
 import React from "react";
-import { createPopper } from "@popperjs/core";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { BASE_URL } from "../../environment";
+import Avatar from "@mui/material/Avatar";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const UserDropdown = () => {
   let history = useHistory();
-
-  // dropdown props
-  const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
-  const btnDropdownRef = React.createRef();
-  const popoverDropdownRef = React.createRef();
-  const openDropdownPopover = () => {
-    createPopper(btnDropdownRef.current, popoverDropdownRef.current, {
-      placement: "bottom-start",
-    });
-    setDropdownPopoverShow(true);
-  };
-  const closeDropdownPopover = () => {
-    setDropdownPopoverShow(false);
-  };
 
   const logoutFunc = () => {
     console.log(localStorage.getItem("refresh_token"));
@@ -50,42 +37,20 @@ const UserDropdown = () => {
 
   return (
     <>
-      <button onClick={() => logoutFunc()}>logout</button>
-      {/*
-      <a
-        className="text-blueGray-500 block"
-        href="#pablo"
-        ref={btnDropdownRef}
-        onClick={(e) => {
-          e.preventDefault();
-          dropdownPopoverShow ? closeDropdownPopover() : openDropdownPopover();
-        }}
-      >
-        <div className="items-center flex">
-          <span className="w-12 h-12 bg-blue-600 inline-flex items-center justify-center rounded-full"></span>
-          <span className="w-auto h-12 text-coolGray-500 inline-flex items-center justify-center ml-1 font-semibold">
-            Hello, User
-          </span>
-        </div>
-      </a>
-      <div
-        ref={popoverDropdownRef}
-        className={
-          (dropdownPopoverShow ? "block " : "hidden ") +
-          "bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg w-auto h-auto"
-        }
-      >
-        <a
-          href=" "
-          className={
-            "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
-          }
+      <div className="mr-1 ">
+        <Avatar alt="Profile Picture" src="" />
+      </div>
+
+      <div className="flex mr-8 items-center">Hello, User</div>
+
+      <div className=" ">
+        <button
+          className="bg-red-200 text-white text-sm py-2 w-10 h-10 rounded-md shadow hover:bg-red-700 outline-none focus:outline-none transition duration-500 ease-in-out"
           onClick={() => logoutFunc()}
         >
-          Log Out
-        </a>
+          <LogoutIcon />
+        </button>
       </div>
-      */}
     </>
   );
 };

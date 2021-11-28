@@ -31,26 +31,6 @@ const TestForm = () => {
       <div className="flex flex-wrap w-auto justify-center align-middle items-center">
         <form className="w-auto">
           <div className="flex flex-wrap justify-center">
-            <div className="w-full mt-3 mr-1 text-right">
-              <Button
-                onClick={handleClose}
-                // size="small"
-                color="inherit"
-                style={{
-                  maxWidth: "30px",
-                  maxHeight: "30px",
-                  minWidth: "30px",
-                  minHeight: "30px",
-                  borderRadius: "50%",
-                  padding: "0",
-                }}
-              >
-                <img
-                  alt=""
-                  src={require("../../assets/img/closeButton.svg").default}
-                />
-              </Button>
-            </div>
             <div className="w-full mb-5 text-center text-yellow-600">
               <h1 className="text-3xl font-bold">Add New Test</h1>
             </div>
@@ -79,6 +59,18 @@ const TestForm = () => {
               />
               {/* <small className="text-red-600">{errors.Email?.message}</small> */}
             </div>
+
+            <div className="w-96 m-2">
+              <input
+                type="email"
+                name="Email"
+                className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
+                placeholder="Email"
+                // {...register("Email")}
+              />
+              {/* <small className="text-red-600">{errors.Email?.message}</small> */}
+            </div>
+            <div className="w-96 m-2"></div>
 
             <div className="w-96 m-2">
               <input
@@ -296,9 +288,9 @@ const TestForm = () => {
                 Confirm
               </Button>
 
-              <Modal open={open} onClose={handleClose}>
+              <Modal open={open}>
                 <div style={modalStyle}>
-                  <TestConfirmForm />
+                  <TestConfirmForm propsHandleClose={handleClose} />
                 </div>
               </Modal>
             </div>

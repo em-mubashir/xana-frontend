@@ -195,8 +195,27 @@ const Test = () => {
           <img alt="" src={require("../../assets/img/plus.svg").default} />
           <p className="font-bold ml-2">Add new test</p>
         </Button>
-        <Modal open={open} onClose={handleClose}>
+        <Modal open={open}>
           <div style={modalStyle}>
+            <div className="mt-3 mr-3 text-right">
+              <Button
+                onClick={handleClose}
+                color="inherit"
+                style={{
+                  maxWidth: "30px",
+                  maxHeight: "30px",
+                  minWidth: "30px",
+                  minHeight: "30px",
+                  borderRadius: "50%",
+                  padding: "0",
+                }}
+              >
+                <img
+                  alt=""
+                  src={require("../../assets/img/closeButton.svg").default}
+                />
+              </Button>
+            </div>
             <TestForm />
           </div>
         </Modal>
