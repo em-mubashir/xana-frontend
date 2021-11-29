@@ -174,3 +174,8 @@ td {
   margin: 0px;
   padding: 0px;
 }
+
+.custom-pdf-footer-logo {
+  width: 25%;
+  padding-top: 2%;
+}

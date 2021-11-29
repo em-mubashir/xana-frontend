@@ -49,7 +49,11 @@ const Report = (props) => {
       )}
       <div id="report">
         <div className="top">
-          <img className="img" src="logo.png" alt="xana" />
+          <img
+            className="img"
+            src={require("assets/img/xana-login.svg").default}
+            alt="xana"
+          />
           <h2 className="bold" style={{ color: "darkblue" }}>
             Certificate of Coronavirus <br />
             <span style={{ color: "darkorange" }}>(SARS-CoV-2)</span> Rapid
@@ -165,10 +169,13 @@ const Report = (props) => {
               <span className="bold">Medical &amp; Clinical Advisor</span>
               <br />
               <span className="bold">GPHC number: 2072830 </span> <br />
-              <img src="logo.png" alt="xana" width={50} height={50} />
+              <img
+                src={require("assets/img/dashboard-logo.svg").default}
+                alt="xana"
+                className="custom-pdf-footer-logo"
+              />
             </p>
             <div className="qr-section">
-              <img alt="" src="fit-to-fly.png" width={90} height={90} />
               <QRCode value="Xana Medtec" size={90} className="qr" />
               <p>
                 <span className="fs-28 bold" style={{ paddingRight: "12px" }}>
