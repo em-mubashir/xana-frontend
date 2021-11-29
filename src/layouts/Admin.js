@@ -16,7 +16,6 @@ import Tables from "views/admin/Tables.js";
 import Test from "views/admin/Test.js";
 import User from "views/admin/User.js";
 
-import NewPassword from "views/auth/NewPassword";
 import ForgetPassword from "views/auth/ForgetPassword";
 
 export default function Admin() {
