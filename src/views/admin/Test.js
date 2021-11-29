@@ -57,6 +57,7 @@ const Test = () => {
     "userId",
     "test_image",
     "qr_id",
+    "video",
   ];
   const options = {
     filterType: "checkbox",
@@ -84,7 +85,11 @@ const Test = () => {
       };
       axios(config)
         .then(function (response) {
-          console.log(JSON.stringify(response.data));
+          console.log(
+            "FETCHING ALL TESTTTTTTTTTTTTTTT",
+            JSON.stringify(response.data)
+          );
+
           setDataTable(response.data.data);
 
           console.log(

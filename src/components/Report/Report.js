@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import html2pdf from "html2pdf.js";
 import axios from "axios";
 import QRCode from "qrcode.react";
 import "./report.css";
 
 const Report = (props) => {
+  const { data, setData } = useState({});
   const { success, setSuccess } = useState();
+
+  useEffect(() => {
+    console.log(props);
+    // let get_report = localStorage.getItem("custom_report_data");
+    // get_report = JSON.parse(get_report);
+    // setData(get_report);
+  }, []);
 
   const generatePDF = () => {
     const element = document.getElementById("report");
@@ -53,16 +61,16 @@ const Report = (props) => {
           <img className="user-img" src="user.jpg" alt="User" />
           <div className="user-info">
             <p>
-              <span className="bold">First name:</span> {props.firstName}
+              <span className="bold">First name:</span> {props.data.first_name}
             </p>
             <p>
-              <span className="bold">Last name:</span> {props.lastName}
+              <span className="bold">Last name:</span> {props.data.last_name}
             </p>
             <p>
-              <span className="bold">Date of Birth:</span> {props.dob}
+              <span className="bold">Date of Birth:</span> {props.data.dob}
             </p>
             <p>
-              <span className="bold">Passport No:</span> {props.passportNo}
+              <span className="bold">Passport No:</span> {props.data.passport}
             </p>
           </div>
         </div>
@@ -100,23 +108,23 @@ const Report = (props) => {
             <tbody>
               <tr>
                 <td className="bold headings">Test Name:</td>
-                <td className="values">{props.testName}</td>
+                <td className="values">{props.data.test_name}</td>
               </tr>
               <tr>
                 <td className="bold headings">Test Manufacturer:</td>
-                <td className="values">{props.testManufacturer}</td>
+                <td className="values">{props.data.test_manufacturer}</td>
               </tr>
               <tr>
                 <td className="bold headings">Test Description:</td>
-                <td className="values">{props.testDescription}</td>
+                <td className="values">{props.data.test_description}</td>
               </tr>
               <tr>
                 <td className="bold headings">Test Performance:</td>
-                <td className="values">{props.testPerformance} </td>
+                <td className="values">{props.data.test_performance} </td>
               </tr>
               <tr>
                 <td className="bold headings">Test Authorisation:</td>
-                <td className="values">{props.testAuthorisation}</td>
+                <td className="values">{props.data.test_authorization}</td>
               </tr>
             </tbody>
           </table>
@@ -124,32 +132,32 @@ const Report = (props) => {
           <div className="results">
             <p>
               <span className="bold">Sample Date:</span>
-              {props.sampleDate}
+              {props.data.sampleDate}
             </p>
             <p>
               <span className="bold">Sample Time:</span>
-              {props.sampleTime}
+              {props.data.sampleTime}
             </p>
             <p>
               <span className="bold">Result Date:</span>
-              {props.resultDate}
+              {props.data.resultDate}
             </p>
             <p>
               <span className="bold">Result Time:</span>
-              {props.resultTime}
+              {props.data.resultTime}
             </p>
           </div>
           <p>
             <span className="bold" style={{ paddingRight: "10px" }}>
               Order Id:
             </span>
-            {props.orderId}
+            {props.data.order_id}
           </p>
           <p style={{ marginBottom: "50px" }}>
             <span className="bold" style={{ paddingRight: "10px" }}>
               Result:
             </span>
-            {props.result}
+            {props.data.test_result}
           </p>
           <div className="regards" style={{ fontSize: "12px" }}>
             <p style={{ flex: 0.6 }}>
