@@ -17,7 +17,6 @@ const scheme = yup
     Email: yup.string().email().required("Field is required."),
     // PassportNumber: yup.string().required("Field is required."),
     PassportNumber: yup.string().required("Field is required"),
-
     // DateOfBirth: yup.string().required("Field is required."),
     // SampleDate: yup.string().required("Field is required."),
     // SampleTime: yup.string().required("Field is required."),
