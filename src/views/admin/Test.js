@@ -34,7 +34,7 @@ const Test = () => {
     boxShadow: 24,
     backgroundColor: "white",
     borderRadius: "15px",
-    overflow: "scroll",
+    "overflow-y": "scroll",
   };
 
   const [open, setOpen] = React.useState(false);

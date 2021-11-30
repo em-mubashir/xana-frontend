@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import TimePicker from "react-time-picker";
@@ -13,6 +13,8 @@ import axios from "axios";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import { BASE_URL } from "../../environment";
 import Report from "../../components/Report/Report";
+
+import UploadIcon from "@mui/icons-material/Upload";
 
 import TestConfirmForm from "./TestConfirmForm";
 
@@ -130,10 +132,88 @@ const TestForm = () => {
   };
 
   //  React Drop Zone
-  const onDrop = useCallback((acceptedFiles) => {
-    // Do something with the files
-  }, []);
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+  const thumbsContainer = {
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    marginTop: 16,
+  };
+
+  const thumb = {
+    display: "inline-flex",
+    borderRadius: 2,
+    border: "1px solid #eaeaea",
+    marginBottom: 8,
+    marginRight: 8,
+    width: 200,
+    height: 200,
+    padding: 4,
+    boxSizing: "border-box",
+  };
+
+  const thumbInner = {
+    display: "flex",
+    minWidth: 0,
+    overflow: "hidden",
+  };
+
+  const img = {
+    display: "block",
+    width: "auto",
+    height: "100%",
+  };
+
+  function Previews(props) {
+    const [files, setFiles] = useState([]);
+    const { getRootProps, getInputProps } = useDropzone({
+      accept: "image/*",
+      onDrop: (acceptedFiles) => {
+        setFiles(
+          acceptedFiles.map((file) =>
+            Object.assign(file, {
+              preview: URL.createObjectURL(file),
+            })
+          )
+        );
+      },
+    });
+
+    const thumbs = files.map((file) => (
+      <div style={thumb} key={file.name}>
+        <div style={thumbInner}>
+          <img alt="image preview" src={file.preview} style={img} />
+        </div>
+      </div>
+    ));
+
+    useEffect(
+      () => () => {
+        // Make sure to revoke the data uris to avoid memory leaks
+        files.forEach((file) => URL.revokeObjectURL(file.preview));
+      },
+      [files]
+    );
+
+    return (
+      <section className="container">
+        <div {...getRootProps({ className: "dropzone" })}>
+          <input {...getInputProps()} />
+          <Button
+            type="button"
+            variant="contained"
+            size="large"
+            color="primary"
+            style={{ backgroundColor: "#F27405", borderRadius: "10px" }}
+          >
+            Upload
+            <UploadIcon />
+          </Button>
+        </div>
+        <aside style={thumbsContainer}>{thumbs}</aside>
+      </section>
+    );
+  }
+  //
 
   return (
     <>
@@ -141,230 +221,243 @@ const TestForm = () => {
         <Report data={finalReportData} />
       ) : (
         <form className="w-auto" onSubmit={handleSubmit(submitForm)}>
-          <div className="flex flex-wrap justify-center">
+          <div className="flex flex-wrap justify-center mx-10 mb-5">
             <div className="w-full mb-5 text-center text-yellow-600">
               <h1 className="text-3xl font-bold">Add New Test</h1>
             </div>
             <div className="w-full mb-5 text-center">
               <h1 className="text-2xl">Fill the form below!</h1>
             </div>
-            <div className="w-full  m-2"></div>
+            <div className="w-full m-2"></div>
 
-            <div className="w-96 m-2">
-              <label>First Name </label>
-              <input
-                type="text"
-                name="FirstName"
-                className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                placeholder="First Name"
-                {...register("FirstName")}
-              />
-              <small className="text-red-600">
-                {errors.FirstName?.message}
-              </small>
-            </div>
-            <div className="w-96 m-2">
-              <label>Last Name </label>
-              <input
-                type="text"
-                name="LastName"
-                className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                placeholder="Last Name"
-                {...register("LastName")}
-              />
-              <small className="text-red-600">{errors.LastName?.message}</small>
-            </div>
-
-            <div className="w-96 m-2">
-              <label>Email </label>
-              <input
-                type="email"
-                name="Email"
-                className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                placeholder="Email"
-                {...register("Email")}
-              />
-              <small className="text-red-600">{errors.Email?.message}</small>
-            </div>
-            <div className="w-96 m-2">
-              <label>Passport Number </label>
-              <input
-                type="text"
-                name="PassportNumber"
-                className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                placeholder="-----/-------/-"
-                {...register("PassportNumber")}
-              />
-              <small className="text-red-600">
-                {errors.PassportNumber?.message}
-              </small>
-            </div>
-
-            <div className="w-96 m-2">
-              <label>Date of birth</label>
-              <DatePicker
-                className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                onChange={setDob}
-                value={dob}
-              />
-
-              {/* <small className="text-red-600">{errors.DateOfBirth?.message}</small> */}
-            </div>
-            <div className="w-96 m-2"></div>
-
-            <div className="w-96 m-2">
-              <label>Sample Date </label>
-              <DatePicker
-                name="SampleDate"
-                className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                onChange={setSampleDate}
-                value={sampleDate}
-              />
-              <small className="text-red-600">
-                {/* {errors.SampleDate?.messatge} */}
-              </small>
-            </div>
-            <div className="w-96 m-2">
-              <label>Sample Time </label>
-              <TimePicker
-                name="SampleTime"
-                className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                onChange={setSampleTime}
-                value={sampleTime}
-                // {...register("SampleTime")}
-              />
-              <small className="text-red-600">
-                {/* {errors.SampleTime?.message} */}
-              </small>
-            </div>
-
-            <div className="w-96 m-2">
-              <label>Result Date </label>
-              <DatePicker
-                name="ResultDate"
-                className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                onChange={setResultDate}
-                value={resultDate}
-              />
-              <small className="text-red-600">
-                {/* {errors.ResultDate?.message} */}
-              </small>
-            </div>
-            <div className="w-96 m-2">
-              <label>Result Time </label>
-              <TimePicker
-                name="ResultTime"
-                className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                onChange={setResultTime}
-                value={resultTime}
-                // {...register("ResultTime")}
-              />
-              <small className="text-red-600">
-                {/* {errors.ResultTime?.message} */}
-              </small>
-            </div>
-
-            <div className="w-96 m-2">
-              <label>Order ID </label>
-              <input
-                type="text"
-                name="OrderID"
-                className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                placeholder="Order ID"
-                {...register("OrderID")}
-              />
-              <small className="text-red-600">{errors.OrderID?.message}</small>
-            </div>
-            <div className="w-96 m-2">
-              <label>Result</label>
-              <select
-                {...register("Selector")}
-                value={result}
-                onChange={handleSelectChange}
-                className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl
-                text-sm shadow focus:outline-none focus:ring w-full ease-linear
-                transition-all duration-150 border-black border-2"
-              >
-                <option value="Positive">Positive</option>
-                <option value="Negative">Negative</option>
-                <option value="Invalid">Invalid</option>
-              </select>
-              <small className="text-red-600">{errors.Selector?.message}</small>
-            </div>
-
-            <div className="w-96 m-2">
-              <div {...getRootProps()}>
-                <input {...getInputProps()} />
-                {isDragActive ? (
-                  <p>Drop the files here ...</p>
-                ) : (
-                  <p>Drag 'n' drop some files here, or click to select files</p>
-                )}
+            <div className="flex justify-between w-full">
+              <div className="w-6/12 m-2">
+                <label>First Name </label>
+                <input
+                  type="text"
+                  name="FirstName"
+                  className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                  placeholder="First Name"
+                  {...register("FirstName")}
+                />
+                <small className="text-red-600">
+                  {errors.FirstName?.message}
+                </small>
+              </div>
+              <div className="w-6/12 m-2">
+                <label>Last Name </label>
+                <input
+                  type="text"
+                  name="LastName"
+                  className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                  placeholder="Last Name"
+                  {...register("LastName")}
+                />
+                <small className="text-red-600">
+                  {errors.LastName?.message}
+                </small>
               </div>
             </div>
-            <div className="w-96 m-2"></div>
+
+            <div className="flex justify-between w-full">
+              <div className="w-6/12 m-2">
+                <label>Email </label>
+                <input
+                  type="email"
+                  name="Email"
+                  className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                  placeholder="Email"
+                  {...register("Email")}
+                />
+                <small className="text-red-600">{errors.Email?.message}</small>
+              </div>
+              <div className="w-6/12 m-2">
+                <label>Passport Number </label>
+                <input
+                  type="text"
+                  name="PassportNumber"
+                  className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                  placeholder="-----/-------/-"
+                  {...register("PassportNumber")}
+                />
+                <small className="text-red-600">
+                  {errors.PassportNumber?.message}
+                </small>
+              </div>
+            </div>
+
+            <div className="flex justify-between w-full">
+              <div className="w-6/12 m-2">
+                <label>Date of birth</label>
+                <DatePicker
+                  className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                  onChange={setDob}
+                  value={dob}
+                />
+
+                {/* <small className="text-red-600">{errors.DateOfBirth?.message}</small> */}
+              </div>
+              <div className="w-6/12 m-2"></div>
+            </div>
+
+            <div className="flex justify-between w-full">
+              <div className="w-6/12 m-2">
+                <label>Sample Date </label>
+                <DatePicker
+                  name="SampleDate"
+                  className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                  onChange={setSampleDate}
+                  value={sampleDate}
+                />
+                <small className="text-red-600">
+                  {/* {errors.SampleDate?.messatge} */}
+                </small>
+              </div>
+              <div className="w-6/12 m-2">
+                <label>Sample Time </label>
+                <TimePicker
+                  name="SampleTime"
+                  className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                  onChange={setSampleTime}
+                  value={sampleTime}
+                  // {...register("SampleTime")}
+                />
+                <small className="text-red-600">
+                  {/* {errors.SampleTime?.message} */}
+                </small>
+              </div>
+            </div>
+
+            <div className="flex justify-between w-full">
+              <div className="w-6/12 m-2">
+                <label>Result Date </label>
+                <DatePicker
+                  name="ResultDate"
+                  className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                  onChange={setResultDate}
+                  value={resultDate}
+                />
+                <small className="text-red-600">
+                  {/* {errors.ResultDate?.message} */}
+                </small>
+              </div>
+              <div className="w-6/12 m-2">
+                <label>Result Time </label>
+                <TimePicker
+                  name="ResultTime"
+                  className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                  onChange={setResultTime}
+                  value={resultTime}
+                  // {...register("ResultTime")}
+                />
+                <small className="text-red-600">
+                  {/* {errors.ResultTime?.message} */}
+                </small>
+              </div>
+            </div>
+
+            <div className="flex justify-between w-full">
+              <div className="w-6/12 m-2">
+                <label>Order ID </label>
+                <input
+                  type="text"
+                  name="OrderID"
+                  className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                  placeholder="Order ID"
+                  {...register("OrderID")}
+                />
+                <small className="text-red-600">
+                  {errors.OrderID?.message}
+                </small>
+              </div>
+              <div className="w-6/12 m-2">
+                <label>Result</label>
+                <select
+                  {...register("Selector")}
+                  defaultValue="Negative"
+                  value={result}
+                  onChange={handleSelectChange}
+                  className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl
+                text-sm shadow focus:outline-none focus:ring w-full ease-linear
+                transition-all duration-150"
+                >
+                  <option value="Positive">Positive</option>
+                  <option value="Negative">Negative</option>
+                  <option value="Invalid">Invalid</option>
+                </select>
+                <small className="text-red-600">
+                  {errors.Selector?.message}
+                </small>
+              </div>
+            </div>
 
             {/* disabled textarea */}
-            <div className="w-96 m-2">
-              <textarea
-                style={{ resize: "none" }}
-                disabled
-                name="textarea1"
-                className="mb-3 px-4 py-4 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
-                placeholder="Xana Medtec Ltd (UKAS stage 1 application number: 23591)"
-                // {...register("Email")}
-              />
-              {/* <small className="text-red-600">{errors.Email?.message}</small> */}
-            </div>
-            <div className="w-96 m-2">
-              <textarea
-                style={{ resize: "none" }}
-                disabled
-                name="textarea1"
-                className="mb-3 px-4 py-4 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
-                placeholder="Universal Square Business Centre, Suite 1.16, Devonshire Street North, Manchester, M12 6JH"
-                // {...register("Email")}
-              />
-              {/* <small className="text-red-600">{errors.Email?.message}</small> */}
-            </div>
-
-            <div className="w-96 m-2">
-              <textarea
-                style={{ resize: "none" }}
-                disabled
-                name="textarea1"
-                className="mb-3 px-4 py-4 h-14 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
-                placeholder="0161 974 6518"
-                // {...register("Email")}
-              />
-              {/* <small className="text-red-600">{errors.Email?.message}</small> */}
-            </div>
-            <div className="w-96 m-2">
-              <textarea
-                style={{ resize: "none" }}
-                disabled
-                name="textarea1"
-                className="mb-3 px-4 py-4 h-14 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
-                placeholder="info@xanameditest.com"
-                // {...register("Email")}
-              />
-              {/* <small className="text-red-600">{errors.Email?.message}</small> */}
+            <div className="flex justify-between w-full">
+              <div className="w-6/12 m-2">
+                <textarea
+                  style={{ resize: "none" }}
+                  disabled
+                  name="textarea1"
+                  className="mb-3 px-4 py-4 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
+                  placeholder="Xana Medtec Ltd (UKAS stage 1 application number: 23591)"
+                  // {...register("Email")}
+                />
+                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
+              </div>
+              <div className="w-6/12 m-2">
+                <textarea
+                  style={{ resize: "none" }}
+                  disabled
+                  name="textarea1"
+                  className="mb-3 px-4 py-4 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
+                  placeholder="Universal Square Business Centre, Suite 1.16, Devonshire Street North, Manchester, M12 6JH"
+                  // {...register("Email")}
+                />
+                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
+              </div>
             </div>
 
-            <div className="w-96 m-2">
-              <textarea
-                style={{ resize: "none" }}
-                disabled
-                name="textarea1"
-                className="mb-3 px-4 py-4 h-14 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
-                placeholder="www.xanameditest.com"
-                // {...register("Email")}
-              />
-              {/* <small className="text-red-600">{errors.Email?.message}</small> */}
+            <div className="flex justify-between w-full">
+              <div className="w-6/12 m-2">
+                <textarea
+                  style={{ resize: "none" }}
+                  disabled
+                  name="textarea1"
+                  className="mb-3 px-4 py-4 h-14 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
+                  placeholder="0161 974 6518"
+                  // {...register("Email")}
+                />
+                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
+              </div>
+              <div className="w-6/12 m-2">
+                <textarea
+                  style={{ resize: "none" }}
+                  disabled
+                  name="textarea1"
+                  className="mb-3 px-4 py-4 h-14 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
+                  placeholder="info@xanameditest.com"
+                  // {...register("Email")}
+                />
+                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
+              </div>
             </div>
-            <div className="w-96 m-2"></div>
 
-            <div className="w-11/12 m-2">
+            <div className="flex justify-between w-full">
+              <div className="w-6/12 m-2">
+                <textarea
+                  style={{ resize: "none" }}
+                  disabled
+                  name="textarea1"
+                  className="mb-3 px-4 py-4 h-14 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
+                  placeholder="www.xanameditest.com"
+                  // {...register("Email")}
+                />
+                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
+              </div>
+              <div className="w-6/12 m-2"></div>
+            </div>
+
+            <div className="w-full m-2">
               <textarea
                 style={{ resize: "none" }}
                 disabled
@@ -376,7 +469,7 @@ const TestForm = () => {
               {/* <small className="text-red-600">{errors.Email?.message}</small> */}
             </div>
 
-            <div className="w-11/12 m-2">
+            <div className="w-full m-2">
               <textarea
                 style={{ resize: "none" }}
                 disabled
@@ -388,7 +481,7 @@ const TestForm = () => {
               {/* <small className="text-red-600">{errors.Email?.message}</small> */}
             </div>
 
-            <div className="w-11/12 m-2">
+            <div className="w-full m-2">
               <textarea
                 style={{ resize: "none" }}
                 disabled
@@ -400,30 +493,39 @@ const TestForm = () => {
               {/* <small className="text-red-600">{errors.Email?.message}</small> */}
             </div>
 
-            <div className="w-96 m-2">
-              <textarea
-                style={{ resize: "none" }}
-                disabled
-                name="textarea1"
-                className="mb-3 px-4 py-4 h-24 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
-                placeholder="Sensitivity: 97.1% Specificity: 99.5% Accuracy: 98.8%"
-                // {...register("Email")}
-              />
-              {/* <small className="text-red-600">{errors.Email?.message}</small> */}
-            </div>
-            <div className="w-96 m-2">
-              <textarea
-                style={{ resize: "none", overflow: "hidden" }}
-                disabled
-                name="textarea1"
-                className="mb-3 px-4 py-4 h-24 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
-                placeholder="CE Marked IVD in accordance with directive 98/79/EC. Passed assessment and validation by Public Health England & Porton Down Laboratory.MHRA registered."
-                // {...register("Email")}
-              />
-              {/* <small className="text-red-600">{errors.Email?.message}</small> */}
+            <div className="flex justify-between w-full">
+              <div className="w-96 m-2">
+                <textarea
+                  style={{ resize: "none" }}
+                  disabled
+                  name="textarea1"
+                  className="mb-3 px-4 py-4 h-24 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
+                  placeholder="Sensitivity: 97.1% Specificity: 99.5% Accuracy: 98.8%"
+                  // {...register("Email")}
+                />
+                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
+              </div>
+              <div className="w-96 m-2">
+                <textarea
+                  style={{ resize: "none", overflow: "hidden" }}
+                  disabled
+                  name="textarea1"
+                  className="mb-3 px-4 py-4 h-24 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
+                  placeholder="CE Marked IVD in accordance with directive 98/79/EC. Passed assessment and validation by Public Health England & Porton Down Laboratory.MHRA registered."
+                  // {...register("Email")}
+                />
+                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
+              </div>
             </div>
 
-            <div className="w-96 m-2">
+            <div className="flex justify-between w-full">
+              <div className="w-96 m-2">
+                <Previews />
+              </div>
+              <div className="w-96 m-2"></div>
+            </div>
+
+            <div className="w-full m-2 flex justify-end mt-5">
               <Button
                 type="submit"
                 variant="contained"
@@ -442,7 +544,6 @@ const TestForm = () => {
                 </div>
               </Modal> */}
             </div>
-            <div className="w-96 m-2"></div>
           </div>
         </form>
       )}
