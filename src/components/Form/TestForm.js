@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
-import DatePicker from "react-date-picker";
-import Report from "../../components/Report/Report";
-
 import TimePicker from "react-time-picker";
+import DatePicker from "react-date-picker";
+
+import { useDropzone } from "react-dropzone";
+
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import { BASE_URL } from "../../environment";
+import Report from "../../components/Report/Report";
 
 import TestConfirmForm from "./TestConfirmForm";
 
@@ -22,6 +24,7 @@ const scheme = yup
     Email: yup.string().email().required("Field is required."),
     PassportNumber: yup.string().required("Field is required."),
     OrderID: yup.string().required("Field is required."),
+    Selector: yup.string().required("Field is required."),
   })
   .required();
 
@@ -62,6 +65,8 @@ const TestForm = () => {
   const handleClose = () => setOpen(false);
   //
 
+  const [value, onChange] = useState(new Date());
+
   const [dob, setDob] = useState(new Date());
   const [sampleDate, setSampleDate] = useState(new Date());
   const [sampleTime, setSampleTime] = useState(new Date());
@@ -70,7 +75,7 @@ const TestForm = () => {
 
   const [status, setStatus] = useState(false);
 
-  console.log(status);
+  console.log("status of pdf and form", status);
 
   const [finalReportData, setFinalReportData] = useState();
 
@@ -118,13 +123,17 @@ const TestForm = () => {
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         setStatus(true);
-        // localStorage.setItem("custom_report_data", data);
-        // history.push("/reports/add-custom-report");
       })
       .catch(function (error) {
         console.log(error);
       });
   };
+
+  //  React Drop Zone
+  const onDrop = useCallback((acceptedFiles) => {
+    // Do something with the files
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   return (
     <>
@@ -142,6 +151,7 @@ const TestForm = () => {
             <div className="w-full  m-2"></div>
 
             <div className="w-96 m-2">
+              <label>First Name </label>
               <input
                 type="text"
                 name="FirstName"
@@ -154,6 +164,7 @@ const TestForm = () => {
               </small>
             </div>
             <div className="w-96 m-2">
+              <label>Last Name </label>
               <input
                 type="text"
                 name="LastName"
@@ -165,6 +176,7 @@ const TestForm = () => {
             </div>
 
             <div className="w-96 m-2">
+              <label>Email </label>
               <input
                 type="email"
                 name="Email"
@@ -175,6 +187,7 @@ const TestForm = () => {
               <small className="text-red-600">{errors.Email?.message}</small>
             </div>
             <div className="w-96 m-2">
+              <label>Passport Number </label>
               <input
                 type="text"
                 name="PassportNumber"
@@ -188,12 +201,11 @@ const TestForm = () => {
             </div>
 
             <div className="w-96 m-2">
+              <label>Date of birth</label>
               <DatePicker
                 className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
                 onChange={setDob}
                 value={dob}
-                // required="true"
-                // {...register("DateOfBirth")}
               />
 
               {/* <small className="text-red-600">{errors.DateOfBirth?.message}</small> */}
@@ -201,18 +213,19 @@ const TestForm = () => {
             <div className="w-96 m-2"></div>
 
             <div className="w-96 m-2">
+              <label>Sample Date </label>
               <DatePicker
                 name="SampleDate"
                 className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
                 onChange={setSampleDate}
                 value={sampleDate}
-                // {...register("SampleDate")}
               />
               <small className="text-red-600">
                 {/* {errors.SampleDate?.messatge} */}
               </small>
             </div>
             <div className="w-96 m-2">
+              <label>Sample Time </label>
               <TimePicker
                 name="SampleTime"
                 className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
@@ -226,18 +239,19 @@ const TestForm = () => {
             </div>
 
             <div className="w-96 m-2">
+              <label>Result Date </label>
               <DatePicker
                 name="ResultDate"
                 className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
                 onChange={setResultDate}
                 value={resultDate}
-                // {...register("ResultDate")}
               />
               <small className="text-red-600">
                 {/* {errors.ResultDate?.message} */}
               </small>
             </div>
             <div className="w-96 m-2">
+              <label>Result Time </label>
               <TimePicker
                 name="ResultTime"
                 className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
@@ -251,6 +265,7 @@ const TestForm = () => {
             </div>
 
             <div className="w-96 m-2">
+              <label>Order ID </label>
               <input
                 type="text"
                 name="OrderID"
@@ -261,7 +276,9 @@ const TestForm = () => {
               <small className="text-red-600">{errors.OrderID?.message}</small>
             </div>
             <div className="w-96 m-2">
+              <label>Result</label>
               <select
+                {...register("Selector")}
                 value={result}
                 onChange={handleSelectChange}
                 className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl
@@ -269,11 +286,23 @@ const TestForm = () => {
                 transition-all duration-150 border-black border-2"
               >
                 <option value="Positive">Positive</option>
-                <option value="Positive">Negative</option>
+                <option value="Negative">Negative</option>
                 <option value="Invalid">Invalid</option>
               </select>
-              {/* <small className="text-red-600">{errors.Result?.message}</small> */}
+              <small className="text-red-600">{errors.Selector?.message}</small>
             </div>
+
+            <div className="w-96 m-2">
+              <div {...getRootProps()}>
+                <input {...getInputProps()} />
+                {isDragActive ? (
+                  <p>Drop the files here ...</p>
+                ) : (
+                  <p>Drag 'n' drop some files here, or click to select files</p>
+                )}
+              </div>
+            </div>
+            <div className="w-96 m-2"></div>
 
             {/* disabled textarea */}
             <div className="w-96 m-2">

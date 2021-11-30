@@ -39,10 +39,12 @@ const Report = (props) => {
   return (
     <div>
       <div className="btn">
-        <button onClick={generatePDF} type="primary">
+        <button className="custom-btn" onClick={generatePDF} type="primary">
           Download PDF
         </button>
-        <button onClick={sendReport}>Get Report via Email</button>
+        <button className="custom-btn" onClick={sendReport}>
+          Get Report via Email
+        </button>
       </div>
       {success && (
         <p style={{ textAlign: "center" }}>Email sent successfully</p>
@@ -62,7 +64,11 @@ const Report = (props) => {
         </div>
 
         <div className="user">
-          <img className="user-img" src="user.jpg" alt="User" />
+          <img
+            className="user-img"
+            src={require("assets/img/pdf-profile-avatar.jpg").default}
+            alt="User"
+          />
           <div className="user-info">
             <p>
               <span className="bold">First name:</span> {props.data.first_name}
@@ -136,19 +142,19 @@ const Report = (props) => {
           <div className="results">
             <p>
               <span className="bold">Sample Date:</span>
-              {props.data.sampleDate}
+              {props.data.sample_date}
             </p>
             <p>
               <span className="bold">Sample Time:</span>
-              {props.data.sampleTime}
+              {props.data.sample_time}
             </p>
             <p>
               <span className="bold">Result Date:</span>
-              {props.data.resultDate}
+              {props.data.result_date}
             </p>
             <p>
               <span className="bold">Result Time:</span>
-              {props.data.resultTime}
+              {props.data.result_time}
             </p>
           </div>
           <p>
