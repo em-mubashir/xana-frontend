@@ -75,27 +75,24 @@ const Report = (props) => {
       };
       setFile(opt);
 
-      const generatedPDF = html2pdf().set(opt).from(element).outputPdf().then((res) => {
-        console.log("insdie =>", res);
+      const generatedPDF = await html2pdf().set(opt).from(element).outputImg().then((res) => {
+        const attachment = res["src"];
         var config = {
           method: "post",
           url: BASE_URL + "reports/send-custom-report",
           headers: {
             "Content-Type": "application/json",
           },
-          data: { email: "beenishkhan603@gmail.com", file: res },
+          data: { img: attachment },
         };
         axios(config)
           .then(function (response) {
             setSuccess(true);
           })
           .catch(function (error) {
-          });
+          })
+
       })
-
-
-
-      // console.log("generatedPDF ==> ", generatedPDF)
 
 
     }
