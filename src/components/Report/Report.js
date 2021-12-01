@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import html2pdf from "html2pdf.js";
+import { Preview, print } from 'react-html2pdf';
 import axios from "axios";
 import QRCode from "qrcode.react";
 import "./report.css";
@@ -32,7 +33,6 @@ import { BASE_URL } from "../../environment";
 //       setProgress(Math.round((evt.loaded / evt.total) * 100));
 //     })
 //     .send((err) => {
-//       if (err) console.log(err);
 //     });
 // };
 //
@@ -43,7 +43,6 @@ const Report = (props) => {
   const [file, setFile] = useState();
 
   useEffect(() => {
-    console.log("Props from Report.js", props);
     // let get_report = localStorage.getItem("custom_report_data");
     // get_report = JSON.parse(get_report);
     // setData(get_report);
@@ -64,34 +63,45 @@ const Report = (props) => {
   };
 
   const sendReport = async () => {
-    const element = document.getElementById("report");
-    const opt = {
-      filename: "report.pdf",
-      image: { type: "png", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-    };
-    setFile(opt);
-    const generatedPDF = await html2pdf().set(opt).from(element).toPdf();
+    try {
 
-    console.log("PDF Generated File: ", generatedPDF);
 
-    var config = {
-      method: "post",
-      url: BASE_URL + "reports/send-custom-report",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: { email: "beenishkhan603@gmail.com", file: generatedPDF },
-    };
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        setSuccess(true);
+      const element = document.getElementById("report");
+      const opt = {
+        filename: "report.pdf",
+        image: { type: "png", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+      };
+      setFile(opt);
+
+      const generatedPDF = html2pdf().set(opt).from(element).outputPdf().then((res) => {
+        console.log("insdie =>", res);
+        var config = {
+          method: "post",
+          url: BASE_URL + "reports/send-custom-report",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: { email: "beenishkhan603@gmail.com", file: res },
+        };
+        axios(config)
+          .then(function (response) {
+            setSuccess(true);
+          })
+          .catch(function (error) {
+          });
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+
+
+
+      // console.log("generatedPDF ==> ", generatedPDF)
+
+
+    }
+    catch (err) {
+      console.log(err.message)
+    }
   };
 
   return (
