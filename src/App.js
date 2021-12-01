@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-
+import "../src/CSS/Style.css";
 // layouts
 
 import Admin from "layouts/Admin.js";

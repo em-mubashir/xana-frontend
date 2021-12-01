@@ -4,7 +4,7 @@ import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { BASE_URL } from "../../environment";
 
 const axios = require("axios");
@@ -13,8 +13,6 @@ let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
 const User = () => {
-  let history = useHistory();
-
   const adminData = useSelector((state) => state.adminData);
 
   const columns = [
@@ -38,6 +36,8 @@ const User = () => {
     filterType: "checkbox",
   };
 
+  const [token, settoken] = useState(true);
+
   const [userData, setUserData] = useState();
   useEffect(() => {
     if (localStorage.getItem("access_token") != null) {
@@ -58,22 +58,28 @@ const User = () => {
           console.log(error);
         });
     } else {
-      // history.push("/");
+      settoken(false);
       console.log("redirected to login page from user page");
     }
   }, []);
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <MUIDataTable
-          title={"Users Details"}
-          // data={dataTable}
-          data={userData}
-          columns={columns}
-          options={options}
-        />
-      </ThemeProvider>
+      {token ? (
+        <React.Fragment>
+          <ThemeProvider theme={theme}>
+            <MUIDataTable
+              title={"Users Details"}
+              // data={dataTable}
+              data={userData}
+              columns={columns}
+              options={options}
+            />
+          </ThemeProvider>
+        </React.Fragment>
+      ) : (
+        <Redirect to="/" />
+      )}
     </>
   );
 };

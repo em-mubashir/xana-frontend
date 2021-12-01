@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, Redirect } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -14,6 +14,10 @@ const scheme = yup
 
 const ForgetPassword = () => {
   let history = useHistory();
+
+  if (localStorage.getItem("access_token") != null) {
+    history.push("/admin/test");
+  }
 
   const {
     register,
@@ -52,18 +56,6 @@ const ForgetPassword = () => {
 
   return (
     <>
-      <div className="relative justify-start ml-3 mt-3">
-        <button
-          className="bg-white rounded-full "
-          type="type"
-          name="backButton"
-        >
-          <img
-            alt=""
-            src={require("../../assets/img/backIcon.svg").default}
-          ></img>
-        </button>
-      </div>
       <div className="mx-auto px-4 h-auto">
         <div className="flex content-center items-center justify-center h-full">
           <div className="w-full h-full lg:w-4/12 md:w-9/12 px-4">

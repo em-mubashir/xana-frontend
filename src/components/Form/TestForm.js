@@ -3,9 +3,7 @@ import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import TimePicker from "react-time-picker";
 import DatePicker from "react-date-picker";
-
 import { useDropzone } from "react-dropzone";
-
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -13,11 +11,9 @@ import axios from "axios";
 import { Link, Redirect, useHistory } from "react-router-dom";
 import { BASE_URL } from "../../environment";
 import Report from "../../components/Report/Report";
-
 import UploadIcon from "@mui/icons-material/Upload";
-
 import TestConfirmForm from "./TestConfirmForm";
-
+import S3FileUpload from "react-s3";
 const scheme = yup
   .object()
   .shape({
@@ -33,7 +29,7 @@ const scheme = yup
 const TestForm = () => {
   let history = useHistory();
 
-  const [result, setResult] = useState();
+  const [result, setResult] = useState("Negative");
   const handleSelectChange = (event) => {
     setResult(event.target.value);
   };
@@ -65,28 +61,31 @@ const TestForm = () => {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  //
-
   const [value, onChange] = useState(new Date());
-
   const [dob, setDob] = useState(new Date());
   const [sampleDate, setSampleDate] = useState(new Date());
   const [sampleTime, setSampleTime] = useState(new Date());
   const [resultDate, setResultDate] = useState(new Date());
   const [resultTime, setResultTime] = useState(new Date());
-
   const [status, setStatus] = useState(false);
-
   console.log("status of pdf and form", status);
-
   const [finalReportData, setFinalReportData] = useState();
 
+  const config = {
+    bucketName: "xana-bucket",
+    dirName: "customReport" /* optional */,
+    region: "us-east-1",
+    accessKeyId: "AKIATMEPT72Q4DEPCW5U",
+    secretAccessKey: "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",
+  };
   const submitForm = (formData) => {
-    console.log(formData);
+    console.log("form data", formData);
     console.log("sample date:", sampleDate);
     console.log("sample time:", sampleTime);
     console.log("result date:", resultDate);
     console.log("result time:", resultTime);
+
+    console.log(result);
 
     var data = JSON.stringify({
       first_name: formData.FirstName,
@@ -107,7 +106,8 @@ const TestForm = () => {
         "Rapid immunichromatiographic assay for the detection of the SARS-COV-2 nucleocapsid protein antigennasopharyngeal swab",
       address: "Hughes Healthcare-Acon Flowflex",
       test_performance: "Sensitivity: 97.1% Specificity: 99.5% Accuracy: 98.8%",
-      test_result: result,
+      result: result,
+      test_image: "file",
     });
     console.log(data);
     setFinalReportData(JSON.parse(data));
@@ -163,7 +163,7 @@ const TestForm = () => {
     height: "100%",
   };
 
-  function Previews(props) {
+  const Previews = (props) => {
     const [files, setFiles] = useState([]);
     const { getRootProps, getInputProps } = useDropzone({
       accept: "image/*",
@@ -205,16 +205,31 @@ const TestForm = () => {
             color="primary"
             style={{ backgroundColor: "#F27405", borderRadius: "10px" }}
           >
-            Upload
+            UPLOAD IMAGE
             <UploadIcon />
           </Button>
         </div>
         <aside style={thumbsContainer}>{thumbs}</aside>
       </section>
     );
-  }
+  };
   //
 
+  const handleDateChange = (selectedDate) => {
+    setDob(selectedDate);
+  };
+  const handleSampleDate = (selectedDate) => {
+    setSampleDate(selectedDate);
+  };
+  const handleResultDate = (selectedDate) => {
+    setResultDate(selectedDate);
+  };
+  const handleSampleTime = (selectedTime) => {
+    setSampleTime(selectedTime);
+  };
+  const handleResultTime = (selectedTime) => {
+    setResultTime(selectedTime);
+  };
   return (
     <>
       {status ? (
@@ -291,7 +306,8 @@ const TestForm = () => {
                 <label>Date of birth</label>
                 <DatePicker
                   className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
-                  onChange={setDob}
+                  onChange={handleDateChange}
+                  maxDate={new Date()}
                   value={dob}
                 />
 
@@ -306,7 +322,8 @@ const TestForm = () => {
                 <DatePicker
                   name="SampleDate"
                   className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
-                  onChange={setSampleDate}
+                  onChange={handleSampleDate}
+                  maxDate={new Date()}
                   value={sampleDate}
                 />
                 <small className="text-red-600">
@@ -318,7 +335,7 @@ const TestForm = () => {
                 <TimePicker
                   name="SampleTime"
                   className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
-                  onChange={setSampleTime}
+                  onChange={handleSampleTime}
                   value={sampleTime}
                   // {...register("SampleTime")}
                 />
@@ -334,7 +351,8 @@ const TestForm = () => {
                 <DatePicker
                   name="ResultDate"
                   className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
-                  onChange={setResultDate}
+                  onChange={handleResultDate}
+                  maxDate={new Date()}
                   value={resultDate}
                 />
                 <small className="text-red-600">
@@ -346,7 +364,7 @@ const TestForm = () => {
                 <TimePicker
                   name="ResultTime"
                   className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
-                  onChange={setResultTime}
+                  onChange={handleResultTime}
                   value={resultTime}
                   // {...register("ResultTime")}
                 />
@@ -360,7 +378,7 @@ const TestForm = () => {
               <div className="w-6/12 m-2">
                 <label>Order ID </label>
                 <input
-                  type="text"
+                  type="number"
                   name="OrderID"
                   className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                   placeholder="Order ID"

@@ -66,7 +66,10 @@ export default function Login() {
           console.log("response success", response.data.success);
 
           if (response?.data?.data.length > 0) {
-            console.log("response data", response.data.data);
+            localStorage.setItem(
+              "First_Name",
+              response.data.data[0].first_name
+            );
 
             dispatch(getLoginAsync(response.data));
             localStorage.setItem(

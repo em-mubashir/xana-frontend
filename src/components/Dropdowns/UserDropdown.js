@@ -27,6 +27,7 @@ const UserDropdown = () => {
         if (response.data.success) {
           localStorage.removeItem("access_token");
           localStorage.removeItem("refresh_token");
+          localStorage.removeItem("First_Name");
           history.push("/");
         }
       })
@@ -37,18 +38,19 @@ const UserDropdown = () => {
 
   return (
     <>
-      <div className="mr-1 ">
-        <Avatar alt="Profile Picture" src="" />
+      <div className="flex mr-8 items-center font-bold">
+        Hello,{" "}
+        {localStorage.getItem("First_Name")
+          ? localStorage.getItem("First_Name")
+          : "Admin"}
       </div>
-
-      <div className="flex mr-8 items-center">Hello, User</div>
 
       <div className=" ">
         <button
-          className="bg-red-200 text-white text-sm py-2 w-10 h-10 rounded-md shadow hover:bg-red-700 outline-none focus:outline-none transition duration-500 ease-in-out"
+          className="hover:bg-red-400 text-white text-center text-sm py-2 w-24 h-10 rounded-md shadow bg-red-700 outline-none focus:outline-none transition duration-500 ease-in-out"
           onClick={() => logoutFunc()}
         >
-          <LogoutIcon />
+          <LogoutIcon fontSize="small" /> Logout
         </button>
       </div>
     </>

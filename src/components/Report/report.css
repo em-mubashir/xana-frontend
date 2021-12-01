@@ -9,12 +9,19 @@
 }
 
 .custom-btn {
-  background-color: crimson;
+  background-color: darkorange;
+  border: 2px solid darkorange;
   color: white;
-  padding: 5px 10px;
+  padding: 1% 2%;
   outline: none;
   border: none;
   cursor: pointer;
+  border-radius: 12px;
+}
+.custom-btn:hover {
+  background-color: #fff;
+  border: 2px solid darkorange;
+  color: darkorange;
 }
 
 .custom-btn:first-child {
