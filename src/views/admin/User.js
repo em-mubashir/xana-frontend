@@ -16,25 +16,148 @@ const User = () => {
   const adminData = useSelector((state) => state.adminData);
 
   const columns = [
-    "id",
-    "first_name",
-    "last_name",
-    "middle_name",
-    "email",
-    "mobile",
-    "passport_number",
-    "gender",
-    "company",
-    "roleid_fk",
-    "address",
-    "image",
-    "code",
-    "confirmed",
-    "dob",
+    {
+      name: "id",
+      label: "ID",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "first_name",
+      label: "First Name",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "last_name",
+      label: "Last Name",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "middle_name",
+      label: "Middle Name",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "email",
+      label: "Email",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "mobile",
+      label: "Mobile",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "passport_number",
+      label: "Passport Number",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "gender",
+      label: "Gender",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "company",
+      label: "Company",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "roleid_fk",
+      label: "Roleid fk",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "address",
+      label: "Address",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "image",
+      label: "Image",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "code",
+      label: "Code",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "confirmed",
+      label: "Confirmed",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "dob",
+      label: "Date of Birth",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
   ];
-  const options = {
-    filterType: "checkbox",
-  };
+
+  // const columns = [
+  //   "id",
+  //   "first_name",
+  //   "last_name",
+  //   "middle_name",
+  //   "email",
+  //   "mobile",
+  //   "passport_number",
+  //   "gender",
+  //   "company",
+  //   "roleid_fk",
+  //   "address",
+  //   "image",
+  //   "code",
+  //   "confirmed",
+  //   "dob",
+  // ];
+  // const options = {
+  //   filterType: "checkbox",
+  // };
 
   const [token, settoken] = useState(true);
 
@@ -73,7 +196,7 @@ const User = () => {
               // data={dataTable}
               data={userData}
               columns={columns}
-              options={options}
+              // options={options}
             />
           </ThemeProvider>
         </React.Fragment>

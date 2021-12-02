@@ -37,29 +37,159 @@ const Test = () => {
 
   const [open, setOpen] = React.useState(false);
 
+  const [selectedResult, setSelectedResult] = React.useState("Positive");
+
   const handleOpen = () => setOpen(true);
 
   const handleClose = () => setOpen(false);
 
+  const onChangeHandleResult = (selectedResultValue) => {
+    setSelectedResult(selectedResultValue);
+  };
+
   // mui datatable
   const columns = [
-    "id",
-    "test_name",
-    "test_manufacturer",
-    "test_description",
-    "test_performance",
-    "test_authorisation",
-    "date_register",
-    "date_conduct",
-    "result",
-    "userId",
-    "test_image",
-    "qr_id",
-    "video",
+    {
+      name: "id",
+      label: "ID",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "test_name",
+      label: "Test Name",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "test_manufacturer",
+      label: "Test Manufacturer",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "test_description",
+      label: "Test Description",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "test_performance",
+      label: "Test Performance",
+      options: {
+        filter: true,
+        sort: true,
+      },
+    },
+    {
+      name: "test_authorisation",
+      label: "Test Authorisation",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "date_register",
+      label: "Test Registeration Date",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "date_conduct",
+      label: "Test Conduct Date",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "result",
+      label: "Result",
+      options: {
+        filter: true,
+        sort: true,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          console.log(tableMeta);
+          return (
+            <React.Fragment>
+              <select
+                style={{ width: "90px" }}
+                className="form-control"
+                onChange={onChangeHandleResult}
+                value={selectedResult}
+              >
+                <option value="Positive">Positive</option>
+                <option value="Negative">Negative</option>
+                <option value="Invalid">Invalid</option>
+              </select>
+            </React.Fragment>
+          );
+        },
+      },
+    },
+    {
+      name: "userId",
+      label: "User ID",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "test_image",
+      label: "Test Image",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "qr_id",
+      label: "QR ID",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
+    {
+      name: "video",
+      label: "Video",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
   ];
-  const options = {
-    filterType: "checkbox",
-  };
+
+  // const columns = [
+  //   "id",
+  //   "test_name",
+  //   "test_manufacturer",
+  //   "test_description",
+  //   "test_performance",
+  //   "test_authorisation",
+  //   "date_register",
+  //   "date_conduct",
+  //   "result",
+  //   "userId",
+  //   "test_image",
+  //   "qr_id",
+  //   "video",
+  // ];
+  // const options = {
+  //   filterType: "checkbox",
+  // };
   //
 
   const [dataTable, setDataTable] = useState([]);
@@ -233,7 +363,7 @@ const Test = () => {
               title={"Tests Details"}
               data={dataTable}
               columns={columns}
-              options={options}
+              // options={options}
             />
           </ThemeProvider>
         </React.Fragment>
