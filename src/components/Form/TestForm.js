@@ -13,7 +13,7 @@ import { BASE_URL } from "../../environment";
 import Report from "../../components/Report/Report";
 import UploadIcon from "@mui/icons-material/Upload";
 import TestConfirmForm from "./TestConfirmForm";
-import S3FileUpload from "react-s3";
+// import S3FileUpload from "react-s3";
 const scheme = yup
   .object()
   .shape({
