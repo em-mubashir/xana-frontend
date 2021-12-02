@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import html2pdf from "html2pdf.js";
-import { Preview, print } from 'react-html2pdf';
+// import { Preview, print } from 'react-html2pdf';
 import axios from "axios";
 import QRCode from "qrcode.react";
 import "./report.css";
@@ -64,8 +64,6 @@ const Report = (props) => {
 
   const sendReport = async () => {
     try {
-
-
       const element = document.getElementById("report");
       const opt = {
         filename: "report.pdf",
@@ -75,29 +73,28 @@ const Report = (props) => {
       };
       setFile(opt);
 
-      const generatedPDF = await html2pdf().set(opt).from(element).outputImg().then((res) => {
-        const attachment = res["src"];
-        var config = {
-          method: "post",
-          url: BASE_URL + "reports/send-custom-report",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          data: { img: attachment },
-        };
-        axios(config)
-          .then(function (response) {
-            setSuccess(true);
-          })
-          .catch(function (error) {
-          })
-
-      })
-
-
-    }
-    catch (err) {
-      console.log(err.message)
+      const generatedPDF = await html2pdf()
+        .set(opt)
+        .from(element)
+        .outputImg()
+        .then((res) => {
+          const attachment = res["src"];
+          var config = {
+            method: "post",
+            url: BASE_URL + "reports/send-custom-report",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            data: { img: attachment, userEmail: props.data.email },
+          };
+          axios(config)
+            .then(function (response) {
+              setSuccess(true);
+            })
+            .catch(function (error) {});
+        });
+    } catch (err) {
+      console.log(err.message);
     }
   };
 

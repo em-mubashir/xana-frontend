@@ -15,7 +15,7 @@ const authReducer = (state = initialState, { type, payload }) => {
     case ACTION.AUTH_LOGIN:
       //   const config = {
       // method: "post",
-      // url: "http://35.153.58.173/api/admin/login",
+      // url: "http://192.168.18.62/api/admin/login",
       // headers: {
       //   "Content-Type": "application/json",
       // },
