@@ -215,8 +215,10 @@ const CustomReport = () => {
   const transformData = (testData) => {
     var selectedValue = [];
     testData.map((data, index) => {
-      console.log(data.id);
-      selectedValue[data.id] = data.result ? data.result : "No Result";
+      console.log(data.custom_report_id);
+      selectedValue[data.custom_report_id] = data.result
+        ? data.result
+        : "No Result";
     });
     setSelectedOption(selectedValue);
   };
