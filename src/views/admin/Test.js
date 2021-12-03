@@ -158,8 +158,8 @@ const Test = () => {
           return (
             <React.Fragment>
               <select
-                style={{ width: "90px" }}
-                className="form-control"
+                style={{ width: "100px" }}
+                className="form-control border-2 rounded-md text-xs px-2 py-2 text-center "
                 onChange={(event) =>
                   onChangeHandleResult(event, tableMeta.rowData[0])
                 }
@@ -400,7 +400,9 @@ const Test = () => {
               title={"Tests Details"}
               data={dataTable}
               columns={columns}
-              // options={options}
+              options={{
+                selectableRows: false,
+              }}
             />
           </ThemeProvider>
         </React.Fragment>

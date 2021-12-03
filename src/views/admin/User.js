@@ -192,10 +192,11 @@ const User = () => {
           <ThemeProvider theme={theme}>
             <MUIDataTable
               title={"Users Details"}
-              // data={dataTable}
               data={userData}
               columns={columns}
-              // options={options}
+              options={{
+                selectableRows: false,
+              }}
             />
           </ThemeProvider>
         </React.Fragment>

@@ -149,8 +149,8 @@ const CustomReport = () => {
           return (
             <React.Fragment>
               <select
-                style={{ width: "90px" }}
-                className="form-control"
+                style={{ width: "100px" }}
+                className="form-control border-2 rounded-md text-xs px-2 py-2 text-center "
                 onChange={(event) =>
                   onChangeHandleResult(event, tableMeta.rowData[0])
                 }
@@ -259,10 +259,11 @@ const CustomReport = () => {
           <ThemeProvider theme={theme}>
             <MUIDataTable
               title={"Custom Report Details"}
-              // data={dataTable}
               data={dataTable}
               columns={columns}
-              // options={options}
+              options={{
+                selectableRows: false,
+              }}
             />
           </ThemeProvider>
         </React.Fragment>
