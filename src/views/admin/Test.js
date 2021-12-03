@@ -9,10 +9,8 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { BASE_URL } from "../../environment";
-
 import TestForm from "components/Form/TestForm";
-
-const axios = require("axios");
+import axios from "axios";
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -37,15 +35,50 @@ const Test = () => {
 
   const [open, setOpen] = React.useState(false);
 
-  const [selectedResult, setSelectedResult] = React.useState("Positive");
+  const [selectedOption, setSelectedOption] = React.useState([]);
+  const [option, setOption] = React.useState();
+
+  // const [dropDownValue, setDropDownValue] = React.useState();
+  // const [dropDownId, setDropDownId] = React.useState();
 
   const handleOpen = () => setOpen(true);
 
   const handleClose = () => setOpen(false);
 
-  const onChangeHandleResult = (selectedResultValue) => {
-    setSelectedResult(selectedResultValue);
+  const onChangeHandleResult = (passedValue, passedId) => {
+    console.log(selectedOption);
+    const changeSelectedValueOnUI = [...passedValue.target.value];
+    changeSelectedValueOnUI[passedId] = passedValue.target.value;
+    setSelectedOption(changeSelectedValueOnUI);
+
+    console.log(selectedOption);
+
+    var data = JSON.stringify({
+      result: passedValue.target.value,
+      id: passedId,
+    });
+
+    var config = {
+      method: "put",
+      url: BASE_URL + "admin/update-report-status",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    // setSelectedResult(passedValue);
   };
+
+  // axios
 
   // mui datatable
   const columns = [
@@ -54,7 +87,7 @@ const Test = () => {
       label: "ID",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -86,7 +119,7 @@ const Test = () => {
       label: "Test Performance",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -118,18 +151,23 @@ const Test = () => {
       label: "Result",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
-          console.log(tableMeta);
+          // setDropDownId(tableMeta.rowData[0]);
+          // setDropDownValue(value);
           return (
             <React.Fragment>
               <select
                 style={{ width: "90px" }}
                 className="form-control"
-                onChange={onChangeHandleResult}
-                value={selectedResult}
+                onChange={(event) =>
+                  onChangeHandleResult(event, tableMeta.rowData[0])
+                }
+                // onChange={onChangeHandleResult(tableMeta.rowData[0], value)}
+                value={selectedOption[tableMeta.rowData[0]]}
               >
                 <option value="Positive">Positive</option>
+                <option value="No Result">No Result</option>
                 <option value="Negative">Negative</option>
                 <option value="Invalid">Invalid</option>
               </select>
@@ -170,34 +208,31 @@ const Test = () => {
         sort: false,
       },
     },
+    {
+      name: "report_url",
+      label: "Report URL",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
   ];
 
-  // const columns = [
-  //   "id",
-  //   "test_name",
-  //   "test_manufacturer",
-  //   "test_description",
-  //   "test_performance",
-  //   "test_authorisation",
-  //   "date_register",
-  //   "date_conduct",
-  //   "result",
-  //   "userId",
-  //   "test_image",
-  //   "qr_id",
-  //   "video",
-  // ];
-  // const options = {
-  //   filterType: "checkbox",
-  // };
-  //
-
   const [dataTable, setDataTable] = useState([]);
-  const [totalTests, setTotalTests] = useState([]);
-  const [pendingReports, setPendingReports] = useState([]);
-  const [positiveNegative, setPositiveNegative] = useState([]);
-  const [token, settoken] = useState(true);
+  const [token, setToken] = useState(true);
 
+  const [totalTests, setTotalTests] = useState([]);
+  const [incompleteReports, setIncompleteReport] = useState([]);
+  const [positiveNegative, setPositiveNegative] = useState([]);
+
+  const transformData = (testData) => {
+    var selectedValue = [];
+    testData.map((data, index) => {
+      console.log(data.id);
+      selectedValue[data.id] = data.result ? data.result : "No Result";
+    });
+    setSelectedOption(selectedValue);
+  };
   useEffect(() => {
     // console.log(
     //   "token get from local storage ",
@@ -207,7 +242,7 @@ const Test = () => {
       var data = "";
       var config = {
         method: "get",
-        url: BASE_URL + "admin/test/",
+        url: BASE_URL + "admin/test",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("access_token"),
         },
@@ -220,6 +255,8 @@ const Test = () => {
           //   JSON.stringify(response.data)
           // );
 
+          // console.log("Result Data jo save kiya varaible myn", resultData);
+          transformData(response.data.data);
           setDataTable(response.data.data);
 
           // console.log(
@@ -246,10 +283,10 @@ const Test = () => {
           //     return count;
           //   }, 0)
           // );
-          setPendingReports(
+          setIncompleteReport(
             response.data.data.reduce((count, val) => {
               // console.log(val.test_image);
-              if (val.test_image != null) {
+              if (val.test_image == null && val.video == null) {
                 count++;
               }
               return count;
@@ -280,10 +317,10 @@ const Test = () => {
           console.log(error);
         });
     } else {
-      settoken(false);
+      setToken(false);
       // console.log("redirected to login page from test page");
     }
-  }, [totalTests, pendingReports, positiveNegative]);
+  }, [totalTests, incompleteReports, positiveNegative]);
 
   // console.log("test page mui data table", dataTable);
 
@@ -304,8 +341,8 @@ const Test = () => {
               </div>
             </div>
             <div className="xl:w-52 lg:w-3/12 md:w-6/12 sm:w-full h-44 p-3 mr-4 mb-3 rounded-xl bg-yellow-600">
-              <div className="text-base text-white">Pending Reports</div>
-              <div className="text-5xl text-white">{pendingReports}</div>
+              <div className="text-base text-white">Incomplete Reports</div>
+              <div className="text-5xl text-white">{incompleteReports}</div>
               <div className="flex justify-end mt-8">
                 <img
                   className="w-10 h-10"

@@ -15,6 +15,7 @@ import Settings from "views/admin/Settings.js";
 import Tables from "views/admin/Tables.js";
 import Test from "views/admin/Test.js";
 import User from "views/admin/User.js";
+import CustomReport from "views/admin/CustomReport";
 
 import ForgetPassword from "views/auth/ForgetPassword";
 
@@ -32,6 +33,7 @@ export default function Admin() {
             {/* <Route path="/admin/tables" exact component={Tables} /> */}
             <Route path="/admin/test" exact component={Test} />
             <Route path="/admin/user" exact component={User} />
+            <Route path="/admin/customreport" exact component={CustomReport} />
 
             <Redirect from="/admin" to="/admin/test" />
           </Switch>

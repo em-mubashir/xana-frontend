@@ -6,8 +6,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { BASE_URL } from "../../environment";
-
-const axios = require("axios");
+import axios from "axios";
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -21,7 +20,7 @@ const User = () => {
       label: "ID",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -29,7 +28,7 @@ const User = () => {
       label: "First Name",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -37,7 +36,7 @@ const User = () => {
       label: "Last Name",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -45,7 +44,7 @@ const User = () => {
       label: "Middle Name",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -53,7 +52,7 @@ const User = () => {
       label: "Email",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -61,7 +60,7 @@ const User = () => {
       label: "Mobile",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -69,7 +68,7 @@ const User = () => {
       label: "Passport Number",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -77,7 +76,7 @@ const User = () => {
       label: "Gender",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -85,7 +84,7 @@ const User = () => {
       label: "Company",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -93,7 +92,7 @@ const User = () => {
       label: "Roleid fk",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -101,7 +100,7 @@ const User = () => {
       label: "Address",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -109,7 +108,7 @@ const User = () => {
       label: "Image",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -117,7 +116,7 @@ const User = () => {
       label: "Code",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -125,7 +124,7 @@ const User = () => {
       label: "Confirmed",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
     {
@@ -133,7 +132,7 @@ const User = () => {
       label: "Date of Birth",
       options: {
         filter: true,
-        sort: true,
+        sort: false,
       },
     },
   ];

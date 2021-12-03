@@ -14,6 +14,7 @@ import Report from "../../components/Report/Report";
 import UploadIcon from "@mui/icons-material/Upload";
 import TestConfirmForm from "./TestConfirmForm";
 // import S3FileUpload from "react-s3";
+
 const scheme = yup
   .object()
   .shape({
@@ -43,7 +44,7 @@ const TestForm = () => {
     resolver: yupResolver(scheme),
   });
   //
-  console.log(handleSubmit);
+  // console.log(handleSubmit);
 
   // Mui Modal functions
   const modalStyle = {
@@ -79,13 +80,13 @@ const TestForm = () => {
     secretAccessKey: "styf9xVjmYB5GweABL+zkLiEy8xBMTYzac3tchPz",
   };
   const submitForm = (formData) => {
-    console.log("form data", formData);
-    console.log("sample date:", sampleDate);
-    console.log("sample time:", sampleTime);
-    console.log("result date:", resultDate);
-    console.log("result time:", resultTime);
+    // console.log("form data", formData);
+    // console.log("sample date:", sampleDate);
+    // console.log("sample time:", sampleTime);
+    // console.log("result date:", resultDate);
+    // console.log("result time:", resultTime);
 
-    console.log(result);
+    // console.log(result);
 
     var data = JSON.stringify({
       first_name: formData.FirstName,
@@ -109,7 +110,7 @@ const TestForm = () => {
       result: result,
       test_image: "file",
     });
-    console.log(data);
+    console.log("Custom test all data", data);
     setFinalReportData(JSON.parse(data));
 
     var config = {
@@ -123,7 +124,7 @@ const TestForm = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        console.log("response.data", JSON.stringify(response.data));
         setStatus(true);
       })
       .catch(function (error) {

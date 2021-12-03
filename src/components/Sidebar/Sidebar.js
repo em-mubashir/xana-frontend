@@ -188,6 +188,28 @@ export default function Sidebar() {
                   Users
                 </Link>
               </li>
+
+              <li className="items-center">
+                <Link
+                  className={
+                    "text-xs uppercase py-3 font-bold block " +
+                    (window.location.href.indexOf("/admin/customreport") !== -1
+                      ? "text-white bg-blue-900 text-center transition duration-300 ease-in-out"
+                      : "text-blueGray-700 hover:text-blueGray-500")
+                  }
+                  to="/admin/customreport"
+                >
+                  {/* <i
+                    className={
+                      "fas fa-table mr-2 text-sm " +
+                      (window.location.href.indexOf("/admin/user") !== -1
+                        ? "opacity-75"
+                        : "text-blueGray-300")
+                    }
+                  ></i>{" "} */}
+                  Custom Report
+                </Link>
+              </li>
             </ul>
           </div>
         </div>
