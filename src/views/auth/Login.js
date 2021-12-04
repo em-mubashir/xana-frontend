@@ -16,7 +16,7 @@ const scheme = yup
     Email: yup.string().email().required("Please enter the email."),
     Password: yup
       .string()
-      .required("Please enter the passowrd.")
+      .required("Please enter the password.")
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
         "Password must contain 8 Letters and atleast 1 Uppercase, 1 Lowercase, 1 Number and 1 Special Character."
