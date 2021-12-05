@@ -12,6 +12,10 @@ import { BASE_URL } from "../../environment";
 import TestForm from "components/Form/TestForm";
 import axios from "axios";
 
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
@@ -47,7 +51,11 @@ const Test = () => {
 
   const onChangeHandleResult = (passedValue, passedId) => {
     console.log(selectedOption);
-    const changeSelectedValueOnUI = [...passedValue.target.value];
+
+    const valueID = selectedOption.filter((value) => value.id != null);
+    console.log(valueID);
+
+    const changeSelectedValueOnUI = [...selectedOption];
     changeSelectedValueOnUI[passedId] = passedValue.target.value;
     setSelectedOption(changeSelectedValueOnUI);
 
@@ -157,7 +165,7 @@ const Test = () => {
           // setDropDownValue(value);
           return (
             <React.Fragment>
-              <select
+              {/* <select
                 style={{ width: "100px" }}
                 className="form-control border-2 rounded-md text-xs px-2 py-2 text-center "
                 onChange={(event) =>
@@ -170,7 +178,23 @@ const Test = () => {
                 <option value="No Result">No Result</option>
                 <option value="Negative">Negative</option>
                 <option value="Invalid">Invalid</option>
-              </select>
+              </select> */}
+              <FormControl>
+                <Select
+                  style={{ width: "110px", height: "30px", fontSize: "14px" }}
+                  className="form-control"
+                  onChange={(event) =>
+                    onChangeHandleResult(event, tableMeta.rowData[0])
+                  }
+                  // onChange={onChangeHandleResult(tableMeta.rowData[0], value)}
+                  value={selectedOption[tableMeta.rowData[0]]}
+                >
+                  <MenuItem value="Positive">Positive</MenuItem>
+                  <MenuItem value="No Result">No Result</MenuItem>
+                  <MenuItem value="Negative">Negative</MenuItem>
+                  <MenuItem value="Invalid">Invalid</MenuItem>
+                </Select>
+              </FormControl>
             </React.Fragment>
           );
         },
