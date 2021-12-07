@@ -80,6 +80,7 @@ const TestForm = () => {
   const [status, setStatus] = useState(false);
   console.log("status of pdf and form", status);
   const [finalReportData, setFinalReportData] = useState();
+  const [s3ImgUrl, setS3ImgUrl] = useState();
 
   const [files, setFiles] = useState([]);
 
@@ -104,7 +105,7 @@ const TestForm = () => {
       address: "Hughes Healthcare-Acon Flowflex",
       test_performance: "Sensitivity: 97.1% Specificity: 99.5% Accuracy: 98.8%",
       result: result,
-      test_image: "file",
+      test_image: s3ImgUrl,
     });
     console.log("Custom test all data", data);
     setFinalReportData(JSON.parse(data));
@@ -190,12 +191,14 @@ const TestForm = () => {
       [files]
     );
 
-    console.log("upload file dropzone path", files[0]);
-
-    // TODO:
+    console.log("upload file dropzone", files[0]);
 
     ReactS3.uploadFile(files[0], configS3Bucket)
-      .then((data) => console.log("s3 data", data))
+      .then((data) => {
+        console.log("s3 data", data);
+        console.log("s3 data location", data.location);
+        setS3ImgUrl(data.location);
+      })
       .catch((err) => console.log("s3 err", err));
 
     return (
