@@ -53,7 +53,6 @@ const TestForm = () => {
     resolver: yupResolver(scheme),
   });
   //
-  // console.log(handleSubmit);
 
   // Mui Modal functions
   const modalStyle = {
