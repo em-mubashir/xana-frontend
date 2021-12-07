@@ -52,8 +52,10 @@ const Test = () => {
   const onChangeHandleResult = (passedValue, passedId) => {
     console.log(selectedOption);
 
+    //TODO:
     const valueID = selectedOption.filter((value) => value.id != null);
     console.log(valueID);
+    //
 
     const changeSelectedValueOnUI = [...selectedOption];
     changeSelectedValueOnUI[passedId] = passedValue.target.value;

@@ -13,7 +13,8 @@ import { BASE_URL } from "../../environment";
 import Report from "../../components/Report/Report";
 import UploadIcon from "@mui/icons-material/Upload";
 import TestConfirmForm from "./TestConfirmForm";
-// import S3FileUpload from "react-s3";
+
+import ReactS3 from "react-s3";
 
 const scheme = yup
   .object()
@@ -26,6 +27,14 @@ const scheme = yup
     Selector: yup.string().required("Field is required."),
   })
   .required();
+
+const configS3Bucket = {
+  bucketName: "xana-bucket",
+  dirName: "customReport" /* optional */,
+  region: "us-east-1",
+  accessKeyId: "AKIATMEPT72Q4DEPCW5U",
+  secretAccessKey: "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",
+};
 
 const TestForm = () => {
   let history = useHistory();
@@ -72,22 +81,9 @@ const TestForm = () => {
   console.log("status of pdf and form", status);
   const [finalReportData, setFinalReportData] = useState();
 
-  const config = {
-    bucketName: "xana-bucket",
-    dirName: "customReport" /* optional */,
-    region: "us-east-1",
-    accessKeyId: "AKIATMEPT72Q4DEPCW5U",
-    secretAccessKey: "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",
-  };
+  const [files, setFiles] = useState([]);
+
   const submitForm = (formData) => {
-    // console.log("form data", formData);
-    // console.log("sample date:", sampleDate);
-    // console.log("sample time:", sampleTime);
-    // console.log("result date:", resultDate);
-    // console.log("result time:", resultTime);
-
-    // console.log(result);
-
     var data = JSON.stringify({
       first_name: formData.FirstName,
       last_name: formData.LastName,
@@ -165,7 +161,6 @@ const TestForm = () => {
   };
 
   const Previews = (props) => {
-    const [files, setFiles] = useState([]);
     const { getRootProps, getInputProps } = useDropzone({
       accept: "image/*",
       onDrop: (acceptedFiles) => {
@@ -194,6 +189,14 @@ const TestForm = () => {
       },
       [files]
     );
+
+    console.log("upload file dropzone path", files[0]);
+
+    // TODO:
+
+    ReactS3.uploadFile(files[0], configS3Bucket)
+      .then((data) => console.log("s3 data", data))
+      .catch((err) => console.log("s3 err", err));
 
     return (
       <section className="container">
