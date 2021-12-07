@@ -115,11 +115,7 @@ const Report = (props) => {
         </div>
 
         <div className="user">
-          <img
-            className="user-img"
-            src={require("assets/img/pdf-profile-avatar.jpg").default}
-            alt="User"
-          />
+          <img className="user-img" src={props.data.test_image} alt="User" />
           <div className="user-info">
             <p>
               <span className="bold">First name:</span> {props.data.first_name}
