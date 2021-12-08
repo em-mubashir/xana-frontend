@@ -3,8 +3,7 @@ import React from "react";
 import { ThemeProvider } from "@mui/styles";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
+
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
@@ -23,31 +22,11 @@ const Test = () => {
   const adminData = useSelector((state) => state.adminData);
   // console.log("test page redux data", adminData);
 
-  // Mui Modal functions
-  const modalStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 900,
-    height: "100%",
-    boxShadow: 24,
-    backgroundColor: "white",
-    borderRadius: "15px",
-    "overflow-y": "scroll",
-  };
-
-  const [open, setOpen] = React.useState(false);
-
   const [selectedOption, setSelectedOption] = React.useState([]);
   const [option, setOption] = React.useState();
 
   // const [dropDownValue, setDropDownValue] = React.useState();
   // const [dropDownId, setDropDownId] = React.useState();
-
-  const handleOpen = () => setOpen(true);
-
-  const handleClose = () => setOpen(false);
 
   const onChangeHandleResult = (passedValue, passedId) => {
     console.log(selectedOption);
@@ -388,37 +367,6 @@ const Test = () => {
                 ></img>
               </div>
             </div>
-          </div>
-
-          <div class="mb-3 mr-2 flex flex-wrap justify-end items-center">
-            <Button onClick={handleOpen} size="small" color="inherit">
-              <img alt="" src={require("../../assets/img/plus.svg").default} />
-              <p className="font-bold ml-2">Add new test</p>
-            </Button>
-            <Modal open={open}>
-              <div style={modalStyle}>
-                <div className="mt-3 mr-3 text-right">
-                  <Button
-                    onClick={handleClose}
-                    color="inherit"
-                    style={{
-                      maxWidth: "30px",
-                      maxHeight: "30px",
-                      minWidth: "30px",
-                      minHeight: "30px",
-                      borderRadius: "50%",
-                      padding: "0",
-                    }}
-                  >
-                    <img
-                      alt=""
-                      src={require("../../assets/img/closeButton.svg").default}
-                    />
-                  </Button>
-                </div>
-                <TestForm />
-              </div>
-            </Modal>
           </div>
 
           <ThemeProvider theme={theme}>

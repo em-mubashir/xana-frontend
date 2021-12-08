@@ -105,6 +105,7 @@ const TestForm = () => {
       test_performance: "Sensitivity: 97.1% Specificity: 99.5% Accuracy: 98.8%",
       result: result,
       test_image: s3ImgUrl,
+      reportURL: "",
     });
     console.log("Custom test all data", data);
     setFinalReportData(JSON.parse(data));

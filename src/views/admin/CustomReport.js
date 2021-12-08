@@ -3,12 +3,15 @@ import React from "react";
 import { ThemeProvider } from "@mui/styles";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
+import Button from "@mui/material/Button";
+import Modal from "@mui/material/Modal";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { BASE_URL } from "../../environment";
+import { BASE_URL, IMAGE_DETECTION_BASE_URL } from "../../environment";
 import axios from "axios";
 
+import TestForm from "components/Form/TestForm";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -18,6 +21,25 @@ theme = responsiveFontSizes(theme);
 
 const CustomReport = () => {
   const [selectedOption, setSelectedOption] = React.useState([]);
+
+  const modalStyle = {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 900,
+    height: "100%",
+    boxShadow: 24,
+    backgroundColor: "white",
+    borderRadius: "15px",
+    "overflow-y": "scroll",
+  };
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleOpen = () => setOpen(true);
+
+  const handleClose = () => setOpen(false);
 
   const onChangeHandleResult = (passedValue, passedId) => {
     console.log(selectedOption);
@@ -50,6 +72,27 @@ const CustomReport = () => {
       });
 
     // setSelectedResult(passedValue);
+
+    var dataChangePdf = JSON.stringify({
+      test_id: passedId,
+    });
+
+    var configChangePdf = {
+      method: "post",
+      url: IMAGE_DETECTION_BASE_URL + "get_test_report",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: dataChangePdf,
+    };
+
+    axios(configChangePdf)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const columns = [
@@ -225,6 +268,14 @@ const CustomReport = () => {
         sort: false,
       },
     },
+    {
+      name: "reportURL",
+      label: "Report URL",
+      options: {
+        filter: true,
+        sort: false,
+      },
+    },
   ];
 
   const [dataTable, setDataTable] = useState([]);
@@ -274,6 +325,37 @@ const CustomReport = () => {
     <>
       {token ? (
         <React.Fragment>
+          <div class="mb-3 mr-2 flex flex-wrap justify-end items-center">
+            <Button onClick={handleOpen} size="small" color="inherit">
+              <img alt="" src={require("../../assets/img/plus.svg").default} />
+              <p className="font-bold ml-2">Add new test</p>
+            </Button>
+            <Modal open={open}>
+              <div style={modalStyle}>
+                <div className="mt-3 mr-3 text-right">
+                  <Button
+                    onClick={handleClose}
+                    color="inherit"
+                    style={{
+                      maxWidth: "30px",
+                      maxHeight: "30px",
+                      minWidth: "30px",
+                      minHeight: "30px",
+                      borderRadius: "50%",
+                      padding: "0",
+                    }}
+                  >
+                    <img
+                      alt=""
+                      src={require("../../assets/img/closeButton.svg").default}
+                    />
+                  </Button>
+                </div>
+                <TestForm />
+              </div>
+            </Modal>
+          </div>
+
           <ThemeProvider theme={theme}>
             <MUIDataTable
               title={"Custom Report Details"}
