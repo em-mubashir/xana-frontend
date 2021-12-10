@@ -1,24 +1,24 @@
-import React, { useState } from "react";
-import { Link, useHistory, Redirect } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import { BASE_URL } from "../../environment";
+import React, { useState } from 'react';
+import { Link, useHistory, Redirect } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { BASE_URL } from '../../environment';
 
 const scheme = yup
   .object()
   .shape({
-    Email: yup.string().email().required("Please enter email."),
+    Email: yup.string().email().required('Please enter email.'),
   })
   .required();
 
 const ForgetPassword = () => {
   let history = useHistory();
 
-  const [invalidEmail, setInvalidEmail] = useState("");
+  const [invalidEmail, setInvalidEmail] = useState('');
 
-  if (localStorage.getItem("access_token") != null) {
-    history.push("/admin/test");
+  if (localStorage.getItem('access_token') != null) {
+    history.push('/admin/test');
   }
 
   const {
@@ -30,15 +30,15 @@ const ForgetPassword = () => {
   });
 
   const submitForm = (data) => {
-    var axios = require("axios");
+    var axios = require('axios');
     var getdata = JSON.stringify({
       email: data.Email,
     });
     var config = {
-      method: "post",
-      url: BASE_URL + "user/forgot-password",
+      method: 'post',
+      url: BASE_URL + 'admin/forgot-password',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       data: getdata,
     };
@@ -48,7 +48,7 @@ const ForgetPassword = () => {
           console.log(JSON.stringify(response.data));
           console.log(response.data.success);
           if (response.data.success === true) {
-            history.push("/auth/verifycode");
+            history.push('/auth/verifycode');
           }
         } else {
           setInvalidEmail(response.data.message);
@@ -70,7 +70,7 @@ const ForgetPassword = () => {
                 <img
                   alt="..."
                   className="mr-1 w-auto h-auto"
-                  src={require("assets/img/xana-login.svg").default}
+                  src={require('assets/img/xana-login.svg').default}
                 />
               </div>
 
@@ -89,7 +89,7 @@ const ForgetPassword = () => {
                       name="Email"
                       className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
                       placeholder="email@email.com"
-                      {...register("Email")}
+                      {...register('Email')}
                     />
                     <small className="text-red-600">
                       {errors.Email?.message}
@@ -99,8 +99,8 @@ const ForgetPassword = () => {
                   <div
                     className={
                       invalidEmail.length > 0
-                        ? " text-center text-red-600 border-2 border-red-600 my-8 py-2"
-                        : "invisible"
+                        ? ' text-center text-red-600 border-2 border-red-600 my-8 py-2'
+                        : 'invisible'
                     }
                   >
                     {invalidEmail}

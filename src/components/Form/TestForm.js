@@ -1,46 +1,46 @@
-import React, { useEffect, useState, useCallback } from "react";
-import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
-import TimePicker from "react-time-picker";
-import DatePicker from "react-date-picker";
-import { useDropzone } from "react-dropzone";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import axios from "axios";
-import { Link, Redirect, useHistory } from "react-router-dom";
-import { BASE_URL } from "../../environment";
-import Report from "../../components/Report/Report";
-import UploadIcon from "@mui/icons-material/Upload";
-import TestConfirmForm from "./TestConfirmForm";
+import React, { useEffect, useState, useCallback } from 'react';
+import Button from '@mui/material/Button';
+import Modal from '@mui/material/Modal';
+import TimePicker from 'react-time-picker';
+import DatePicker from 'react-date-picker';
+import { useDropzone } from 'react-dropzone';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import axios from 'axios';
+import { Link, Redirect, useHistory } from 'react-router-dom';
+import { BASE_URL } from '../../environment';
+import Report from '../../components/Report/Report';
+import UploadIcon from '@mui/icons-material/Upload';
+import TestConfirmForm from './TestConfirmForm';
 
-import ReactS3 from "react-s3";
-import { ArrowBackIosTwoTone } from "@material-ui/icons";
+import ReactS3 from 'react-s3';
+import { ArrowBackIosTwoTone } from '@material-ui/icons';
 
 const scheme = yup
   .object()
   .shape({
-    FirstName: yup.string().required("First Name is required."),
-    LastName: yup.string().required("Last Name is required."),
-    Email: yup.string().email().required("Email is required."),
-    PassportNumber: yup.string().required("Passport Number is required."),
-    OrderID: yup.string().required("Order ID is required."),
-    Selector: yup.string().required("Result is required."),
+    FirstName: yup.string().required('First Name is required.'),
+    LastName: yup.string().required('Last Name is required.'),
+    Email: yup.string().email().required('Email is required.'),
+    PassportNumber: yup.string().required('Passport Number is required.'),
+    OrderID: yup.string().required('Order ID is required.'),
+    Selector: yup.string().required('Result is required.'),
   })
   .required();
 
 const configS3Bucket = {
-  bucketName: "xana-bucket",
-  dirName: "customReport" /* optional */,
-  region: "us-east-1",
-  accessKeyId: "AKIATMEPT72Q4DEPCW5U",
-  secretAccessKey: "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",
+  bucketName: 'xana-bucket',
+  dirName: 'customReport' /* optional */,
+  region: 'us-east-1',
+  accessKeyId: 'AKIATMEPT72Q4DEPCW5U',
+  secretAccessKey: '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',
 };
 
 const TestForm = () => {
   let history = useHistory();
 
-  const [result, setResult] = useState("Negative");
+  const [result, setResult] = useState('Negative');
   const handleSelectChange = (event) => {
     setResult(event.target.value);
   };
@@ -57,15 +57,15 @@ const TestForm = () => {
 
   // Mui Modal functions
   const modalStyle = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
     width: 500,
-    bgcolor: "white",
+    bgcolor: 'white',
     boxShadow: 24,
-    backgroundColor: "white",
-    borderRadius: "10px",
+    backgroundColor: 'white',
+    borderRadius: '10px',
   };
 
   const [open, setOpen] = React.useState(false);
@@ -78,7 +78,7 @@ const TestForm = () => {
   const [resultDate, setResultDate] = useState(new Date());
   const [resultTime, setResultTime] = useState(new Date());
   const [status, setStatus] = useState(false);
-  console.log("status of pdf and form", status);
+  console.log('status of pdf and form', status);
   const [finalReportData, setFinalReportData] = useState();
   const [s3ImgUrl, setS3ImgUrl] = useState();
   const [base64Img, setBase64Img] = useState();
@@ -87,7 +87,7 @@ const TestForm = () => {
 
   const Previews = (props) => {
     const { getRootProps, getInputProps } = useDropzone({
-      accept: "image/*",
+      accept: 'image/*',
       onDrop: (acceptedFiles) => {
         setFiles(
           acceptedFiles.map((file) =>
@@ -117,14 +117,14 @@ const TestForm = () => {
 
     return (
       <section className="container">
-        <div {...getRootProps({ className: "dropzone" })}>
+        <div {...getRootProps({ className: 'dropzone' })}>
           <input {...getInputProps()} />
           <Button
             type="button"
             variant="contained"
             size="large"
             color="primary"
-            style={{ backgroundColor: "#F27405", borderRadius: "10px" }}
+            style={{ backgroundColor: '#F27405', borderRadius: '10px' }}
           >
             UPLOAD IMAGE
             <UploadIcon />
@@ -139,7 +139,7 @@ const TestForm = () => {
   const imageConvertedToBase64 = async () => {
     const file = files[0];
     const base64 = await toBase64(file);
-    console.log("Converted into base64", base64);
+    console.log('Converted into base64', base64);
     await setBase64Img(base64);
   };
 
@@ -159,94 +159,96 @@ const TestForm = () => {
   };
 
   const submitForm = (formData) => {
-    console.log("upload file dropzone", files[0]);
+    console.log('upload file dropzone', files[0]);
+    if (file[0]) {
+      imageConvertedToBase64();
 
-    imageConvertedToBase64();
+      ReactS3.uploadFile(files[0], configS3Bucket)
+        .then((data) => {
+          console.log('s3 data', data);
+          console.log('s3 data location', data.location);
+          setS3ImgUrl(data.location);
 
-    ReactS3.uploadFile(files[0], configS3Bucket)
-      .then((data) => {
-        console.log("s3 data", data);
-        console.log("s3 data location", data.location);
-        setS3ImgUrl(data.location);
-
-        var dataForm = JSON.stringify({
-          first_name: formData.FirstName,
-          last_name: formData.LastName,
-          email: formData.Email,
-          dob: dob,
-          passport: formData.PassportNumber,
-          sample_date: sampleDate,
-          sample_time: sampleTime,
-          result_date: resultDate,
-          result_time: resultTime,
-          order_id: formData.OrderID,
-          test_name: "Coronavirus Ag Rapid Test Cassette (Swab)",
-          test_manufacturer: "Xana",
-          test_authorization:
-            "CE Marked IVD in accordance with directive 98/79/EC. Passed assessment and validation by Public Health England & Porton Down Laboratory.MHRA registered",
-          test_description:
-            "Rapid immunichromatiographic assay for the detection of the SARS-COV-2 nucleocapsid protein antigennasopharyngeal swab",
-          address: "Hughes Healthcare-Acon Flowflex",
-          test_performance:
-            "Sensitivity: 97.1% Specificity: 99.5% Accuracy: 98.8%",
-          result: result,
-          test_image: data.location,
-          reportURL: "",
-        });
-        console.log("Custom test all data", dataForm);
-        setFinalReportData(JSON.parse(dataForm));
-
-        var config = {
-          method: "post",
-          url: BASE_URL + "reports/add-custom-report",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          data: dataForm,
-        };
-
-        axios(config)
-          .then(function (response) {
-            console.log("response.data", JSON.stringify(response.data));
-            setStatus(true);
-          })
-          .catch(function (error) {
-            console.log(error);
+          var dataForm = JSON.stringify({
+            first_name: formData.FirstName,
+            last_name: formData.LastName,
+            email: formData.Email,
+            dob: dob,
+            passport: formData.PassportNumber,
+            sample_date: sampleDate,
+            sample_time: sampleTime,
+            result_date: resultDate,
+            result_time: resultTime,
+            order_id: formData.OrderID,
+            test_name: 'Coronavirus Ag Rapid Test Cassette (Swab)',
+            test_manufacturer: 'Xana',
+            test_authorization:
+              'CE Marked IVD in accordance with directive 98/79/EC. Passed assessment and validation by Public Health England & Porton Down Laboratory.MHRA registered',
+            test_description:
+              'Rapid immunichromatiographic assay for the detection of the SARS-COV-2 nucleocapsid protein antigennasopharyngeal swab',
+            address: 'Hughes Healthcare-Acon Flowflex',
+            test_performance:
+              'Sensitivity: 97.1% Specificity: 99.5% Accuracy: 98.8%',
+            result: result,
+            test_image: data.location,
+            reportURL: '',
           });
-      })
-      .catch((err) => console.log("s3 err", err));
+          console.log('Custom test all data', dataForm);
+          setFinalReportData(JSON.parse(dataForm));
+
+          var config = {
+            method: 'post',
+            url: BASE_URL + 'reports/add-custom-report',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            data: dataForm,
+          };
+
+          axios(config)
+            .then(function (response) {
+              console.log('response.data', JSON.stringify(response.data));
+              setStatus(true);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        })
+        .catch((err) => console.log('s3 err', err));
+    } else {
+    }
   };
 
   //  React Drop Zone
   const thumbsContainer = {
-    display: "flex",
-    flexDirection: "row",
-    flexWrap: "wrap",
+    display: 'flex',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
     marginTop: 16,
   };
 
   const thumb = {
-    display: "inline-flex",
+    display: 'inline-flex',
     borderRadius: 2,
-    border: "1px solid #eaeaea",
+    border: '1px solid #eaeaea',
     marginBottom: 8,
     marginRight: 8,
     width: 200,
     height: 200,
     padding: 4,
-    boxSizing: "border-box",
+    boxSizing: 'border-box',
   };
 
   const thumbInner = {
-    display: "flex",
+    display: 'flex',
     minWidth: 0,
-    overflow: "hidden",
+    overflow: 'hidden',
   };
 
   const img = {
-    display: "block",
-    width: "auto",
-    height: "100%",
+    display: 'block',
+    width: 'auto',
+    height: '100%',
   };
 
   const handleDateChange = (selectedDate) => {
@@ -288,7 +290,7 @@ const TestForm = () => {
                   name="FirstName"
                   className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                   placeholder="First Name"
-                  {...register("FirstName")}
+                  {...register('FirstName')}
                 />
                 <small className="text-red-600">
                   {errors.FirstName?.message}
@@ -301,7 +303,7 @@ const TestForm = () => {
                   name="LastName"
                   className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                   placeholder="Last Name"
-                  {...register("LastName")}
+                  {...register('LastName')}
                 />
                 <small className="text-red-600">
                   {errors.LastName?.message}
@@ -317,7 +319,7 @@ const TestForm = () => {
                   name="Email"
                   className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                   placeholder="Email"
-                  {...register("Email")}
+                  {...register('Email')}
                 />
                 <small className="text-red-600">{errors.Email?.message}</small>
               </div>
@@ -328,7 +330,7 @@ const TestForm = () => {
                   name="PassportNumber"
                   className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                   placeholder="-----/-------/-"
-                  {...register("PassportNumber")}
+                  {...register('PassportNumber')}
                 />
                 <small className="text-red-600">
                   {errors.PassportNumber?.message}
@@ -423,7 +425,7 @@ const TestForm = () => {
                   name="OrderID"
                   className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                   placeholder="Order ID"
-                  {...register("OrderID")}
+                  {...register('OrderID')}
                 />
                 <small className="text-red-600">
                   {errors.OrderID?.message}
@@ -432,7 +434,7 @@ const TestForm = () => {
               <div className="w-6/12 m-2">
                 <label>Result</label>
                 <select
-                  {...register("Selector")}
+                  {...register('Selector')}
                   defaultValue="Negative"
                   value={result}
                   onChange={handleSelectChange}
@@ -455,7 +457,7 @@ const TestForm = () => {
               <div className="w-6/12 m-2">
                 <label>Company Name</label>
                 <textarea
-                  style={{ resize: "none" }}
+                  style={{ resize: 'none' }}
                   disabled
                   name="textarea1"
                   className="mb-3 px-4 py-4 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
@@ -467,7 +469,7 @@ const TestForm = () => {
               <div className="w-6/12 m-2">
                 <label>Address</label>
                 <textarea
-                  style={{ resize: "none" }}
+                  style={{ resize: 'none' }}
                   disabled
                   name="textarea1"
                   className="mb-3 px-4 py-4 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
@@ -482,7 +484,7 @@ const TestForm = () => {
               <div className="w-6/12 m-2">
                 <label>Tel</label>
                 <textarea
-                  style={{ resize: "none" }}
+                  style={{ resize: 'none' }}
                   disabled
                   name="textarea1"
                   className="mb-3 px-4 py-4 h-14 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
@@ -494,7 +496,7 @@ const TestForm = () => {
               <div className="w-6/12 m-2">
                 <label>Email</label>
                 <textarea
-                  style={{ resize: "none" }}
+                  style={{ resize: 'none' }}
                   disabled
                   name="textarea1"
                   className="mb-3 px-4 py-4 h-14 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
@@ -509,7 +511,7 @@ const TestForm = () => {
               <div className="w-6/12 m-2">
                 <label>Website</label>
                 <textarea
-                  style={{ resize: "none" }}
+                  style={{ resize: 'none' }}
                   disabled
                   name="textarea1"
                   className="mb-3 px-4 py-4 h-14 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
@@ -524,7 +526,7 @@ const TestForm = () => {
             <div className="w-full m-2">
               <label>Test Name</label>
               <textarea
-                style={{ resize: "none" }}
+                style={{ resize: 'none' }}
                 disabled
                 name="textarea1"
                 className="mb-3 px-4 py-4 h-14 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
@@ -537,7 +539,7 @@ const TestForm = () => {
             <div className="w-full m-2">
               <label>Test Description</label>
               <textarea
-                style={{ resize: "none" }}
+                style={{ resize: 'none' }}
                 disabled
                 name="textarea1"
                 className="mb-3 px-4 py-4 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
@@ -551,7 +553,7 @@ const TestForm = () => {
               <div className="w-96 m-2">
                 <label>Test Performance</label>
                 <textarea
-                  style={{ resize: "none" }}
+                  style={{ resize: 'none' }}
                   disabled
                   name="textarea1"
                   className="mb-3 px-4 py-4 h-24 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
@@ -563,7 +565,7 @@ const TestForm = () => {
               <div className="w-96 m-2">
                 <label>Test Authorization</label>
                 <textarea
-                  style={{ resize: "none", overflow: "hidden" }}
+                  style={{ resize: 'none', overflow: 'hidden' }}
                   disabled
                   name="textarea1"
                   className="mb-3 px-4 py-4 h-24 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
@@ -589,7 +591,7 @@ const TestForm = () => {
                 // onClick={handleOpen}
                 size="large"
                 color="primary"
-                style={{ backgroundColor: "#293C74", borderRadius: "10px" }}
+                style={{ backgroundColor: '#293C74', borderRadius: '10px' }}
               >
                 Confirm
               </Button>
