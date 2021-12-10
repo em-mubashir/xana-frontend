@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -26,6 +26,8 @@ const scheme = yup
 
 const NewPassword = () => {
   let history = useHistory();
+
+  const [invalidPassword, setInvalidPassword] = useState("");
 
   if (localStorage.getItem("access_token") != null) {
     history.push("/admin/test");
@@ -60,11 +62,15 @@ const NewPassword = () => {
 
     axios(config)
       .then(function (response) {
-        console.log("response data", JSON.stringify(response.data));
-        console.log(response.data.success);
-        if (response.data.success === true) {
-          localStorage.removeItem("User_Id_Token");
-          history.push("/");
+        if (response.data.success) {
+          console.log("response data", JSON.stringify(response.data));
+          console.log(response.data.success);
+          if (response.data.success === true) {
+            localStorage.removeItem("User_Id_Token");
+            history.push("/");
+          }
+        } else {
+          setInvalidPassword(response.data.message);
         }
       })
       .catch(function (error) {
@@ -121,6 +127,16 @@ const NewPassword = () => {
                     <small className="text-red-600">
                       {errors.ConfirmPassword?.message}
                     </small>
+                  </div>
+
+                  <div
+                    className={
+                      invalidPassword.length > 0
+                        ? " text-center text-red-600 border-2 border-red-600 my-8 py-2"
+                        : "invisible"
+                    }
+                  >
+                    {invalidPassword}
                   </div>
 
                   <div className="text-center mt-6">

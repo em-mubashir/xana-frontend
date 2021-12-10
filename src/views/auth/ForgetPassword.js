@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useHistory, Redirect } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,6 +14,8 @@ const scheme = yup
 
 const ForgetPassword = () => {
   let history = useHistory();
+
+  const [invalidEmail, setInvalidEmail] = useState("");
 
   if (localStorage.getItem("access_token") != null) {
     history.push("/admin/test");
@@ -42,10 +44,14 @@ const ForgetPassword = () => {
     };
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        console.log(response.data.success);
-        if (response.data.success === true) {
-          history.push("/auth/verifycode");
+        if (response.data.success) {
+          console.log(JSON.stringify(response.data));
+          console.log(response.data.success);
+          if (response.data.success === true) {
+            history.push("/auth/verifycode");
+          }
+        } else {
+          setInvalidEmail(response.data.message);
         }
       })
       .catch(function (error) {
@@ -90,6 +96,16 @@ const ForgetPassword = () => {
                     </small>
                   </div>
 
+                  <div
+                    className={
+                      invalidEmail.length > 0
+                        ? " text-center text-red-600 border-2 border-red-600 my-8 py-2"
+                        : "invisible"
+                    }
+                  >
+                    {invalidEmail}
+                  </div>
+
                   <div className="text-center mt-6">
                     <button
                       className="bg-blue-900 text-white text-sm px-12 py-3 rounded-xl shadow hover:bg-yellow-600 outline-none focus:outline-none mr-1 mb-1 w-auto transition duration-500 ease-in-out"
@@ -107,11 +123,6 @@ const ForgetPassword = () => {
               </div>
             </div>
             <div className="px-3 py-3 flex align-bottom relative mt-20 justify-center lg:w-full">
-              {/* <img
-          alt="..."
-          className="mr-1"
-          src={require("assets/img/copyright.svg").default}
-        /> */}
               <p className="text-blue-900 font-semibold text-sm">
                 Copyright © {new Date().getFullYear()} All Rights Reserved.
                 Powered By Codistan

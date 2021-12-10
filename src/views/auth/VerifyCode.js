@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -18,6 +18,8 @@ const scheme = yup
 
 const VerifyCode = () => {
   let history = useHistory();
+
+  const [invalidCode, setInvalidCode] = useState("");
 
   if (localStorage.getItem("access_token") != null) {
     history.push("/admin/test");
@@ -50,12 +52,16 @@ const VerifyCode = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(response.data);
-        console.log(response.data.success);
-        console.log(response.data.data);
-        if (response.data.success === true) {
-          localStorage.setItem("User_Id_Token", response.data.data);
-          history.push("/auth/newpassword");
+        if (response.data.success) {
+          console.log(response.data);
+          console.log(response.data.success);
+          console.log(response.data.data);
+          if (response.data.success === true) {
+            localStorage.setItem("User_Id_Token", response.data.data);
+            history.push("/auth/newpassword");
+          }
+        } else {
+          setInvalidCode(response.data.message);
         }
       })
       .catch(function (error) {
@@ -128,6 +134,16 @@ const VerifyCode = () => {
                         {...register("Field4")}
                       />
                     </div>
+                  </div>
+
+                  <div
+                    className={
+                      invalidCode.length > 0
+                        ? " text-center text-red-600 border-2 border-red-600 my-8 py-2"
+                        : "invisible"
+                    }
+                  >
+                    {invalidCode}
                   </div>
 
                   <div className="text-center mt-6">
