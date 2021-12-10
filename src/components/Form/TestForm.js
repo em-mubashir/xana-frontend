@@ -15,16 +15,17 @@ import UploadIcon from "@mui/icons-material/Upload";
 import TestConfirmForm from "./TestConfirmForm";
 
 import ReactS3 from "react-s3";
+import { ArrowBackIosTwoTone } from "@material-ui/icons";
 
 const scheme = yup
   .object()
   .shape({
-    FirstName: yup.string().required("Field is required."),
-    LastName: yup.string().required("Field is required."),
-    Email: yup.string().email().required("Field is required."),
-    PassportNumber: yup.string().required("Field is required."),
-    OrderID: yup.string().required("Field is required."),
-    Selector: yup.string().required("Field is required."),
+    FirstName: yup.string().required("First Name is required."),
+    LastName: yup.string().required("Last Name is required."),
+    Email: yup.string().email().required("Email is required."),
+    PassportNumber: yup.string().required("Passport Number is required."),
+    OrderID: yup.string().required("Order ID is required."),
+    Selector: yup.string().required("Result is required."),
   })
   .required();
 
@@ -80,53 +81,140 @@ const TestForm = () => {
   console.log("status of pdf and form", status);
   const [finalReportData, setFinalReportData] = useState();
   const [s3ImgUrl, setS3ImgUrl] = useState();
+  const [base64Img, setBase64Img] = useState();
 
   const [files, setFiles] = useState([]);
 
-  const submitForm = (formData) => {
-    var data = JSON.stringify({
-      first_name: formData.FirstName,
-      last_name: formData.LastName,
-      email: formData.Email,
-      dob: dob,
-      passport: formData.PassportNumber,
-      sample_date: sampleDate,
-      sample_time: sampleTime,
-      result_date: resultDate,
-      result_time: resultTime,
-      order_id: formData.OrderID,
-      test_name: "Coronavirus Ag Rapid Test Cassette (Swab)",
-      test_manufacturer: "Xana",
-      test_authorization:
-        "CE Marked IVD in accordance with directive 98/79/EC. Passed assessment and validation by Public Health England & Porton Down Laboratory.MHRA registered",
-      test_description:
-        "Rapid immunichromatiographic assay for the detection of the SARS-COV-2 nucleocapsid protein antigennasopharyngeal swab",
-      address: "Hughes Healthcare-Acon Flowflex",
-      test_performance: "Sensitivity: 97.1% Specificity: 99.5% Accuracy: 98.8%",
-      result: result,
-      test_image: s3ImgUrl,
-      reportURL: "",
-    });
-    console.log("Custom test all data", data);
-    setFinalReportData(JSON.parse(data));
-
-    var config = {
-      method: "post",
-      url: BASE_URL + "reports/add-custom-report",
-      headers: {
-        "Content-Type": "application/json",
+  const Previews = (props) => {
+    const { getRootProps, getInputProps } = useDropzone({
+      accept: "image/*",
+      onDrop: (acceptedFiles) => {
+        setFiles(
+          acceptedFiles.map((file) =>
+            Object.assign(file, {
+              preview: URL.createObjectURL(file),
+            })
+          )
+        );
       },
-      data: data,
-    };
+    });
 
-    axios(config)
-      .then(function (response) {
-        console.log("response.data", JSON.stringify(response.data));
-        setStatus(true);
+    const thumbs = files.map((file) => (
+      <div style={thumb} key={file.name}>
+        <div style={thumbInner}>
+          <img alt="image preview" src={file.preview} style={img} />
+        </div>
+      </div>
+    ));
+
+    useEffect(
+      () => () => {
+        // Make sure to revoke the data uris to avoid memory leaks
+        files.forEach((file) => URL.revokeObjectURL(file.preview));
+      },
+      [files]
+    );
+
+    return (
+      <section className="container">
+        <div {...getRootProps({ className: "dropzone" })}>
+          <input {...getInputProps()} />
+          <Button
+            type="button"
+            variant="contained"
+            size="large"
+            color="primary"
+            style={{ backgroundColor: "#F27405", borderRadius: "10px" }}
+          >
+            UPLOAD IMAGE
+            <UploadIcon />
+          </Button>
+        </div>
+        <aside style={thumbsContainer}>{thumbs}</aside>
+      </section>
+    );
+  };
+  //
+
+  const imageConvertedToBase64 = async () => {
+    const file = files[0];
+    const base64 = await toBase64(file);
+    console.log("Converted into base64", base64);
+    await setBase64Img(base64);
+  };
+
+  const toBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(file);
+
+      fileReader.onload = () => {
+        resolve(fileReader.result);
+      };
+
+      fileReader.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
+  const submitForm = (formData) => {
+    console.log("upload file dropzone", files[0]);
+
+    imageConvertedToBase64();
+
+    ReactS3.uploadFile(files[0], configS3Bucket)
+      .then((data) => {
+        console.log("s3 data", data);
+        console.log("s3 data location", data.location);
+        setS3ImgUrl(data.location);
+
+        var dataForm = JSON.stringify({
+          first_name: formData.FirstName,
+          last_name: formData.LastName,
+          email: formData.Email,
+          dob: dob,
+          passport: formData.PassportNumber,
+          sample_date: sampleDate,
+          sample_time: sampleTime,
+          result_date: resultDate,
+          result_time: resultTime,
+          order_id: formData.OrderID,
+          test_name: "Coronavirus Ag Rapid Test Cassette (Swab)",
+          test_manufacturer: "Xana",
+          test_authorization:
+            "CE Marked IVD in accordance with directive 98/79/EC. Passed assessment and validation by Public Health England & Porton Down Laboratory.MHRA registered",
+          test_description:
+            "Rapid immunichromatiographic assay for the detection of the SARS-COV-2 nucleocapsid protein antigennasopharyngeal swab",
+          address: "Hughes Healthcare-Acon Flowflex",
+          test_performance:
+            "Sensitivity: 97.1% Specificity: 99.5% Accuracy: 98.8%",
+          result: result,
+          test_image: data.location,
+          reportURL: "",
+        });
+        console.log("Custom test all data", dataForm);
+        setFinalReportData(JSON.parse(dataForm));
+
+        var config = {
+          method: "post",
+          url: BASE_URL + "reports/add-custom-report",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data: dataForm,
+        };
+
+        axios(config)
+          .then(function (response) {
+            console.log("response.data", JSON.stringify(response.data));
+            setStatus(true);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
       })
-      .catch(function (error) {
-        console.log(error);
-      });
+      .catch((err) => console.log("s3 err", err));
   };
 
   //  React Drop Zone
@@ -161,67 +249,6 @@ const TestForm = () => {
     height: "100%",
   };
 
-  const Previews = (props) => {
-    const { getRootProps, getInputProps } = useDropzone({
-      accept: "image/*",
-      onDrop: (acceptedFiles) => {
-        setFiles(
-          acceptedFiles.map((file) =>
-            Object.assign(file, {
-              preview: URL.createObjectURL(file),
-            })
-          )
-        );
-      },
-    });
-
-    const thumbs = files.map((file) => (
-      <div style={thumb} key={file.name}>
-        <div style={thumbInner}>
-          <img alt="image preview" src={file.preview} style={img} />
-        </div>
-      </div>
-    ));
-
-    useEffect(
-      () => () => {
-        // Make sure to revoke the data uris to avoid memory leaks
-        files.forEach((file) => URL.revokeObjectURL(file.preview));
-      },
-      [files]
-    );
-
-    console.log("upload file dropzone", files[0]);
-
-    ReactS3.uploadFile(files[0], configS3Bucket)
-      .then((data) => {
-        console.log("s3 data", data);
-        console.log("s3 data location", data.location);
-        setS3ImgUrl(data.location);
-      })
-      .catch((err) => console.log("s3 err", err));
-
-    return (
-      <section className="container">
-        <div {...getRootProps({ className: "dropzone" })}>
-          <input {...getInputProps()} />
-          <Button
-            type="button"
-            variant="contained"
-            size="large"
-            color="primary"
-            style={{ backgroundColor: "#F27405", borderRadius: "10px" }}
-          >
-            UPLOAD IMAGE
-            <UploadIcon />
-          </Button>
-        </div>
-        <aside style={thumbsContainer}>{thumbs}</aside>
-      </section>
-    );
-  };
-  //
-
   const handleDateChange = (selectedDate) => {
     setDob(selectedDate);
   };
@@ -237,10 +264,11 @@ const TestForm = () => {
   const handleResultTime = (selectedTime) => {
     setResultTime(selectedTime);
   };
+
   return (
     <>
       {status ? (
-        <Report data={finalReportData} />
+        <Report data={finalReportData} base64Props={base64Img} />
       ) : (
         <form className="w-auto" onSubmit={handleSubmit(submitForm)}>
           <div className="flex flex-wrap justify-center mx-10 mb-5">
@@ -316,6 +344,7 @@ const TestForm = () => {
                   onChange={handleDateChange}
                   maxDate={new Date()}
                   value={dob}
+                  required="true"
                 />
 
                 {/* <small className="text-red-600">{errors.DateOfBirth?.message}</small> */}
@@ -332,6 +361,7 @@ const TestForm = () => {
                   onChange={handleSampleDate}
                   maxDate={new Date()}
                   value={sampleDate}
+                  required="true"
                 />
                 <small className="text-red-600">
                   {/* {errors.SampleDate?.messatge} */}
@@ -344,6 +374,8 @@ const TestForm = () => {
                   className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                   onChange={handleSampleTime}
                   value={sampleTime}
+                  required="true"
+
                   // {...register("SampleTime")}
                 />
                 <small className="text-red-600">
@@ -361,6 +393,7 @@ const TestForm = () => {
                   onChange={handleResultDate}
                   maxDate={new Date()}
                   value={resultDate}
+                  required="true"
                 />
                 <small className="text-red-600">
                   {/* {errors.ResultDate?.message} */}
@@ -373,6 +406,7 @@ const TestForm = () => {
                   className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                   onChange={handleResultTime}
                   value={resultTime}
+                  required="true"
                   // {...register("ResultTime")}
                 />
                 <small className="text-red-600">
@@ -419,6 +453,7 @@ const TestForm = () => {
             {/* disabled textarea */}
             <div className="flex justify-between w-full">
               <div className="w-6/12 m-2">
+                <label>Company Name</label>
                 <textarea
                   style={{ resize: "none" }}
                   disabled
@@ -430,6 +465,7 @@ const TestForm = () => {
                 {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
               <div className="w-6/12 m-2">
+                <label>Address</label>
                 <textarea
                   style={{ resize: "none" }}
                   disabled
@@ -444,6 +480,7 @@ const TestForm = () => {
 
             <div className="flex justify-between w-full">
               <div className="w-6/12 m-2">
+                <label>Tel</label>
                 <textarea
                   style={{ resize: "none" }}
                   disabled
@@ -455,6 +492,7 @@ const TestForm = () => {
                 {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
               <div className="w-6/12 m-2">
+                <label>Email</label>
                 <textarea
                   style={{ resize: "none" }}
                   disabled
@@ -469,6 +507,7 @@ const TestForm = () => {
 
             <div className="flex justify-between w-full">
               <div className="w-6/12 m-2">
+                <label>Website</label>
                 <textarea
                   style={{ resize: "none" }}
                   disabled
@@ -483,6 +522,7 @@ const TestForm = () => {
             </div>
 
             <div className="w-full m-2">
+              <label>Test Name</label>
               <textarea
                 style={{ resize: "none" }}
                 disabled
@@ -495,18 +535,7 @@ const TestForm = () => {
             </div>
 
             <div className="w-full m-2">
-              <textarea
-                style={{ resize: "none" }}
-                disabled
-                name="textarea1"
-                className="mb-3 px-4 py-4 h-14 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
-                placeholder="Hughes Healthcare-Acon Flowflex"
-                // {...register("Email")}
-              />
-              {/* <small className="text-red-600">{errors.Email?.message}</small> */}
-            </div>
-
-            <div className="w-full m-2">
+              <label>Test Description</label>
               <textarea
                 style={{ resize: "none" }}
                 disabled
@@ -520,6 +549,7 @@ const TestForm = () => {
 
             <div className="flex justify-between w-full">
               <div className="w-96 m-2">
+                <label>Test Performance</label>
                 <textarea
                   style={{ resize: "none" }}
                   disabled
@@ -531,6 +561,7 @@ const TestForm = () => {
                 {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
               <div className="w-96 m-2">
+                <label>Test Authorization</label>
                 <textarea
                   style={{ resize: "none", overflow: "hidden" }}
                   disabled

@@ -150,7 +150,7 @@ export default function Sidebar() {
                   className={
                     "text-xs uppercase py-3 font-bold block " +
                     (window.location.href.indexOf("/admin/test") !== -1
-                      ? "text-white bg-blue-900 text-center transition duration-300 ease-in-out"
+                      ? "text-white bg-blue-900 pl-1 transition duration-300 ease-in-out"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
                   to="/admin/test"
@@ -172,7 +172,7 @@ export default function Sidebar() {
                   className={
                     "text-xs uppercase py-3 font-bold block " +
                     (window.location.href.indexOf("/admin/user") !== -1
-                      ? "text-white bg-blue-900 text-center transition duration-300 ease-in-out"
+                      ? "text-white bg-blue-900 pl-1 transition duration-300 ease-in-out"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
                   to="/admin/user"
@@ -194,7 +194,7 @@ export default function Sidebar() {
                   className={
                     "text-xs uppercase py-3 font-bold block " +
                     (window.location.href.indexOf("/admin/customreport") !== -1
-                      ? "text-white bg-blue-900 text-center transition duration-300 ease-in-out"
+                      ? "text-white bg-blue-900 pl-1 transition duration-300 ease-in-out"
                       : "text-blueGray-700 hover:text-blueGray-500")
                   }
                   to="/admin/customreport"

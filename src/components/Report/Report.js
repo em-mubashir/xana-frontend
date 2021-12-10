@@ -5,6 +5,9 @@ import axios from "axios";
 import QRCode from "qrcode.react";
 import "./report.css";
 import { BASE_URL } from "../../environment";
+
+// import imageToBase64 from "image-to-base64";
+
 // AWS S3 Bucket
 // const S3_BUCKET = "xana-bucket";
 // const REGION = "us-east-1";
@@ -52,14 +55,14 @@ const Report = (props) => {
     const element = document.getElementById("report");
 
     const opt = {
+      margin: 1,
       filename: "report.pdf",
-      image: { type: "png", quality: 0.98 },
-      html2canvas: { scale: 2 },
-      jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+      image: { type: "png", quality: 0.99 },
+      html2canvas: { dpi: 192, letterRendering: true, useCORS: true },
+      jsPDF: { unit: "pt", format: "letter", orientation: "portrait" },
     };
-    setFile(opt);
-
     html2pdf().set(opt).from(element).save();
+    setFile(opt);
   };
 
   const sendReport = async () => {
@@ -67,7 +70,7 @@ const Report = (props) => {
       const element = document.getElementById("report");
       const opt = {
         filename: "report.pdf",
-        image: { type: "png", quality: 0.98 },
+        image: { type: "png", quality: 0.95 },
         html2canvas: { scale: 2 },
         jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
       };
@@ -98,6 +101,9 @@ const Report = (props) => {
     }
   };
 
+  console.log("in report.js image url", props.data.test_image);
+  console.log("in report.js image base64", props.base64Props);
+
   return (
     <div>
       <div id="report">
@@ -115,7 +121,11 @@ const Report = (props) => {
         </div>
 
         <div className="user">
-          <img className="user-img" src={props.data.test_image} alt="User" />
+          <img
+            className="user-img"
+            src={props.base64Props}
+            alt="User-Profile"
+          />
           <div className="user-info">
             <p>
               <span className="bold">First name:</span> {props.data.first_name}
@@ -181,7 +191,7 @@ const Report = (props) => {
                 <td className="values">{props.data.test_performance} </td>
               </tr>
               <tr>
-                <td className="bold headings">Test Authorisation:</td>
+                <td className="bold headings">Test Authorization:</td>
                 <td className="values">{props.data.test_authorization}</td>
               </tr>
             </tbody>

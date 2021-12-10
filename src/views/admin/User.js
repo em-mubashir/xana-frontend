@@ -40,14 +40,6 @@ const User = () => {
       },
     },
     {
-      name: "middle_name",
-      label: "Middle Name",
-      options: {
-        filter: true,
-        sort: false,
-      },
-    },
-    {
       name: "email",
       label: "Email",
       options: {

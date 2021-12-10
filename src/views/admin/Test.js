@@ -7,7 +7,7 @@ import MUIDataTable from "mui-datatables";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
-import { BASE_URL } from "../../environment";
+import { BASE_URL, IMAGE_DETECTION_BASE_URL } from "../../environment";
 import TestForm from "components/Form/TestForm";
 import axios from "axios";
 
@@ -65,6 +65,27 @@ const Test = () => {
       });
 
     // setSelectedResult(passedValue);
+
+    var dataChangePdf = JSON.stringify({
+      test_id: passedId,
+    });
+
+    var configChangePdf = {
+      method: "post",
+      url: IMAGE_DETECTION_BASE_URL + "get_test_report",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: dataChangePdf,
+    };
+
+    axios(configChangePdf)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   // axios
@@ -255,22 +276,9 @@ const Test = () => {
       };
       axios(config)
         .then(function (response) {
-          // console.log(
-          //   "FETCHING ALL TESTTTTTTTTTTTTTTT",
-          //   JSON.stringify(response.data)
-          // );
-
-          // console.log("Result Data jo save kiya varaible myn", resultData);
           transformData(response.data.data);
           setDataTable(response.data.data);
 
-          // console.log(
-          //   "Total Tests",
-          //   response.data.data.reduce((count, val) => {
-          //     count++;
-          //     return count;
-          //   }, 0)
-          // );
           setTotalTests(
             response.data.data.reduce((count, val) => {
               count++;
@@ -278,36 +286,16 @@ const Test = () => {
             }, 0)
           );
 
-          // console.log(
-          //   "Pending Reports",
-          //   response.data.data.reduce((count, val) => {
-          //     console.log(val.test_image);
-          //     if (val.test_image != null) {
-          //       count++;
-          //     }
-          //     return count;
-          //   }, 0)
-          // );
           setIncompleteReport(
             response.data.data.reduce((count, val) => {
               // console.log(val.test_image);
-              if (val.test_image == null && val.video == null) {
+              if (val.video === null || val.test_image === null) {
                 count++;
               }
               return count;
             }, 0)
           );
 
-          // console.log(
-          //   "Positive/Negative",
-          //   response.data.data.reduce((count, val) => {
-          //     console.log(val.result);
-          //     if (val.result != null) {
-          //       count++;
-          //     }
-          //     return count;
-          //   }, 0)
-          // );
           setPositiveNegative(
             response.data.data.reduce((count, val) => {
               // console.log(val.result);
