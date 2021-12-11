@@ -123,7 +123,11 @@ const Report = (props) => {
         <div className="user">
           <img
             className="user-img"
-            src={props.base64Props}
+            src={
+              props.base64Props
+                ? props.base64Props
+                : "../../assets/img/pdf-profile-avatar.jpg"
+            }
             alt="User-Profile"
           />
           <div className="user-info">
