@@ -36,7 +36,7 @@ const ForgetPassword = () => {
     });
     var config = {
       method: "post",
-      url: BASE_URL + "user/forgot-password",
+      url: BASE_URL + "admin/forgot-password",
       headers: {
         "Content-Type": "application/json",
       },

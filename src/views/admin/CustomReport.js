@@ -97,7 +97,7 @@ const CustomReport = () => {
 
   const columns = [
     {
-      name: "custom_report_id",
+      name: "id",
       label: "ID",
       options: {
         filter: true,
@@ -284,10 +284,8 @@ const CustomReport = () => {
   const transformData = (testData) => {
     var selectedValue = [];
     testData.map((data, index) => {
-      console.log(data.custom_report_id);
-      selectedValue[data.custom_report_id] = data.result
-        ? data.result
-        : "No Result";
+      console.log(data.id);
+      selectedValue[data.id] = data.result ? data.result : "No Result";
     });
     setSelectedOption(selectedValue);
   };

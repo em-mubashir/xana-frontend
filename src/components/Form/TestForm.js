@@ -139,14 +139,9 @@ const TestForm = () => {
 
   const imageConvertedToBase64 = async () => {
     const file = files[0];
-    if (file) {
-      const base64 = await toBase64(file);
-      console.log("Converted into base64", base64);
-      console.log("image file varaible", file);
-      await setBase64Img(base64);
-    } else {
-      await setBase64Img("");
-    }
+    const base64 = await toBase64(file);
+    console.log("Converted into base64", base64);
+    await setBase64Img(base64);
   };
 
   const toBase64 = (file) => {
@@ -164,65 +159,64 @@ const TestForm = () => {
     });
   };
 
-  const dataOfForm = (formData) => {
-    var dataForm = JSON.stringify({
-      first_name: formData.FirstName,
-      last_name: formData.LastName,
-      email: formData.Email,
-      dob: dob,
-      passport: formData.PassportNumber,
-      sample_date: sampleDate,
-      sample_time: sampleTime,
-      result_date: resultDate,
-      result_time: resultTime,
-      order_id: formData.OrderID,
-      test_name: "Coronavirus Ag Rapid Test Cassette (Swab)",
-      test_manufacturer: "Xana",
-      test_authorization:
-        "CE Marked IVD in accordance with directive 98/79/EC. Passed assessment and validation by Public Health England & Porton Down Laboratory.MHRA registered",
-      test_description:
-        "Rapid immunichromatiographic assay for the detection of the SARS-COV-2 nucleocapsid protein antigennasopharyngeal swab",
-      address: "Hughes Healthcare-Acon Flowflex",
-      test_performance: "Sensitivity: 97.1% Specificity: 99.5% Accuracy: 98.8%",
-      result: result,
-      test_image: s3ImgUrl,
-      reportURL: "",
-    });
-    console.log("Custom test all data", dataForm);
-    setFinalReportData(JSON.parse(dataForm));
-
-    var config = {
-      method: "post",
-      url: BASE_URL + "reports/add-custom-report",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: dataForm,
-    };
-
-    axios(config)
-      .then(function (response) {
-        console.log("response.data", JSON.stringify(response.data));
-        setStatus(true);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-
   const submitForm = (formData) => {
-    if (files[0] && files[0].length > 0) {
+    console.log("upload file dropzone", files[0]);
+    if (files[0]) {
       imageConvertedToBase64();
+
       ReactS3.uploadFile(files[0], configS3Bucket)
         .then((data) => {
           console.log("s3 data", data);
           console.log("s3 data location", data.location);
           setS3ImgUrl(data.location);
-          dataOfForm(formData);
+
+          var dataForm = JSON.stringify({
+            first_name: formData.FirstName,
+            last_name: formData.LastName,
+            email: formData.Email,
+            dob: dob,
+            passport: formData.PassportNumber,
+            sample_date: sampleDate,
+            sample_time: sampleTime,
+            result_date: resultDate,
+            result_time: resultTime,
+            order_id: formData.OrderID,
+            test_name: "Coronavirus Ag Rapid Test Cassette (Swab)",
+            test_manufacturer: "Xana",
+            test_authorization:
+              "CE Marked IVD in accordance with directive 98/79/EC. Passed assessment and validation by Public Health England & Porton Down Laboratory.MHRA registered",
+            test_description:
+              "Rapid immunichromatiographic assay for the detection of the SARS-COV-2 nucleocapsid protein antigennasopharyngeal swab",
+            address: "Hughes Healthcare-Acon Flowflex",
+            test_performance:
+              "Sensitivity: 97.1% Specificity: 99.5% Accuracy: 98.8%",
+            result: result,
+            test_image: data.location,
+            reportURL: "",
+          });
+          console.log("Custom test all data", dataForm);
+          setFinalReportData(JSON.parse(dataForm));
+
+          var config = {
+            method: "post",
+            url: BASE_URL + "reports/add-custom-report",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            data: dataForm,
+          };
+
+          axios(config)
+            .then(function (response) {
+              console.log("response.data", JSON.stringify(response.data));
+              setStatus(true);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
         })
         .catch((err) => console.log("s3 err", err));
     } else {
-      dataOfForm(formData);
     }
   };
 
