@@ -42,13 +42,9 @@ const CustomReport = () => {
   const handleClose = () => setOpen(false);
 
   const onChangeHandleResult = (passedValue, passedId) => {
-    console.log(selectedOption);
     const changeSelectedValueOnUI = [...selectedOption];
     changeSelectedValueOnUI[passedId] = passedValue.target.value;
     setSelectedOption(changeSelectedValueOnUI);
-
-    console.log(selectedOption);
-
     var data = JSON.stringify({
       result: passedValue.target.value,
       id: passedId,
@@ -191,24 +187,8 @@ const CustomReport = () => {
         filter: true,
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
-          // setDropDownId(tableMeta.rowData[0]);
-          // setDropDownValue(value);
           return (
             <React.Fragment>
-              {/* <select
-                style={{ width: "100px" }}
-                className="form-control border-2 rounded-md text-xs px-2 py-2 text-center "
-                onChange={(event) =>
-                  onChangeHandleResult(event, tableMeta.rowData[0])
-                }
-                // onChange={onChangeHandleResult(tableMeta.rowData[0], value)}
-                value={selectedOption[tableMeta.rowData[0]]}
-              >
-                <option value="Positive">Positive</option>
-                <option value="No Result">No Result</option>
-                <option value="Negative">Negative</option>
-                <option value="Invalid">Invalid</option>
-              </select> */}
               <Select
                 style={{ width: '110px', height: '30px', fontSize: '14px' }}
                 className="form-control"
@@ -284,17 +264,12 @@ const CustomReport = () => {
   const transformData = (testData) => {
     var selectedValue = [];
     testData.map((data, index) => {
-      console.log(data.id);
       selectedValue[data.id] = data.result ? data.result : 'No Result';
     });
     setSelectedOption(selectedValue);
   };
 
   useEffect(() => {
-    // console.log(
-    //   "token get from local storage ",
-    //   localStorage.getItem("access_token")
-    // );
     if (localStorage.getItem('access_token') != null) {
       var data = '';
       var config = {
@@ -315,7 +290,6 @@ const CustomReport = () => {
         });
     } else {
       setToken(false);
-      // console.log("redirected to login page from test page");
     }
   }, []);
 
@@ -326,7 +300,7 @@ const CustomReport = () => {
           <div class="mb-3 mr-2 flex flex-wrap justify-end items-center">
             <Button onClick={handleOpen} size="small" color="inherit">
               <img alt="" src={require('../../assets/img/plus.svg').default} />
-              <p className="font-bold ml-2">Add new test</p>
+              <p className="font-bold ml-2">Generate Report</p>
             </Button>
             <Modal open={open}>
               <div style={modalStyle}>

@@ -1,16 +1,14 @@
 import React from 'react';
-
 import { ThemeProvider } from '@mui/styles';
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 import MUIDataTable from 'mui-datatables';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { BASE_URL, IMAGE_DETECTION_BASE_URL } from '../../environment';
-import TestForm from 'components/Form/TestForm';
 import axios from 'axios';
-
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
@@ -59,9 +57,29 @@ const Test = () => {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
+        if (response.status == 200) {
+          toast.success('Result Updated Successfully', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
       })
       .catch(function (error) {
         console.log(error);
+        toast.error(error, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       });
 
     // setSelectedResult(passedValue);
@@ -102,7 +120,7 @@ const Test = () => {
     },
     {
       name: 'test_name',
-      label: 'Test Name',
+      label: ' Name',
       options: {
         filter: true,
         sort: false,
@@ -110,7 +128,7 @@ const Test = () => {
     },
     {
       name: 'test_manufacturer',
-      label: 'Test Manufacturer',
+      label: ' Manufacturer',
       options: {
         filter: true,
         sort: false,
@@ -118,7 +136,7 @@ const Test = () => {
     },
     {
       name: 'test_description',
-      label: 'Test Description',
+      label: ' Description',
       options: {
         filter: true,
         sort: false,
@@ -126,7 +144,7 @@ const Test = () => {
     },
     {
       name: 'test_performance',
-      label: 'Test Performance',
+      label: ' Performance',
       options: {
         filter: true,
         sort: false,
@@ -134,7 +152,7 @@ const Test = () => {
     },
     {
       name: 'test_authorisation',
-      label: 'Test Authorisation',
+      label: 'Authorisation',
       options: {
         filter: true,
         sort: false,
@@ -142,7 +160,7 @@ const Test = () => {
     },
     {
       name: 'date_register',
-      label: 'Test Registeration Date',
+      label: 'Registeration Date',
       options: {
         filter: true,
         sort: false,
@@ -150,7 +168,7 @@ const Test = () => {
     },
     {
       name: 'date_conduct',
-      label: 'Test Conduct Date',
+      label: 'Conduct Date',
       options: {
         filter: true,
         sort: false,
@@ -163,24 +181,8 @@ const Test = () => {
         filter: true,
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
-          // setDropDownId(tableMeta.rowData[0]);
-          // setDropDownValue(value);
           return (
             <React.Fragment>
-              {/* <select
-                style={{ width: "100px" }}
-                className="form-control border-2 rounded-md text-xs px-2 py-2 text-center "
-                onChange={(event) =>
-                  onChangeHandleResult(event, tableMeta.rowData[0])
-                }
-                // onChange={onChangeHandleResult(tableMeta.rowData[0], value)}
-                value={selectedOption[tableMeta.rowData[0]]}
-              >
-                <option value="Positive">Positive</option>
-                <option value="No Result">No Result</option>
-                <option value="Negative">Negative</option>
-                <option value="Invalid">Invalid</option>
-              </select> */}
               <FormControl>
                 <Select
                   style={{ width: '110px', height: '30px', fontSize: '14px' }}
@@ -188,7 +190,6 @@ const Test = () => {
                   onChange={(event) =>
                     onChangeHandleResult(event, tableMeta.rowData[0])
                   }
-                  // onChange={onChangeHandleResult(tableMeta.rowData[0], value)}
                   value={selectedOption[tableMeta.rowData[0]]}
                 >
                   <MenuItem value="Positive">Positive</MenuItem>
@@ -212,7 +213,7 @@ const Test = () => {
     },
     {
       name: 'test_image',
-      label: 'Test Image',
+      label: ' Image',
       options: {
         filter: true,
         sort: false,
@@ -254,7 +255,6 @@ const Test = () => {
   const transformData = (testData) => {
     var selectedValue = [];
     testData.map((data, index) => {
-      console.log(data.id);
       selectedValue[data.id] = data.result ? data.result : 'No Result';
     });
     setSelectedOption(selectedValue);
@@ -321,6 +321,17 @@ const Test = () => {
     <>
       {token ? (
         <React.Fragment>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
           <div className="flex flex-wrap w-full h-auto p-1">
             <div className="xl:w-52 lg:w-3/12 md:w-6/12 sm:w-full h-44 p-3 mr-4 mb-3 rounded-xl bg-blue-900">
               <div className="text-base text-white">Total Tests</div>

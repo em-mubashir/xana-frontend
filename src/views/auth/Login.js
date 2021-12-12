@@ -1,25 +1,25 @@
-import React, { useState, useEffect } from "react";
-import { Link, Redirect, useHistory } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
-import axios from "axios";
-import { getLoginAsync } from "../../redux/admin/admin.thunk";
-import { useDispatch } from "react-redux";
+import React, { useState, useEffect } from 'react';
+import { Link, Redirect, useHistory } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import axios from 'axios';
+import { getLoginAsync } from '../../redux/admin/admin.thunk';
+import { useDispatch } from 'react-redux';
 
-import { BASE_URL } from "../../environment";
+import { BASE_URL } from '../../environment';
 
 // for yup
 const scheme = yup
   .object()
   .shape({
-    Email: yup.string().email().required("Please enter the email."),
+    Email: yup.string().email().required('Please enter the email.'),
     Password: yup
       .string()
-      .required("Please enter the password.")
+      .required('Please enter the password.')
       .matches(
         /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
-        "Password must contain 8 Letters and atleast 1 Uppercase, 1 Lowercase, 1 Number and 1 Special Character."
+        'Password must contain 8 Letters and atleast 1 Uppercase, 1 Lowercase, 1 Number and 1 Special Character.'
       ),
   })
   .required();
@@ -28,10 +28,10 @@ export default function Login() {
   let history = useHistory();
   const dispatch = useDispatch();
 
-  const [invalidLogin, setInvalidLogin] = useState("");
+  const [invalidLogin, setInvalidLogin] = useState('');
 
-  if (localStorage.getItem("access_token") != null) {
-    history.push("/admin/test");
+  if (localStorage.getItem('access_token') != null) {
+    history.push('/admin/test');
   }
 
   // for yup and react-hook-form
@@ -47,45 +47,45 @@ export default function Login() {
   // sendind form fields data to api
   const submitForm = (formData) => {
     const getFormData = JSON.stringify({
-      email: watch("Email"),
-      password: watch("Password"),
+      email: watch('Email'),
+      password: watch('Password'),
     });
     const config = {
-      method: "post",
-      url: BASE_URL + "admin/login",
+      method: 'post',
+      url: BASE_URL + 'admin/login',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       data: getFormData,
     };
 
     axios(config)
       .then(function (response) {
-        console.log("response data", response.data);
+        console.log('response data', response.data);
         if (response.data.success) {
-          console.log("response success", response.data.success);
+          console.log('response success', response.data.success);
 
           if (response?.data?.data.length > 0) {
             localStorage.setItem(
-              "First_Name",
+              'First_Name',
               response.data.data[0].first_name
             );
 
             dispatch(getLoginAsync(response.data));
             localStorage.setItem(
-              "access_token",
+              'access_token',
               response.data.payload.accessToken
             );
             localStorage.setItem(
-              "refresh_token",
+              'refresh_token',
               response.data.payload.refreshToken
             );
             console.log(
-              "token set on local storage from login page",
-              localStorage.getItem("access_token")
+              'token set on local storage from login page',
+              localStorage.getItem('access_token')
             );
 
-            history.push("/admin/test");
+            history.push('/admin/test');
           }
         } else {
           setInvalidLogin(response.data.message);
@@ -107,7 +107,7 @@ export default function Login() {
                 <img
                   alt="..."
                   className="mr-1 w-auto h-auto"
-                  src={require("assets/img/xana-login.svg").default}
+                  src={require('assets/img/xana-login.svg').default}
                 />
               </div>
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
@@ -120,8 +120,8 @@ export default function Login() {
                       type="email"
                       // name="Email"
                       className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
-                      placeholder="User name/Email"
-                      {...register("Email")}
+                      placeholder="Email"
+                      {...register('Email')}
                     />
                     <small className="text-red-600">
                       {errors.Email?.message}
@@ -133,7 +133,7 @@ export default function Login() {
                       // name="Password"
                       className="px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 border-black border-2"
                       placeholder="Password"
-                      {...register("Password")}
+                      {...register('Password')}
                     />
                     <small className="text-red-600">
                       {errors.Password?.message}
@@ -150,8 +150,8 @@ export default function Login() {
                   <div
                     className={
                       invalidLogin.length > 0
-                        ? " text-center text-red-600 border-2 border-red-600 my-8 py-2"
-                        : "invisible"
+                        ? ' text-center text-red-600 border-2 border-red-600 my-8 py-2'
+                        : 'invisible'
                     }
                   >
                     {invalidLogin}
