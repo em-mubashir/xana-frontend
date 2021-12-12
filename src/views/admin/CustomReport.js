@@ -1,21 +1,18 @@
 import React from 'react';
-
 import { ThemeProvider } from '@mui/styles';
 import { createTheme, responsiveFontSizes } from '@mui/material/styles';
 import MUIDataTable from 'mui-datatables';
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { BASE_URL, IMAGE_DETECTION_BASE_URL } from '../../environment';
 import axios from 'axios';
-
 import TestForm from 'components/Form/TestForm';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
@@ -32,7 +29,7 @@ const CustomReport = () => {
     boxShadow: 24,
     backgroundColor: 'white',
     borderRadius: '15px',
-    'overflow-y': 'scroll',
+    overflowY: 'scroll',
   };
 
   const [open, setOpen] = React.useState(false);
@@ -62,9 +59,29 @@ const CustomReport = () => {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
+        if (response.status == 200) {
+          toast.success('Result Updated Successfully', {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
       })
       .catch(function (error) {
         console.log(error);
+        toast.error(error, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       });
 
     // setSelectedResult(passedValue);
@@ -84,7 +101,7 @@ const CustomReport = () => {
 
     axios(configChangePdf)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        // console.log(JSON.stringify(response.data));
       })
       .catch(function (error) {
         console.log(error);
@@ -297,6 +314,17 @@ const CustomReport = () => {
     <>
       {token ? (
         <React.Fragment>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
           <div class="mb-3 mr-2 flex flex-wrap justify-end items-center">
             <Button onClick={handleOpen} size="small" color="inherit">
               <img alt="" src={require('../../assets/img/plus.svg').default} />

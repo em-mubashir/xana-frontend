@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Button from '@mui/material/Button';
-import Modal from '@mui/material/Modal';
 import TimePicker from 'react-time-picker';
 import DatePicker from 'react-date-picker';
 import { useDropzone } from 'react-dropzone';
@@ -8,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import axios from 'axios';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { BASE_URL } from '../../environment';
 import Report from '../../components/Report/Report';
 import UploadIcon from '@mui/icons-material/Upload';
@@ -34,7 +33,7 @@ const configS3Bucket = {
   secretAccessKey: 'styf9xVjmYB5GweABL+zkLiEy8xBMTYzac3tchPz',
 };
 
-const TestForm = () => {
+const TestForm = (props) => {
   let history = useHistory();
 
   const [result, setResult] = useState('Negative');
@@ -495,7 +494,6 @@ const TestForm = () => {
                   placeholder="www.xanameditest.com"
                   // {...register("Email")}
                 />
-                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
             </div>
 
@@ -511,7 +509,6 @@ const TestForm = () => {
                   placeholder="Xana Medtec Ltd (UKAS stage 1 application number: 23591)"
                   // {...register("Email")}
                 />
-                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
               <div className="w-6/12 m-2">
                 <label>Address</label>
@@ -523,7 +520,6 @@ const TestForm = () => {
                   placeholder="Universal Square Business Centre, Suite 1.16, Devonshire Street North, Manchester, M12 6JH"
                   // {...register("Email")}
                 />
-                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
             </div>
 
@@ -538,7 +534,6 @@ const TestForm = () => {
                   placeholder="0161 974 6518"
                   // {...register("Email")}
                 />
-                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
               <div className="w-6/12 m-2">
                 <label>Email</label>
@@ -550,14 +545,8 @@ const TestForm = () => {
                   placeholder="info@xanameditest.com"
                   // {...register("Email")}
                 />
-                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
             </div>
-
-            {/* <div className="flex justify-between w-full">
-             
-              <div className="w-6/12 m-2"></div>
-            </div> */}
 
             <div className="w-full m-2">
               <label>Test Name</label>
@@ -569,7 +558,6 @@ const TestForm = () => {
                 placeholder="Coronavirus Ag Rapid Test Cassette (Swab)"
                 // {...register("Email")}
               />
-              {/* <small className="text-red-600">{errors.Email?.message}</small> */}
             </div>
 
             <div className="w-full m-2">
@@ -582,7 +570,6 @@ const TestForm = () => {
                 placeholder="Rapid immunichromatiographic assay for the detection of the SARS-COV-2 nucleocapsid protein antigennasopharyngeal swab"
                 // {...register("Email")}
               />
-              {/* <small className="text-red-600">{errors.Email?.message}</small> */}
             </div>
 
             <div className="flex justify-between w-full">
@@ -596,7 +583,6 @@ const TestForm = () => {
                   placeholder="Sensitivity: 97.1% Specificity: 99.5% Accuracy: 98.8%"
                   // {...register("Email")}
                 />
-                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
               <div className="w-96 m-2">
                 <label>Test Authorization</label>
@@ -608,7 +594,6 @@ const TestForm = () => {
                   placeholder="CE Marked IVD in accordance with directive 98/79/EC. Passed assessment and validation by Public Health England & Porton Down Laboratory.MHRA registered."
                   // {...register("Email")}
                 />
-                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
             </div>
 
@@ -631,12 +616,6 @@ const TestForm = () => {
               >
                 Confirm
               </Button>
-
-              {/* <Modal open={open}>
-                <div style={modalStyle}>
-                  <TestConfirmForm propsHandleClose={handleClose} />
-                </div>
-              </Modal> */}
             </div>
           </div>
         </form>
