@@ -6,43 +6,8 @@ import QRCode from "qrcode.react";
 import "./report.css";
 import { BASE_URL } from "../../environment";
 
-// import imageToBase64 from "image-to-base64";
-
-// AWS S3 Bucket
-// const S3_BUCKET = "xana-bucket";
-// const REGION = "us-east-1";
-
-// AWS.config.update({
-//   accessKeyId: "AKIATMEPT72Q4DEPCW5U",
-//   secretAccessKey: "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",
-// });
-
-// const myBucket = new AWS.S3({
-//   params: { Bucket: S3_BUCKET },
-//   region: REGION,
-// });
-
-// const uploadFile = (file) => {
-//   const params = {
-//     ACL: "public-read",
-//     Body: file,
-//     Bucket: S3_BUCKET,
-//     Key: file.name,
-//   };
-
-//   myBucket
-//     .putObject(params)
-//     .on("httpUploadProgress", (evt) => {
-//       setProgress(Math.round((evt.loaded / evt.total) * 100));
-//     })
-//     .send((err) => {
-//     });
-// };
-//
-
 const Report = (props) => {
-  const { data, setData } = useState();
-  const { emailStaus, setEmailStatus } = useState();
+  const [emailStatus, setEmailStatus] = useState();
   const [file, setFile] = useState();
 
   useEffect(() => {
@@ -51,9 +16,9 @@ const Report = (props) => {
     // setData(get_report);
   }, []);
 
-  let emailMessage = (content) => {
+  var emailMessage = (content) => {
     console.log(content);
-    // setData(content);
+    setEmailStatus(content);
   };
 
   const generatePDF = async () => {
@@ -288,7 +253,8 @@ const Report = (props) => {
           Get Report via Email
         </button>
       </div>
-      <p style={{ textAlign: "center" }}>{emailStaus}</p>
+      <br />
+      <p style={{ textAlign: "center", fontWeight: "600" }}>{emailStatus}</p>
       <br />
       <br />
     </div>

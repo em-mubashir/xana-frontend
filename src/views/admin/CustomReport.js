@@ -85,9 +85,11 @@ const CustomReport = () => {
       });
 
     // setSelectedResult(passedValue);
+    console.log("passed id", passedId);
 
     var dataChangePdf = JSON.stringify({
-      id: passedId,
+      test_id: passedId,
+      test_type: 1,
     });
 
     var configChangePdf = {
