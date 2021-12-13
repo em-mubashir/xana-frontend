@@ -74,7 +74,7 @@ const CustomReport = () => {
     // setSelectedResult(passedValue);
 
     var dataChangePdf = JSON.stringify({
-      custom_report_id: passedId,
+      id: passedId,
     });
 
     var configChangePdf = {
