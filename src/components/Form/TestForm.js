@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
 import Button from "@mui/material/Button";
-import Modal from "@mui/material/Modal";
 import TimePicker from "react-time-picker";
 import DatePicker from "react-date-picker";
 import { useDropzone } from "react-dropzone";
@@ -8,14 +7,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
-import { Link, Redirect, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { BASE_URL } from "../../environment";
 import Report from "../../components/Report/Report";
 import UploadIcon from "@mui/icons-material/Upload";
-import TestConfirmForm from "./TestConfirmForm";
-
 import ReactS3 from "react-s3";
-import { ArrowBackIosTwoTone } from "@material-ui/icons";
 
 const scheme = yup
   .object()
@@ -37,7 +33,7 @@ const configS3Bucket = {
   secretAccessKey: "styf9xVjmYB5GweABL+zkLiEy8xBMTYzac3tchPz",
 };
 
-const TestForm = () => {
+const TestForm = (props) => {
   let history = useHistory();
 
   const [result, setResult] = useState("Negative");
@@ -78,7 +74,6 @@ const TestForm = () => {
   const [resultDate, setResultDate] = useState(new Date());
   const [resultTime, setResultTime] = useState(new Date());
   const [status, setStatus] = useState(false);
-  console.log("status of pdf and form", status);
   const [finalReportData, setFinalReportData] = useState();
   const [s3ImgUrl, setS3ImgUrl] = useState();
   const [base64Img, setBase64Img] = useState();
@@ -166,10 +161,7 @@ const TestForm = () => {
 
       ReactS3.uploadFile(files[0], configS3Bucket)
         .then((data) => {
-          console.log("s3 data", data);
-          console.log("s3 data location", data.location);
           setS3ImgUrl(data.location);
-
           var dataForm = JSON.stringify({
             first_name: formData.FirstName,
             last_name: formData.LastName,
@@ -194,7 +186,6 @@ const TestForm = () => {
             test_image: data.location,
             reportURL: "",
           });
-          console.log("Custom test all data", dataForm);
           setFinalReportData(JSON.parse(dataForm));
 
           var config = {
@@ -217,6 +208,50 @@ const TestForm = () => {
         })
         .catch((err) => console.log("s3 err", err));
     } else {
+      setS3ImgUrl(null);
+      var dataForm = JSON.stringify({
+        first_name: formData.FirstName,
+        last_name: formData.LastName,
+        email: formData.Email,
+        dob: dob,
+        passport: formData.PassportNumber,
+        sample_date: sampleDate,
+        sample_time: sampleTime,
+        result_date: resultDate,
+        result_time: resultTime,
+        order_id: formData.OrderID,
+        test_name: "Coronavirus Ag Rapid Test Cassette (Swab)",
+        test_manufacturer: "Xana",
+        test_authorization:
+          "CE Marked IVD in accordance with directive 98/79/EC. Passed assessment and validation by Public Health England & Porton Down Laboratory.MHRA registered",
+        test_description:
+          "Rapid immunichromatiographic assay for the detection of the SARS-COV-2 nucleocapsid protein antigennasopharyngeal swab",
+        address: "Hughes Healthcare-Acon Flowflex",
+        test_performance:
+          "Sensitivity: 97.1% Specificity: 99.5% Accuracy: 98.8%",
+        result: result,
+        test_image: s3ImgUrl,
+        reportURL: "",
+      });
+      setFinalReportData(JSON.parse(dataForm));
+
+      var config = {
+        method: "post",
+        url: BASE_URL + "reports/add-custom-report",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: dataForm,
+      };
+
+      axios(config)
+        .then(function (response) {
+          console.log("response.data", JSON.stringify(response.data));
+          setStatus(true);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   };
 
@@ -352,7 +387,19 @@ const TestForm = () => {
 
                 {/* <small className="text-red-600">{errors.DateOfBirth?.message}</small> */}
               </div>
-              <div className="w-6/12 m-2"></div>
+              <div className="w-6/12 m-2">
+                <label>Order ID </label>
+                <input
+                  type="number"
+                  name="OrderID"
+                  className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                  placeholder="Order ID"
+                  {...register("OrderID")}
+                />
+                <small className="text-red-600">
+                  {errors.OrderID?.message}
+                </small>
+              </div>
             </div>
 
             <div className="flex justify-between w-full">
@@ -420,19 +467,6 @@ const TestForm = () => {
 
             <div className="flex justify-between w-full">
               <div className="w-6/12 m-2">
-                <label>Order ID </label>
-                <input
-                  type="number"
-                  name="OrderID"
-                  className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
-                  placeholder="Order ID"
-                  {...register("OrderID")}
-                />
-                <small className="text-red-600">
-                  {errors.OrderID?.message}
-                </small>
-              </div>
-              <div className="w-6/12 m-2">
                 <label>Result</label>
                 <select
                   {...register("Selector")}
@@ -451,6 +485,17 @@ const TestForm = () => {
                   {errors.Selector?.message}
                 </small>
               </div>
+              <div className="w-6/12 m-2">
+                <label>Website</label>
+                <textarea
+                  style={{ resize: "none" }}
+                  disabled
+                  name="textarea1"
+                  className="mb-3 px-4 py-4 h-14 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
+                  placeholder="www.xanameditest.com"
+                  // {...register("Email")}
+                />
+              </div>
             </div>
 
             {/* disabled textarea */}
@@ -465,7 +510,6 @@ const TestForm = () => {
                   placeholder="Xana Medtec Ltd (UKAS stage 1 application number: 23591)"
                   // {...register("Email")}
                 />
-                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
               <div className="w-6/12 m-2">
                 <label>Address</label>
@@ -477,7 +521,6 @@ const TestForm = () => {
                   placeholder="Universal Square Business Centre, Suite 1.16, Devonshire Street North, Manchester, M12 6JH"
                   // {...register("Email")}
                 />
-                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
             </div>
 
@@ -492,7 +535,6 @@ const TestForm = () => {
                   placeholder="0161 974 6518"
                   // {...register("Email")}
                 />
-                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
               <div className="w-6/12 m-2">
                 <label>Email</label>
@@ -504,24 +546,7 @@ const TestForm = () => {
                   placeholder="info@xanameditest.com"
                   // {...register("Email")}
                 />
-                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
-            </div>
-
-            <div className="flex justify-between w-full">
-              <div className="w-6/12 m-2">
-                <label>Website</label>
-                <textarea
-                  style={{ resize: "none" }}
-                  disabled
-                  name="textarea1"
-                  className="mb-3 px-4 py-4 h-14 bg-blue-100 rounded-2xl text-sm shadow w-full border-0"
-                  placeholder="www.xanameditest.com"
-                  // {...register("Email")}
-                />
-                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
-              </div>
-              <div className="w-6/12 m-2"></div>
             </div>
 
             <div className="w-full m-2">
@@ -534,7 +559,6 @@ const TestForm = () => {
                 placeholder="Coronavirus Ag Rapid Test Cassette (Swab)"
                 // {...register("Email")}
               />
-              {/* <small className="text-red-600">{errors.Email?.message}</small> */}
             </div>
 
             <div className="w-full m-2">
@@ -547,7 +571,6 @@ const TestForm = () => {
                 placeholder="Rapid immunichromatiographic assay for the detection of the SARS-COV-2 nucleocapsid protein antigennasopharyngeal swab"
                 // {...register("Email")}
               />
-              {/* <small className="text-red-600">{errors.Email?.message}</small> */}
             </div>
 
             <div className="flex justify-between w-full">
@@ -561,7 +584,6 @@ const TestForm = () => {
                   placeholder="Sensitivity: 97.1% Specificity: 99.5% Accuracy: 98.8%"
                   // {...register("Email")}
                 />
-                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
               <div className="w-96 m-2">
                 <label>Test Authorization</label>
@@ -573,7 +595,6 @@ const TestForm = () => {
                   placeholder="CE Marked IVD in accordance with directive 98/79/EC. Passed assessment and validation by Public Health England & Porton Down Laboratory.MHRA registered."
                   // {...register("Email")}
                 />
-                {/* <small className="text-red-600">{errors.Email?.message}</small> */}
               </div>
             </div>
 
@@ -596,12 +617,6 @@ const TestForm = () => {
               >
                 Confirm
               </Button>
-
-              {/* <Modal open={open}>
-                <div style={modalStyle}>
-                  <TestConfirmForm propsHandleClose={handleClose} />
-                </div>
-              </Modal> */}
             </div>
           </div>
         </form>

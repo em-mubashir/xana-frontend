@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export default function FooterAdmin() {
   return (
@@ -8,7 +8,7 @@ export default function FooterAdmin() {
           <hr className="mb-4 border-b-1 border-blueGray-200" />
           <div className="flex flex-wrap items-center md:justify-between justify-center">
             <div className="w-full px-4">
-              <div className="text-sm text-blueGray-500 font-semibold py-1 text-center md:text-left">
+              <div className="text-sm text-blueGray-500 font-semibold py-1 text-center ">
                 Copyright © {new Date().getFullYear()} All Rights Reserved.
                 Powered By Codistan
               </div>

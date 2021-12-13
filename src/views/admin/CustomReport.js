@@ -1,21 +1,18 @@
 import React from "react";
-
 import { ThemeProvider } from "@mui/styles";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 import MUIDataTable from "mui-datatables";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { BASE_URL, IMAGE_DETECTION_BASE_URL } from "../../environment";
 import axios from "axios";
-
 import TestForm from "components/Form/TestForm";
 import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
@@ -32,7 +29,7 @@ const CustomReport = () => {
     boxShadow: 24,
     backgroundColor: "white",
     borderRadius: "15px",
-    "overflow-y": "scroll",
+    overflowY: "scroll",
   };
 
   const [open, setOpen] = React.useState(false);
@@ -42,13 +39,9 @@ const CustomReport = () => {
   const handleClose = () => setOpen(false);
 
   const onChangeHandleResult = (passedValue, passedId) => {
-    console.log(selectedOption);
     const changeSelectedValueOnUI = [...selectedOption];
     changeSelectedValueOnUI[passedId] = passedValue.target.value;
     setSelectedOption(changeSelectedValueOnUI);
-
-    console.log(selectedOption);
-
     var data = JSON.stringify({
       result: passedValue.target.value,
       id: passedId,
@@ -66,9 +59,29 @@ const CustomReport = () => {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
+        if (response.status == 200) {
+          toast.success("Result Updated Successfully", {
+            position: "top-right",
+            autoClose: 5000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+          });
+        }
       })
       .catch(function (error) {
         console.log(error);
+        toast.error(error, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+        });
       });
 
     // setSelectedResult(passedValue);
@@ -88,7 +101,7 @@ const CustomReport = () => {
 
     axios(configChangePdf)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        // console.log(JSON.stringify(response.data));
       })
       .catch(function (error) {
         console.log(error);
@@ -191,24 +204,8 @@ const CustomReport = () => {
         filter: true,
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
-          // setDropDownId(tableMeta.rowData[0]);
-          // setDropDownValue(value);
           return (
             <React.Fragment>
-              {/* <select
-                style={{ width: "100px" }}
-                className="form-control border-2 rounded-md text-xs px-2 py-2 text-center "
-                onChange={(event) =>
-                  onChangeHandleResult(event, tableMeta.rowData[0])
-                }
-                // onChange={onChangeHandleResult(tableMeta.rowData[0], value)}
-                value={selectedOption[tableMeta.rowData[0]]}
-              >
-                <option value="Positive">Positive</option>
-                <option value="No Result">No Result</option>
-                <option value="Negative">Negative</option>
-                <option value="Invalid">Invalid</option>
-              </select> */}
               <Select
                 style={{ width: "110px", height: "30px", fontSize: "14px" }}
                 className="form-control"
@@ -284,17 +281,12 @@ const CustomReport = () => {
   const transformData = (testData) => {
     var selectedValue = [];
     testData.map((data, index) => {
-      console.log(data.id);
       selectedValue[data.id] = data.result ? data.result : "No Result";
     });
     setSelectedOption(selectedValue);
   };
 
   useEffect(() => {
-    // console.log(
-    //   "token get from local storage ",
-    //   localStorage.getItem("access_token")
-    // );
     if (localStorage.getItem("access_token") != null) {
       var data = "";
       var config = {
@@ -315,7 +307,6 @@ const CustomReport = () => {
         });
     } else {
       setToken(false);
-      // console.log("redirected to login page from test page");
     }
   }, []);
 
@@ -323,10 +314,21 @@ const CustomReport = () => {
     <>
       {token ? (
         <React.Fragment>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
           <div class="mb-3 mr-2 flex flex-wrap justify-end items-center">
             <Button onClick={handleOpen} size="small" color="inherit">
               <img alt="" src={require("../../assets/img/plus.svg").default} />
-              <p className="font-bold ml-2">Add new test</p>
+              <p className="font-bold ml-2">Generate Report</p>
             </Button>
             <Modal open={open}>
               <div style={modalStyle}>

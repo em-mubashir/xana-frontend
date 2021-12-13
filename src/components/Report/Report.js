@@ -41,8 +41,8 @@ import { BASE_URL } from "../../environment";
 //
 
 const Report = (props) => {
-  const { data, setData } = useState({});
-  const { success, setSuccess } = useState();
+  const { data, setData } = useState();
+  const { emailStaus, setEmailStatus } = useState();
   const [file, setFile] = useState();
 
   useEffect(() => {
@@ -50,6 +50,11 @@ const Report = (props) => {
     // get_report = JSON.parse(get_report);
     // setData(get_report);
   }, []);
+
+  let emailMessage = (content) => {
+    console.log(content);
+    // setData(content);
+  };
 
   const generatePDF = async () => {
     const element = document.getElementById("report");
@@ -92,18 +97,20 @@ const Report = (props) => {
           };
           axios(config)
             .then(function (response) {
-              setSuccess(true);
+              console.log(response.status);
+              if (response.status == 200) {
+                emailMessage("Email Sent Successfully");
+              }
             })
-            .catch(function (error) {});
+            .catch(function (error) {
+              console.log(error);
+              emailMessage("Couldn't sent email. Please try later");
+            });
         });
     } catch (err) {
       console.log(err.message);
     }
   };
-
-  console.log("in report.js image url", props.data.test_image);
-  console.log("in report.js image base64", props.base64Props);
-
   return (
     <div>
       <div id="report">
@@ -126,23 +133,26 @@ const Report = (props) => {
             src={
               props.base64Props
                 ? props.base64Props
-                : "../../assets/img/pdf-profile-avatar.jpg"
+                : require("assets/img/avatar.png").default
             }
             alt="User-Profile"
           />
           <div className="user-info">
             <p>
-              <span className="bold">First name:</span> {props.data.first_name}
+              <span className="bold">First name:</span>&nbsp;
+              {props.data.first_name}
             </p>
             <p>
-              <span className="bold">Last name:</span> {props.data.last_name}
+              <span className="bold">Last name:</span>&nbsp;
+              {props.data.last_name}
             </p>
             <p>
-              <span className="bold">Date of Birth:</span>
+              <span className="bold">Date of Birth:</span> &nbsp;
               {props.data.dob.split("T")[0]}
             </p>
             <p>
-              <span className="bold">Passport No:</span> {props.data.passport}
+              <span className="bold">Passport No:</span> &nbsp;
+              {props.data.passport}
             </p>
           </div>
         </div>
@@ -203,11 +213,11 @@ const Report = (props) => {
 
           <div className="results">
             <p>
-              <span className="bold">Sample Date:</span>
+              <span className="bold">Sample Date:</span>&nbsp;
               {props.data.sample_date.split("T")[0]}
             </p>
             <p>
-              <span className="bold">Sample Time:</span>
+              <span className="bold">Sample Time:</span>&nbsp;
               {props.data.sample_time.split("T")[1].split(".")[0]}
             </p>
             <p>
@@ -278,9 +288,7 @@ const Report = (props) => {
           Get Report via Email
         </button>
       </div>
-      {success && (
-        <p style={{ textAlign: "center" }}>Email sent successfully</p>
-      )}
+      <p style={{ textAlign: "center" }}>{emailStaus}</p>
       <br />
       <br />
     </div>

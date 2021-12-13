@@ -45,8 +45,6 @@ const ForgetPassword = () => {
     axios(config)
       .then(function (response) {
         if (response.data.success) {
-          console.log(JSON.stringify(response.data));
-          console.log(response.data.success);
           if (response.data.success === true) {
             history.push("/auth/verifycode");
           }
@@ -57,7 +55,6 @@ const ForgetPassword = () => {
       .catch(function (error) {
         console.log(error);
       });
-    console.log(data);
   };
 
   return (
@@ -76,7 +73,7 @@ const ForgetPassword = () => {
 
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                 <div className="text-black text-center font-bold text-lg">
-                  <h1>Forgot password?</h1>
+                  <h1>Forgot Password?</h1>
                 </div>
                 <div className="text-blue-900 text-center mb-7 font-semibold text-xs">
                   <p>Enter your email to reset your password.</p>
