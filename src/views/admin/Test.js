@@ -291,8 +291,12 @@ const Test = () => {
 
           setIncompleteReport(
             response.data.data.reduce((count, val) => {
-              // console.log(val.test_image);
-              if (val.video === null || val.test_image === null) {
+              if (
+                val.video === "" ||
+                val.video === null ||
+                val.test_image === "" ||
+                val.test_image === null
+              ) {
                 count++;
               }
               return count;
