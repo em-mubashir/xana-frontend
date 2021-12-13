@@ -262,11 +262,6 @@ const Test = () => {
     setSelectedOption(selectedValue);
   };
   useEffect(() => {
-    // console.log(
-    //   "token get from local storage ",
-    //   localStorage.getItem("access_token")
-    // );
-
     if (localStorage.getItem('access_token') != null) {
       var data = '';
       var config = {
@@ -279,42 +274,48 @@ const Test = () => {
       };
       axios(config)
         .then(function (response) {
-          transformData(response.data.data);
-          setDataTable(response.data.data);
+          if (response.status !== 401) {
+            transformData(response.data.data);
+            setDataTable(response.data.data);
 
-          setTotalTests(
-            response.data.data.reduce((count, val) => {
-              count++;
-              return count;
-            }, 0)
-          );
-
-          setIncompleteReport(
-            response.data.data.reduce((count, val) => {
-              // console.log(val.test_image);
-              if (
-                val.video === null ||
-                val.video === '' ||
-                val.video === 'undefined' ||
-                val.test_image === null ||
-                val.test_image === '' ||
-                val.test_image === 'undefined'
-              ) {
+            setTotalTests(
+              response.data.data.reduce((count, val) => {
                 count++;
-              }
-              return count;
-            }, 0)
-          );
+                return count;
+              }, 0)
+            );
 
-          setPositiveNegative(
-            response.data.data.reduce((count, val) => {
-              // console.log(val.result);
-              if (val.result != null) {
-                count++;
-              }
-              return count;
-            }, 0)
-          );
+            setIncompleteReport(
+              response.data.data.reduce((count, val) => {
+                if (
+                  val.video === '' ||
+                  val.video === null ||
+                  val.video === 'undefined' ||
+                  val.test_image === '' ||
+                  val.test_image === null ||
+                  val.test_image === 'undefined'
+                ) {
+                  count++;
+                }
+                return count;
+              }, 0)
+            );
+
+            setPositiveNegative(
+              response.data.data.reduce((count, val) => {
+                // console.log(val.result);
+                if (val.result != null) {
+                  count++;
+                }
+                return count;
+              }, 0)
+            );
+          } else {
+            setToken(false);
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('First_Name');
+          }
         })
         .catch(function (error) {
           console.log(error);

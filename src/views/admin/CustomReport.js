@@ -301,8 +301,15 @@ const CustomReport = () => {
       };
       axios(config)
         .then(function (response) {
-          transformData(response.data.data);
-          setDataTable(response.data.data);
+          if (response.status !== 401) {
+            transformData(response.data.data);
+            setDataTable(response.data.data);
+          } else {
+            setToken(false);
+            localStorage.removeItem("access_token");
+            localStorage.removeItem("refresh_token");
+            localStorage.removeItem("First_Name");
+          }
         })
         .catch(function (error) {
           console.log(error);
