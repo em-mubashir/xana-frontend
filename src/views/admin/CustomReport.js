@@ -58,7 +58,6 @@ const CustomReport = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
         if (response.status == 200) {
           toast.success("Result Updated Successfully", {
             position: "top-right",
@@ -72,7 +71,6 @@ const CustomReport = () => {
         }
       })
       .catch(function (error) {
-        console.log(error);
         toast.error(error, {
           position: "top-right",
           autoClose: 5000,
@@ -83,9 +81,6 @@ const CustomReport = () => {
           progress: undefined,
         });
       });
-
-    // setSelectedResult(passedValue);
-    console.log("passed id", passedId);
 
     var dataChangePdf = JSON.stringify({
       test_id: passedId,
@@ -103,7 +98,7 @@ const CustomReport = () => {
 
     axios(configChangePdf)
       .then(function (response) {
-        // console.log(JSON.stringify(response.data));
+        console.log(JSON.stringify(response.data));
       })
       .catch(function (error) {
         console.log(error);
@@ -214,7 +209,6 @@ const CustomReport = () => {
                 onChange={(event) =>
                   onChangeHandleResult(event, tableMeta.rowData[0])
                 }
-                // onChange={onChangeHandleResult(tableMeta.rowData[0], value)}
                 value={selectedOption[tableMeta.rowData[0]]}
               >
                 <MenuItem value="Positive">Positive</MenuItem>

@@ -17,28 +17,13 @@ let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
 const Test = () => {
-  const adminData = useSelector((state) => state.adminData);
-  // console.log("test page redux data", adminData);
-
   const [selectedOption, setSelectedOption] = React.useState([]);
   const [option, setOption] = React.useState();
 
-  // const [dropDownValue, setDropDownValue] = React.useState();
-  // const [dropDownId, setDropDownId] = React.useState();
-
   const onChangeHandleResult = (passedValue, passedId) => {
-    console.log(selectedOption);
-
-    //TODO:
-    const valueID = selectedOption.filter((value) => value.id != null);
-    console.log(valueID);
-    //
-
     const changeSelectedValueOnUI = [...selectedOption];
     changeSelectedValueOnUI[passedId] = passedValue.target.value;
     setSelectedOption(changeSelectedValueOnUI);
-
-    console.log(selectedOption);
 
     var data = JSON.stringify({
       result: passedValue.target.value,
@@ -56,8 +41,7 @@ const Test = () => {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        if (response.status == 200) {
+        if (response.status === 200) {
           toast.success("Result Updated Successfully", {
             position: "top-right",
             autoClose: 5000,
@@ -70,7 +54,6 @@ const Test = () => {
         }
       })
       .catch(function (error) {
-        console.log(error);
         toast.error(error, {
           position: "top-right",
           autoClose: 5000,
@@ -81,9 +64,6 @@ const Test = () => {
           progress: undefined,
         });
       });
-
-    // setSelectedResult(passedValue);
-    console.log("passed id", passedId);
 
     var dataChangePdf = JSON.stringify({
       test_id: passedId,
@@ -108,9 +88,6 @@ const Test = () => {
       });
   };
 
-  // axios
-
-  // mui datatable
   const columns = [
     {
       name: "id",
@@ -302,7 +279,6 @@ const Test = () => {
 
           setPositiveNegative(
             response.data.data.reduce((count, val) => {
-              // console.log(val.result);
               if (val.result != null) {
                 count++;
               }
@@ -320,11 +296,8 @@ const Test = () => {
         });
     } else {
       setToken(false);
-      // console.log("redirected to login page from test page");
     }
   }, [totalTests, incompleteReports, positiveNegative]);
-
-  // console.log("test page mui data table", dataTable);
 
   return (
     <>

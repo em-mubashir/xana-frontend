@@ -61,10 +61,7 @@ export default function Login() {
 
     axios(config)
       .then(function (response) {
-        console.log("response data", response.data);
         if (response.data.success) {
-          console.log("response success", response.data.success);
-
           if (response?.data?.data.length > 0) {
             localStorage.setItem(
               "First_Name",
@@ -79,10 +76,6 @@ export default function Login() {
             localStorage.setItem(
               "refresh_token",
               response.data.payload.refreshToken
-            );
-            console.log(
-              "token set on local storage from login page",
-              localStorage.getItem("access_token")
             );
 
             history.push("/admin/test");

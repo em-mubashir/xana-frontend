@@ -137,7 +137,6 @@ const TestForm = (props) => {
   const imageConvertedToBase64 = async () => {
     const file = files[0];
     const base64 = await toBase64(file);
-    console.log("Converted into base64", base64);
     await setBase64Img(base64);
   };
 
@@ -157,13 +156,11 @@ const TestForm = (props) => {
   };
 
   const submitForm = (formData) => {
-    console.log("upload file dropzone", files[0]);
     if (files[0]) {
       imageConvertedToBase64();
 
       ReactS3.uploadFile(files[0], configS3Bucket)
         .then((data) => {
-          console.log(data.location);
           setS3ImgUrl(data.location);
           var dataForm = JSON.stringify({
             first_name: formData.FirstName,
@@ -202,7 +199,6 @@ const TestForm = (props) => {
 
           axios(config)
             .then(function (response) {
-              console.log("response.data", JSON.stringify(response.data));
               setStatus(true);
             })
             .catch(function (error) {
@@ -249,7 +245,6 @@ const TestForm = (props) => {
 
       axios(config)
         .then(function (response) {
-          console.log("response.data", JSON.stringify(response.data));
           setStatus(true);
         })
         .catch(function (error) {

@@ -17,7 +17,6 @@ const Report = (props) => {
   }, []);
 
   var emailMessage = (content) => {
-    console.log(content);
     setEmailStatus(content);
   };
 
@@ -62,7 +61,6 @@ const Report = (props) => {
           };
           axios(config)
             .then(function (response) {
-              console.log(response.status);
               if (response.status == 200) {
                 emailMessage("Email Sent Successfully");
               }

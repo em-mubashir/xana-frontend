@@ -154,7 +154,6 @@ const User = () => {
         });
     } else {
       setToken(false);
-      console.log("redirected to login page from user page");
     }
   }, []);
 

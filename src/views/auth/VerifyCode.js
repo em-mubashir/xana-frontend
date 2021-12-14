@@ -35,11 +35,8 @@ const VerifyCode = () => {
   });
 
   const onClickResend = () => {
-    console.log("Clicked on resend link");
-
     var resendLinkData = JSON.stringify({
       email: localStorage.getItem("email_Link"),
-      // email: "haseeb999khan@gmail.com",
     });
 
     var resendLinkConfig = {

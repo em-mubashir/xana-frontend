@@ -9,7 +9,6 @@ const UserDropdown = () => {
   let history = useHistory();
 
   const logoutFunc = () => {
-    console.log(localStorage.getItem("refresh_token"));
     var data = JSON.stringify({
       refreshToken: localStorage.getItem("refresh_token"),
     });
@@ -23,7 +22,6 @@ const UserDropdown = () => {
     };
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
         if (response.data.success) {
           localStorage.removeItem("access_token");
           localStorage.removeItem("refresh_token");

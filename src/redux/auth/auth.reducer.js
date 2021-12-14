@@ -29,7 +29,6 @@ const authReducer = (state = initialState, { type, payload }) => {
       // .catch(function (error) {
       //   console.log(error);
       // });
-      console.log("in reduce r");
       return {
         ...state,
         userData: 1,

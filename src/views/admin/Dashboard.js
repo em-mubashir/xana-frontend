@@ -11,7 +11,6 @@ import CardSocialTraffic from "components/Cards/CardSocialTraffic.js";
 export default function Dashboard() {
   const dispatch = useDispatch();
   const btnClicked = () => {
-    console.log("btn clicked");
     dispatch(loadUserAsync());
   };
   return (
