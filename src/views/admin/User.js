@@ -141,17 +141,16 @@ const User = () => {
       };
       axios(config)
         .then(function (response) {
-          if (response.status !== 401) {
-            setUserData(response.data.data);
-          } else {
+          setUserData(response.data.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+          if (error.response.status == 401) {
             setToken(false);
             localStorage.removeItem("access_token");
             localStorage.removeItem("refresh_token");
             localStorage.removeItem("First_Name");
           }
-        })
-        .catch(function (error) {
-          console.log(error);
         });
     } else {
       setToken(false);

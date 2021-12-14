@@ -161,6 +161,7 @@ const TestForm = (props) => {
 
       ReactS3.uploadFile(files[0], configS3Bucket)
         .then((data) => {
+          console.log(data.location);
           setS3ImgUrl(data.location);
           var dataForm = JSON.stringify({
             first_name: formData.FirstName,

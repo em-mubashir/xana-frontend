@@ -57,7 +57,7 @@ const Test = () => {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
-        if (response.status === 200) {
+        if (response.status == 200) {
           toast.success("Result Updated Successfully", {
             position: "top-right",
             autoClose: 5000,
@@ -274,52 +274,49 @@ const Test = () => {
       };
       axios(config)
         .then(function (response) {
-          console.log("Response Status Code", response.status);
-          if (response.status !== 401) {
-            transformData(response.data.data);
-            setDataTable(response.data.data);
+          transformData(response.data.data);
+          setDataTable(response.data.data);
 
-            setTotalTests(
-              response.data.data.reduce((count, val) => {
+          setTotalTests(
+            response.data.data.reduce((count, val) => {
+              count++;
+              return count;
+            }, 0)
+          );
+
+          setIncompleteReport(
+            response.data.data.reduce((count, val) => {
+              if (
+                val.video === "" ||
+                val.video === null ||
+                val.video === "undefined" ||
+                val.test_image === "" ||
+                val.test_image === null ||
+                val.test_image === "undefined"
+              ) {
                 count++;
-                return count;
-              }, 0)
-            );
+              }
+              return count;
+            }, 0)
+          );
 
-            setIncompleteReport(
-              response.data.data.reduce((count, val) => {
-                if (
-                  val.video === "" ||
-                  val.video === null ||
-                  val.video === "undefined" ||
-                  val.test_image === "" ||
-                  val.test_image === null ||
-                  val.test_image === "undefined"
-                ) {
-                  count++;
-                }
-                return count;
-              }, 0)
-            );
-
-            setPositiveNegative(
-              response.data.data.reduce((count, val) => {
-                // console.log(val.result);
-                if (val.result != null) {
-                  count++;
-                }
-                return count;
-              }, 0)
-            );
-          } else {
+          setPositiveNegative(
+            response.data.data.reduce((count, val) => {
+              // console.log(val.result);
+              if (val.result != null) {
+                count++;
+              }
+              return count;
+            }, 0)
+          );
+        })
+        .catch(function (error) {
+          if (error.response.status == 401) {
             setToken(false);
             localStorage.removeItem("access_token");
             localStorage.removeItem("refresh_token");
             localStorage.removeItem("First_Name");
           }
-        })
-        .catch(function (error) {
-          console.log(error);
         });
     } else {
       setToken(false);
