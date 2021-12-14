@@ -368,7 +368,7 @@ const TestForm = (props) => {
                   type="text"
                   name="PassportNumber"
                   className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
-                  placeholder="-----/-------/-"
+                  placeholder="---------"
                   {...register("PassportNumber")}
                 />
                 <small className="text-red-600">
