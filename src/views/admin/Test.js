@@ -57,7 +57,7 @@ const Test = () => {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
-        if (response.status == 200) {
+        if (response.status === 200) {
           toast.success("Result Updated Successfully", {
             position: "top-right",
             autoClose: 5000,
@@ -274,6 +274,7 @@ const Test = () => {
       };
       axios(config)
         .then(function (response) {
+          console.log("Response Status Code", response.status);
           if (response.status !== 401) {
             transformData(response.data.data);
             setDataTable(response.data.data);
