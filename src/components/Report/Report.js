@@ -183,7 +183,7 @@ const Report = (props) => {
             </p>
             <p>
               <span className="bold">Sample Time:</span>&nbsp;
-              {props.data.sample_time.split("T")[1].split(".")[0]}
+              {props.data.sample_time}
             </p>
             <p>
               <span className="bold">Result Date:</span>
@@ -191,7 +191,7 @@ const Report = (props) => {
             </p>
             <p>
               <span className="bold">Result Time:</span>
-              {props.data.result_time.split("T")[1].split(".")[0]}
+              {props.data.result_time}
             </p>
           </div>
           <p>

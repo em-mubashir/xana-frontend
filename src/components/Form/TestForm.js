@@ -73,14 +73,13 @@ const TestForm = (props) => {
   const [value, onChange] = useState(new Date());
   const [dob, setDob] = useState(new Date());
   const [sampleDate, setSampleDate] = useState(new Date());
-  const [sampleTime, setSampleTime] = useState(new Date());
+  const [sampleTime, setSampleTime] = useState("00:00");
   const [resultDate, setResultDate] = useState(new Date());
-  const [resultTime, setResultTime] = useState(new Date());
+  const [resultTime, setResultTime] = useState("00:00");
   const [status, setStatus] = useState(false);
   const [finalReportData, setFinalReportData] = useState();
   const [s3ImgUrl, setS3ImgUrl] = useState();
   const [base64Img, setBase64Img] = useState();
-  const [isReady, setIsReady] = useState(false);
 
   const [files, setFiles] = useState([]);
 
