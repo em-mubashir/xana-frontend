@@ -34,6 +34,32 @@ const VerifyCode = () => {
     resolver: yupResolver(scheme),
   });
 
+  const onClickResend = () => {
+    console.log("Clicked on resend link");
+
+    var resendLinkData = JSON.stringify({
+      email: localStorage.getItem("email_Link"),
+      // email: "haseeb999khan@gmail.com",
+    });
+
+    var resendLinkConfig = {
+      method: "post",
+      url: BASE_URL + "user/resend-code",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: resendLinkData,
+    };
+
+    axios(resendLinkConfig)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   const submitForm = (data) => {
     var axios = require("axios");
     var getData =
@@ -147,6 +173,10 @@ const VerifyCode = () => {
                     >
                       Continue
                     </button>
+                  </div>
+
+                  <div className="text-blue-900 text-center mt-2 font-semibold text-xs">
+                    <Link onClick={onClickResend}>Resend link</Link>
                   </div>
                 </form>
               </div>

@@ -46,6 +46,7 @@ const ForgetPassword = () => {
       .then(function (response) {
         if (response.data.success) {
           if (response.data.success === true) {
+            localStorage.setItem("email_Link", data.Email);
             history.push("/auth/verifycode");
           }
         } else {
@@ -111,10 +112,6 @@ const ForgetPassword = () => {
                     >
                       Continue
                     </button>
-                  </div>
-
-                  <div className="text-blue-900 text-center mt-2 font-semibold text-xs">
-                    <Link to="">Resend link</Link>
                   </div>
                 </form>
               </div>
