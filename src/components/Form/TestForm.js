@@ -12,6 +12,9 @@ import { BASE_URL } from "../../environment";
 import Report from "../../components/Report/Report";
 import UploadIcon from "@mui/icons-material/Upload";
 import ReactS3 from "react-s3";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
 const scheme = yup
   .object()
@@ -393,7 +396,7 @@ const TestForm = (props) => {
                 <input
                   type="number"
                   name="OrderID"
-                  className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
+                  className="mb-3 px-3 py-4 text-blueGray-700 bg-white rounded-2xl text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                   placeholder="Order ID"
                   {...register("OrderID")}
                 />
@@ -469,19 +472,20 @@ const TestForm = (props) => {
             <div className="flex justify-between w-full">
               <div className="w-6/12 m-2">
                 <label>Result</label>
-                <select
+
+                <Select
                   {...register("Selector")}
                   defaultValue="Negative"
                   value={result}
                   onChange={handleSelectChange}
-                  className="mb-3 px-3 py-3 text-blueGray-700 bg-white rounded-2xl
-                text-sm shadow focus:outline-none focus:ring w-full ease-linear
-                transition-all duration-150"
+                  className="mb-3 bg-white shadow w-full"
+                  style={{ borderRadius: "16px" }}
                 >
-                  <option value="Positive">Positive</option>
-                  <option value="Negative">Negative</option>
-                  <option value="Invalid">Invalid</option>
-                </select>
+                  <MenuItem value="Positive">Positive</MenuItem>
+                  <MenuItem value="Negative">Negative</MenuItem>
+                  <MenuItem value="Invalid">Invalid</MenuItem>
+                </Select>
+
                 <small className="text-red-600">
                   {errors.Selector?.message}
                 </small>

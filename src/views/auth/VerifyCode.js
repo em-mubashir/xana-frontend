@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Link, useHistory } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import axios from 'axios';
-import { BASE_URL } from '../../environment';
+import React, { useState } from "react";
+import { Link, useHistory } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import axios from "axios";
+import { BASE_URL } from "../../environment";
 
 const scheme = yup
   .object()
@@ -19,10 +19,10 @@ const scheme = yup
 const VerifyCode = () => {
   let history = useHistory();
 
-  const [invalidCode, setInvalidCode] = useState('');
+  const [invalidCode, setInvalidCode] = useState("");
 
-  if (localStorage.getItem('access_token') != null) {
-    history.push('/admin/test');
+  if (localStorage.getItem("access_token") != null) {
+    history.push("/admin/test");
   }
 
   const {
@@ -35,15 +35,15 @@ const VerifyCode = () => {
   });
 
   const submitForm = (data) => {
-    var axios = require('axios');
+    var axios = require("axios");
     var getData =
-      watch('Field1') + watch('Field2') + watch('Field3') + watch('Field4');
+      watch("Field1") + watch("Field2") + watch("Field3") + watch("Field4");
 
     var config = {
-      method: 'get',
-      url: BASE_URL + 'user/reset-password/' + getData,
+      method: "get",
+      url: BASE_URL + "user/reset-password/" + getData,
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       data: getData,
     };
@@ -52,8 +52,8 @@ const VerifyCode = () => {
       .then(function (response) {
         if (response.data.success) {
           if (response.data.success === true) {
-            localStorage.setItem('User_Id_Token', response.data.data);
-            history.push('/auth/newpassword');
+            localStorage.setItem("User_Id_Token", response.data.data);
+            history.push("/auth/newpassword");
           }
         } else {
           setInvalidCode(response.data.message);
@@ -66,15 +66,15 @@ const VerifyCode = () => {
 
   return (
     <>
-      <div className="mx-auto px-4 h-auto">
-        <div className="flex content-center items-center justify-center h-full">
+      <div className="mx-auto px-4 h-full">
+        <div className="flex flex-col items-center h-screen">
           <div className="w-full h-full lg:w-4/12 md:w-9/12 px-4">
             <div className="relative flex flex-col min-w-0 break-words w-full h-full mb-6 rounded-lg bg-trueGray-200 border-0">
               <div className="rounded-t flex justify-center mb-12 px-6 py-6 mt-8">
                 <img
                   alt="..."
                   className="mr-1 w-auto h-auto"
-                  src={require('assets/img/xana-login.svg').default}
+                  src={require("assets/img/xana-login.svg").default}
                 />
               </div>
 
@@ -94,7 +94,7 @@ const VerifyCode = () => {
                         name="Field1"
                         className="px-1 py-2 text-blueGray-700 bg-white rounded-lg text-2xl text-center shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                         placeholder="0"
-                        {...register('Field1')}
+                        {...register("Field1")}
                       />
                     </div>
 
@@ -104,7 +104,7 @@ const VerifyCode = () => {
                         name="Field2"
                         className="px-1 py-2 text-blueGray-700 bg-white rounded-lg text-2xl text-center shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                         placeholder="0"
-                        {...register('Field2')}
+                        {...register("Field2")}
                       />
                     </div>
 
@@ -114,7 +114,7 @@ const VerifyCode = () => {
                         name="Field3"
                         className="px-1 py-2 text-blueGray-700 bg-white rounded-lg text-2xl text-center shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                         placeholder="0"
-                        {...register('Field3')}
+                        {...register("Field3")}
                       />
                     </div>
 
@@ -124,7 +124,7 @@ const VerifyCode = () => {
                         name="Field4"
                         className="px-1 py-2 text-blueGray-700 bg-white rounded-lg text-2xl text-center shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150 "
                         placeholder="0"
-                        {...register('Field4')}
+                        {...register("Field4")}
                       />
                     </div>
                   </div>
@@ -132,8 +132,8 @@ const VerifyCode = () => {
                   <div
                     className={
                       invalidCode.length > 0
-                        ? ' text-center text-red-600 border-2 border-red-600 my-8 py-2'
-                        : 'invisible'
+                        ? " text-center text-red-600 border-2 border-red-600 my-8 py-2"
+                        : "invisible"
                     }
                   >
                     {invalidCode}
@@ -151,12 +151,12 @@ const VerifyCode = () => {
                 </form>
               </div>
             </div>
-            <div className="px-3 py-3 flex align-bottom relative mt-20 justify-center lg:w-full">
-              <p className="text-blue-900 font-semibold text-sm">
-                Copyright © {new Date().getFullYear()} All Rights Reserved.
-                Powered By Codistan
-              </p>
-            </div>
+          </div>
+          <div className="px-3 py-3 inline-block align-bottom">
+            <p className="text-blue-900 font-semibold text-sm">
+              Copyright © {new Date().getFullYear()} All Rights Reserved.
+              Powered By Codistan
+            </p>
           </div>
         </div>
       </div>

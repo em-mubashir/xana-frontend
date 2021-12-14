@@ -59,8 +59,8 @@ const ForgetPassword = () => {
 
   return (
     <>
-      <div className="mx-auto px-4 h-auto">
-        <div className="flex content-center items-center justify-center h-full">
+      <div className="mx-auto px-4 h-full">
+        <div className="flex flex-col items-center h-screen">
           <div className="w-full h-full lg:w-4/12 md:w-9/12 px-4">
             <div className="relative flex flex-col min-w-0 break-words w-full h-full mb-6 rounded-lg bg-trueGray-200 border-0">
               <div className="rounded-t flex justify-center mb-12 px-6 py-6 mt-8">
@@ -119,12 +119,12 @@ const ForgetPassword = () => {
                 </form>
               </div>
             </div>
-            <div className="px-3 py-3 flex align-bottom relative mt-20 justify-center lg:w-full">
-              <p className="text-blue-900 font-semibold text-sm">
-                Copyright © {new Date().getFullYear()} All Rights Reserved.
-                Powered By Codistan
-              </p>
-            </div>
+          </div>
+          <div className="px-3 py-3 inline-block align-bottom">
+            <p className="text-blue-900 font-semibold text-sm">
+              Copyright © {new Date().getFullYear()} All Rights Reserved.
+              Powered By Codistan
+            </p>
           </div>
         </div>
       </div>
