@@ -1,12 +1,12 @@
-import React from "react";
-import { ThemeProvider } from "@mui/styles";
-import { createTheme, responsiveFontSizes } from "@mui/material/styles";
-import MUIDataTable from "mui-datatables";
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { BASE_URL } from "../../environment";
-import axios from "axios";
+import React from 'react';
+import { ThemeProvider } from '@mui/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+import MUIDataTable from 'mui-datatables';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { BASE_URL } from '../../environment';
+import axios from 'axios';
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -16,64 +16,64 @@ const User = () => {
 
   const columns = [
     {
-      name: "id",
-      label: "ID",
+      name: 'id',
+      label: 'ID',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "first_name",
-      label: "First Name",
+      name: 'first_name',
+      label: 'First Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "last_name",
-      label: "Last Name",
+      name: 'last_name',
+      label: 'Last Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "email",
-      label: "Email",
+      name: 'email',
+      label: 'Email',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "mobile",
-      label: "Mobile",
+      name: 'mobile',
+      label: 'Mobile',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "passport_number",
-      label: "Passport Number",
+      name: 'passport_number',
+      label: 'Passport Number',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "gender",
-      label: "Gender",
+      name: 'gender',
+      label: 'Gender',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "company",
-      label: "Company",
+      name: 'company',
+      label: 'Company',
       options: {
         filter: true,
         sort: false,
@@ -88,40 +88,40 @@ const User = () => {
     //   },
     // },
     {
-      name: "address",
-      label: "Address",
+      name: 'address',
+      label: 'Address',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "image",
-      label: "Image",
+      name: 'image',
+      label: 'Image',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "code",
-      label: "Code",
+      name: 'code',
+      label: 'Code',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "confirmed",
-      label: "Confirmed",
+      name: 'confirmed',
+      label: 'Confirmed',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "dob",
-      label: "Date of Birth",
+      name: 'dob',
+      label: 'Date of Birth',
       options: {
         filter: true,
         sort: false,
@@ -133,29 +133,28 @@ const User = () => {
 
   const [userData, setUserData] = useState();
   useEffect(() => {
-    if (localStorage.getItem("access_token") != null) {
+    if (localStorage.getItem('access_token') != null) {
       var config = {
-        method: "get",
-        url: BASE_URL + "admin/all-users",
+        method: 'get',
+        url: BASE_URL + 'admin/all-users',
         headers: {},
       };
       axios(config)
         .then(function (response) {
-          if (response.status !== 401) {
-            setUserData(response.data.data);
-          } else {
-            setToken(false);
-            localStorage.removeItem("access_token");
-            localStorage.removeItem("refresh_token");
-            localStorage.removeItem("First_Name");
-          }
+          setUserData(response.data.data);
         })
         .catch(function (error) {
           console.log(error);
+          if (error.response.status == 401) {
+            setToken(false);
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('First_Name');
+          }
         });
     } else {
       setToken(false);
-      console.log("redirected to login page from user page");
+      console.log('redirected to login page from user page');
     }
   }, []);
 
@@ -165,7 +164,7 @@ const User = () => {
         <React.Fragment>
           <ThemeProvider theme={theme}>
             <MUIDataTable
-              title={"Users Details"}
+              title={'Users Details'}
               data={userData}
               columns={columns}
               options={{
