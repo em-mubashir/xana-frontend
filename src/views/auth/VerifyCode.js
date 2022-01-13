@@ -5,7 +5,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import axios from "axios";
 import { BASE_URL } from "../../environment";
-
 const scheme = yup
   .object()
   .shape({
@@ -20,6 +19,7 @@ const VerifyCode = () => {
   let history = useHistory();
 
   const [invalidCode, setInvalidCode] = useState("");
+  const [verifyCodeStatus, setVerifyCodeStatus]=useState("");
 
   if (localStorage.getItem("access_token") != null) {
     history.push("/admin/test");
@@ -51,9 +51,11 @@ const VerifyCode = () => {
     axios(resendLinkConfig)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
+        setVerifyCodeStatus(response.data.message);
       })
       .catch(function (error) {
         console.log(error);
+        setVerifyCodeStatus(error);
       });
   };
 
@@ -79,6 +81,7 @@ const VerifyCode = () => {
             history.push("/auth/newpassword");
           }
         } else {
+          setVerifyCodeStatus("");
           setInvalidCode(response.data.message);
         }
       })
@@ -174,6 +177,15 @@ const VerifyCode = () => {
 
                   <div className="text-blue-900 text-center mt-2 font-semibold text-xs">
                     <Link onClick={onClickResend}>Resend link</Link>
+                  </div>
+                  <div
+                    className={
+                      verifyCodeStatus.length > 0
+                        ? " text-center text-green-600 border-2 border-green-600 my-8 py-2"
+                        : "invisible"
+                    }
+                  >
+                    {verifyCodeStatus}
                   </div>
                 </form>
               </div>

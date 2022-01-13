@@ -2,12 +2,21 @@
   margin: 15px 50px;
   font-size: 14px;
 }
-
+.pt-0 {
+  padding-top: 0;
+}
 .btn {
   text-align: center;
   display: block;
 }
-
+.report-data-td {
+  width: 15%;
+}
+.result-status {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0b2a75;
+}
 .custom-btn {
   background-color: darkorange;
   border: 2px solid darkorange;

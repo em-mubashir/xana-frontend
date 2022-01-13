@@ -1,17 +1,17 @@
-import React from "react";
-import { ThemeProvider } from "@mui/styles";
-import { createTheme, responsiveFontSizes } from "@mui/material/styles";
-import MUIDataTable from "mui-datatables";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
-import { BASE_URL, IMAGE_DETECTION_BASE_URL } from "../../environment";
-import axios from "axios";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
+import React from 'react';
+import { ThemeProvider } from '@mui/styles';
+import { createTheme, responsiveFontSizes } from '@mui/material/styles';
+import MUIDataTable from 'mui-datatables';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { BASE_URL, IMAGE_DETECTION_BASE_URL } from '../../environment';
+import axios from 'axios';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
@@ -24,38 +24,59 @@ const Test = () => {
     const changeSelectedValueOnUI = [...selectedOption];
     changeSelectedValueOnUI[passedId] = passedValue.target.value;
     setSelectedOption(changeSelectedValueOnUI);
-
+    console.log(passedValue.target.value, passedId);
     var data = JSON.stringify({
       result: passedValue.target.value,
       id: passedId,
     });
 
     var config = {
-      method: "put",
-      url: BASE_URL + "admin/update-report-status",
+      method: 'put',
+      url: BASE_URL + 'admin/update-report-status',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       data: data,
     };
 
     axios(config)
       .then(function (response) {
-        if (response.status === 200) {
-          toast.success("Result Updated Successfully", {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: true,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
+        console.log(response);
+        if (response.status == 200 && response.data.success) {
+          var dataChangePdf = JSON.stringify({
+            test_id: passedId,
+            test_type: 0,
           });
+          var configChangePdf = {
+            method: 'post',
+            url: IMAGE_DETECTION_BASE_URL + 'get_test_report',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            data: dataChangePdf,
+          };
+
+          axios(configChangePdf)
+            .then(function (response) {
+              // console.log(JSON.stringify(response.data));
+              toast.success('Result Updated Successfully', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+              });
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
         }
       })
       .catch(function (error) {
         toast.error(error, {
-          position: "top-right",
+          position: 'top-right',
           autoClose: 5000,
           hideProgressBar: true,
           closeOnClick: true,
@@ -65,97 +86,104 @@ const Test = () => {
         });
       });
 
-    var dataChangePdf = JSON.stringify({
-      test_id: passedId,
-      test_type: 0,
-    });
+    // var dataChangePdf = JSON.stringify({
+    //   test_id: passedId,
+    //   test_type: 0,
+    // });
 
-    var configChangePdf = {
-      method: "post",
-      url: IMAGE_DETECTION_BASE_URL + "get_test_report",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: dataChangePdf,
-    };
+    // var configChangePdf = {
+    //   method: "post",
+    //   url: IMAGE_DETECTION_BASE_URL + "get_test_report",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   data: dataChangePdf,
+    // };
 
-    axios(configChangePdf)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    // axios(configChangePdf)
+    //   .then(function (response) {
+    //     console.log(JSON.stringify(response.data));
+    //   })
+    //   .catch(function (error) {
+    //     console.log(error);
+    //   });
   };
 
   const columns = [
     {
-      name: "id",
-      label: "ID",
+      name: 'id',
+      label: 'ID',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "test_name",
-      label: " Name",
+      name: 'test_name',
+      label: 'Name',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "test_manufacturer",
-      label: " Manufacturer",
+      name: 'test_manufacturer',
+      label: 'Manufacturer',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "test_description",
-      label: " Description",
+      name: 'test_description',
+      label: 'Description',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "test_performance",
-      label: " Performance",
+      name: 'test_performance',
+      label: 'Performance',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "test_authorisation",
-      label: "Authorisation",
+      name: 'test_authorisation',
+      label: 'Authorization',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "date_register",
-      label: "Registeration Date",
+      name: 'date_register',
+      label: 'Registration Date',
       options: {
         filter: true,
         sort: false,
+
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return <React.Fragment>{value.split('T')[0]}</React.Fragment>;
+        },
       },
     },
     {
-      name: "date_conduct",
-      label: "Conduct Date",
+      name: 'date_conduct',
+      label: 'Conduct Date',
       options: {
         filter: true,
         sort: false,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return <React.Fragment>{value.split('T')[0]}</React.Fragment>;
+        },
       },
     },
     {
-      name: "result",
-      label: "Result",
+      name: 'result',
+      label: 'Result',
       options: {
         filter: true,
         sort: false,
@@ -164,7 +192,7 @@ const Test = () => {
             <React.Fragment>
               <FormControl>
                 <Select
-                  style={{ width: "110px", height: "30px", fontSize: "14px" }}
+                  style={{ width: '110px', height: '30px', fontSize: '14px' }}
                   className="form-control"
                   onChange={(event) =>
                     onChangeHandleResult(event, tableMeta.rowData[0])
@@ -183,43 +211,90 @@ const Test = () => {
       },
     },
     {
-      name: "userId",
-      label: "User ID",
+      name: 'userId',
+      label: 'User ID',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "test_image",
-      label: " Image",
+      name: 'test_image',
+      label: 'Image',
+      options: {
+        filter: true,
+        sort: false,
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return (
+            <React.Fragment>
+              {value && value != 'null' && value != 'undefined' ? (
+                <a href={value} target="_blank">
+                  <button class=" orange-btn  hover:bg-blue-900 text-white font-bold py-2 px-4 rounded">
+                    View Image
+                  </button>
+                </a>
+              ) : (
+                ''
+              )}
+            </React.Fragment>
+          );
+        },
+      },
+    },
+    {
+      name: 'qr_id',
+      label: 'QR ID',
       options: {
         filter: true,
         sort: false,
       },
     },
     {
-      name: "qr_id",
-      label: "QR ID",
+      name: 'video',
+      label: 'Video',
       options: {
         filter: true,
         sort: false,
+
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return (
+            <React.Fragment>
+              {value && value != 'null' && value != 'undefined' ? (
+                <a href={value} target="_blank">
+                  <button class=" orange-btn  hover:bg-blue-900 text-white font-bold py-2 px-4 rounded">
+                    View Video
+                  </button>
+                </a>
+              ) : (
+                ''
+              )}
+            </React.Fragment>
+          );
+        },
       },
     },
     {
-      name: "video",
-      label: "Video",
+      name: 'report_url',
+      label: 'Report URL',
       options: {
         filter: true,
         sort: false,
-      },
-    },
-    {
-      name: "report_url",
-      label: "Report URL",
-      options: {
-        filter: true,
-        sort: false,
+
+        customBodyRender: (value, tableMeta, updateValue) => {
+          return (
+            <React.Fragment>
+              {value && value != 'null' && value != 'undefined' ? (
+                <a href={value} target="_blank">
+                  <button class=" orange-btn  hover:bg-blue-900 text-white font-bold py-2 px-4 rounded">
+                    Download
+                  </button>
+                </a>
+              ) : (
+                ''
+              )}
+            </React.Fragment>
+          );
+        },
       },
     },
   ];
@@ -234,18 +309,18 @@ const Test = () => {
   const transformData = (testData) => {
     var selectedValue = [];
     testData.map((data, index) => {
-      selectedValue[data.id] = data.result ? data.result : "No Result";
+      selectedValue[data.id] = data.result ? data.result : 'No Result';
     });
     setSelectedOption(selectedValue);
   };
   useEffect(() => {
-    if (localStorage.getItem("access_token") != null) {
-      var data = "";
+    if (localStorage.getItem('access_token') != null) {
+      var data = '';
       var config = {
-        method: "get",
-        url: BASE_URL + "admin/test",
+        method: 'get',
+        url: BASE_URL + 'admin/test',
         headers: {
-          Authorization: "Bearer " + localStorage.getItem("access_token"),
+          Authorization: 'Bearer ' + localStorage.getItem('access_token'),
         },
         data: data,
       };
@@ -264,12 +339,12 @@ const Test = () => {
           setIncompleteReport(
             response.data.data.reduce((count, val) => {
               if (
-                val.video === "" ||
+                val.video === '' ||
                 val.video === null ||
-                val.video === "undefined" ||
-                val.test_image === "" ||
+                val.video === 'undefined' ||
+                val.test_image === '' ||
                 val.test_image === null ||
-                val.test_image === "undefined"
+                val.test_image === 'undefined'
               ) {
                 count++;
               }
@@ -279,7 +354,12 @@ const Test = () => {
 
           setPositiveNegative(
             response.data.data.reduce((count, val) => {
-              if (val.result != null) {
+              if (
+                val.result &&
+                (val.result == 'Positive' ||
+                  val.result == 'Negative' ||
+                  val.result == 'Invalid')
+              ) {
                 count++;
               }
               return count;
@@ -289,9 +369,9 @@ const Test = () => {
         .catch(function (error) {
           if (error.response.status == 401) {
             setToken(false);
-            localStorage.removeItem("access_token");
-            localStorage.removeItem("refresh_token");
-            localStorage.removeItem("First_Name");
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('First_Name');
           }
         });
     } else {
@@ -322,7 +402,7 @@ const Test = () => {
                 <img
                   className="w-10 h-10"
                   alt=""
-                  src={require("assets/img/totalTest.svg").default}
+                  src={require('assets/img/totalTest.svg').default}
                 ></img>
               </div>
             </div>
@@ -333,7 +413,7 @@ const Test = () => {
                 <img
                   className="w-10 h-10"
                   alt=""
-                  src={require("assets/img/pendingReports.svg").default}
+                  src={require('assets/img/pendingReports.svg').default}
                 ></img>
               </div>
             </div>
@@ -344,7 +424,7 @@ const Test = () => {
                 <img
                   className="w-10 h-10"
                   alt=""
-                  src={require("assets/img/positiveNegative.svg").default}
+                  src={require('assets/img/positiveNegative.svg').default}
                 ></img>
               </div>
             </div>
@@ -352,7 +432,7 @@ const Test = () => {
 
           <ThemeProvider theme={theme}>
             <MUIDataTable
-              title={"Tests Details"}
+              title={'Tests Details'}
               data={dataTable}
               columns={columns}
               options={{
