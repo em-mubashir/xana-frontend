@@ -17,6 +17,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
 const scheme = yup
   .object()
   .shape({
@@ -208,25 +209,27 @@ const TestForm = (props) => {
   };
 
   const submitForm = (formData) => {
-    var dateOfBirth = dob;
-    var sDate = sampleDate;
-    var rDate = resultDate;
-    var today = new Date();
-    if (dob != today) {
-      var fetchDate = dob.getDate();
-      var incrementedDate = fetchDate + 1;
-      dateOfBirth = new Date(dob.setDate(parseInt(incrementedDate)));
-    }
-    if (sDate != today) {
-      var fetchDate = sDate.getDate();
-      var incrementedDate = fetchDate + 1;
-      sDate = new Date(sDate.setDate(parseInt(incrementedDate)));
-    }
-    if (rDate != today) {
-      var fetchDate = rDate.getDate();
-      var incrementedDate = fetchDate + 1;
-      rDate = new Date(rDate.setDate(parseInt(incrementedDate)));
-    }
+    // var dateOfBirth = dob;
+    // var sDate = sampleDate;
+    // var rDate = resultDate;
+    // var today = new Date();
+    // if (dob.getDate() != today.getDate()) {
+    //   var fetchDate = dob.getDate();
+    //   var incrementedDate = fetchDate + 1;
+    //   dateOfBirth = new Date(dob.setDate(parseInt(incrementedDate)));
+    // }
+    // if (sDate.getDate() != today.getDate()) {
+    //   console.log(sDate);
+    //   console.log(today);
+    //   var fetchDate = sDate.getDate();
+    //   var incrementedDate = fetchDate + 1;
+    //   sDate = new Date(sDate.setDate(parseInt(incrementedDate)));
+    // }
+    // if (rDate.getDate() != today.getDate()) {
+    //   var fetchDate = rDate.getDate();
+    //   var incrementedDate = fetchDate + 1;
+    //   rDate = new Date(rDate.setDate(parseInt(incrementedDate)));
+    // }
     if (files[0]) {
       console.log(files[0]);
       imageConvertedToBase64();
@@ -238,11 +241,11 @@ const TestForm = (props) => {
             first_name: formData.FirstName,
             last_name: formData.LastName,
             email: formData.Email,
-            dob: dateOfBirth,
+            dob: dob,
             passport: formData.PassportNumber,
-            sample_date: sDate,
+            sample_date: sampleDate,
             sample_time: sampleTime,
-            result_date: rDate,
+            result_date: resultDate,
             result_time: resultTime,
             order_id: formData.OrderID,
             test_name: 'Coronavirus Ag Rapid Test Cassette (Swab)',
@@ -290,11 +293,11 @@ const TestForm = (props) => {
         first_name: formData.FirstName,
         last_name: formData.LastName,
         email: formData.Email,
-        dob: dateOfBirth,
+        dob: dob,
         passport: formData.PassportNumber,
-        sample_date: sDate,
+        sample_date: sampleDate,
         sample_time: sampleTime,
-        result_date: rDate,
+        result_date: resultDate,
         result_time: resultTime,
         order_id: formData.OrderID,
         test_name: 'Coronavirus Ag Rapid Test Cassette (Swab)',

@@ -13,6 +13,8 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import moment from 'moment';
+
 let theme = createTheme();
 theme = responsiveFontSizes(theme);
 
@@ -166,7 +168,17 @@ const CustomReport = () => {
         filter: true,
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
-          return <React.Fragment>{value.split('T')[0]}</React.Fragment>;
+          return (
+            <React.Fragment>
+              <h3>
+                {tableMeta.rowData[4] &&
+                tableMeta.rowData[4] != 'null' &&
+                tableMeta.rowData[4] !== 'undefined'
+                  ? moment(tableMeta.rowData[4]).format('DD-MM-YYYY')
+                  : ''}
+              </h3>
+            </React.Fragment>
+          );
         },
       },
     },
@@ -186,7 +198,11 @@ const CustomReport = () => {
         sort: false,
 
         customBodyRender: (value, tableMeta, updateValue) => {
-          return <React.Fragment>{value.split('T')[0]}</React.Fragment>;
+          return (
+            <React.Fragment>
+              <h3>{moment(tableMeta.rowData[6]).format('DD-MM-YYYY')}</h3>
+            </React.Fragment>
+          );
         },
       },
     },
@@ -205,7 +221,11 @@ const CustomReport = () => {
         filter: true,
         sort: false,
         customBodyRender: (value, tableMeta, updateValue) => {
-          return <React.Fragment>{value.split('T')[0]}</React.Fragment>;
+          return (
+            <React.Fragment>
+              <h3>{moment(tableMeta.rowData[8]).format('DD-MM-YYYY')}</h3>
+            </React.Fragment>
+          );
         },
       },
     },
@@ -361,7 +381,7 @@ const CustomReport = () => {
         result_time: data.result_time,
         order_id: data.order_id,
         test_name: data.test_name,
-        type:data.type,
+        type: data.type,
         test_manufacturer: data.test_manufacturer,
         test_authorization: data.test_authorization,
         test_description: data.test_description,

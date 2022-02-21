@@ -1,46 +1,55 @@
-import React from "react";
-import axios from "axios";
-import { useHistory } from "react-router-dom";
-import { BASE_URL } from "../../environment";
-import Avatar from "@mui/material/Avatar";
-import LogoutIcon from "@mui/icons-material/Logout";
+import React from 'react';
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import { BASE_URL } from '../../environment';
+import Avatar from '@mui/material/Avatar';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 const UserDropdown = () => {
   let history = useHistory();
 
   const logoutFunc = () => {
-    var data = JSON.stringify({
-      refreshToken: localStorage.getItem("refresh_token"),
-    });
-    var config = {
-      method: "post",
-      url: BASE_URL + "user/logout",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
-    axios(config)
-      .then(function (response) {
-        if (response.data.success) {
-          localStorage.removeItem("access_token");
-          localStorage.removeItem("refresh_token");
-          localStorage.removeItem("First_Name");
-          history.push("/");
-        }
-      })
-      .catch(function (error) {
-        console.log(error);
+    if (localStorage.getItem('access_token') != null) {
+      var data = JSON.stringify({
+        refreshToken: localStorage.getItem('refresh_token'),
       });
+      var config = {
+        method: 'post',
+        url: BASE_URL + 'user/logout',
+        headers: {
+          Authorization: 'Bearer ' + localStorage.getItem('access_token'),
+          'Content-Type': 'application/json',
+        },
+        data: data,
+      };
+      axios(config)
+        .then(function (response) {
+          if (response.data.success) {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('First_Name');
+            history.push('/');
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+          if (error.response.status == 401) {
+            setToken(false);
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('First_Name');
+          }
+        });
+    }
   };
 
   return (
     <>
       <div className="flex mr-8 items-center font-bold">
-        Hello,{" "}
-        {localStorage.getItem("First_Name")
-          ? localStorage.getItem("First_Name")
-          : "Admin"}
+        Hello,{' '}
+        {localStorage.getItem('First_Name')
+          ? localStorage.getItem('First_Name')
+          : 'Admin'}
       </div>
 
       <div className=" ">

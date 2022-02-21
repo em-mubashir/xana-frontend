@@ -5,6 +5,7 @@ import axios from 'axios';
 import QRCode from 'qrcode.react';
 import './report.css';
 import { BASE_URL } from '../../environment';
+import moment from 'moment';
 
 const Report = (props) => {
   console.log(props);
@@ -112,7 +113,7 @@ const Report = (props) => {
             </p>
             <p>
               <span className="bold">Date of Birth:</span> &nbsp;
-              {props.data.dob.split('T')[0]}
+              {moment(props.data.dob).format('DD-MM-YYYY')}
             </p>
             <p>
               <span className="bold">Passport No:</span> &nbsp;
@@ -184,7 +185,7 @@ const Report = (props) => {
               <td className="report-data-td ">
                 <p>
                   <span className="bold">Sample Date:</span>&nbsp;
-                  {props.data.sample_date.split('T')[0]}
+                  {moment(props.data.sample_date).format('DD-MM-YYYY')}
                 </p>
               </td>
               <td class="report-data-td ">
@@ -198,7 +199,7 @@ const Report = (props) => {
               <td class="report-data-td ">
                 <p>
                   <span className="bold">Result Date:</span>&nbsp;
-                  {props.data.result_date.split('T')[0]}
+                  {moment(props.data.result_date).format('DD-MM-YYYY')}
                 </p>
               </td>
               <td class="report-data-td ">
@@ -259,6 +260,11 @@ const Report = (props) => {
           </p> */}
           <div className="regards" style={{ fontSize: '12px' }}>
             <p style={{ flex: 0.6 }}>
+              <img
+                src={require('assets/img/signature.svg').default}
+                alt="signature"
+                className="custom-pdf-footer-logo"
+              />
               <span>Mr. Sayed Adeel Babar Shah MPharm</span> <br />
               <span className="bold">Medical &amp; Clinical Advisor</span>
               <br />
